@@ -3,6 +3,7 @@
 **Motto:** _Building The Future, One Line Of Code At A Time_
 
 **Logo:** 
+
 ![Logo](https://github.com/qmeinung22/The-Architechs/blob/main/media/architechs_logo.png?raw=true)
 
 ## Contributors 
