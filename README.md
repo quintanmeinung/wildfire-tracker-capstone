@@ -12,7 +12,7 @@
 | ------------------ | ------------------------------------------------------------------------------------------------- |
 | Eric Lomeli-Gil    | https://github.com/qmeinung22/The-Architechs/blob/main/team_resumes/EricLomeliGilResume.pdf       |
 | Jonny Reynoso      | https://github.com/qmeinung22/The-Architechs/blob/main/team_resumes/Jonny_s%20Resume.pdf          |
-| Quentin Meinung    | https://github.com/qmeinung22/The-Architechs/blob/main/team_resumes/Quintan_sResume.pdf           |
+| Quintan Meinung    | https://github.com/qmeinung22/The-Architechs/blob/main/team_resumes/Quintan_sResume.pdf           |
 | Mike Deladurantaye | https://github.com/qmeinung22/The-Architechs/blob/main/team_resumes/mike-deladurantaye-resume.pdf |
 
 ## Meeting Times
