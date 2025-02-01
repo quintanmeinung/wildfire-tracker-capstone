@@ -55,13 +55,13 @@
   - Share wildfire updates with colleagues through the app.  
 
 ---
-### 3. Enviromental Journalist
-**Name**: Marcus Rivera  
+### 3. Marcus Rivera 
 **Age**: 30  
 **Hometown**: San Francisco, CA  
 **Occupation**: Freelance Environmental Journalist  
 **Background**:  
   - Marcus writes for major news outlets about the effect of climate and its impact on wildfires, how they are causing them to be more frequent, even in their off season, and more deadly with the elements often increasing their destructive potential. He frequently travels to wildfire-affected areas to gather first hand stories and notes of the land after a wildfire has ravaged it. He would like to have an app that accuretly tracks wildfires so that he knows when a wildfire has died down and is safe to travel too. As well as the ability to determine the air quality of the area in order to inform his readers of potential health risks for them and himself.
+  
 **Motivations**:  
   - Access up-to-date wildfire maps to provide accurate reporting.  
   - Track resources and evacuation zones to inform the public.  
@@ -78,60 +78,22 @@
 
   ---
 # *Timeline & Release Plan:*
-#### *Milestone 3*
-- Epic & bigger user stories
-- Jira
-- Requirements
-- Stakeholder personas
-- Architecture diagram
 
-#### *Milestone 4*
-- Product and Sprint Backlog finished
-- Test all user stories in Sprint 1 to meet requirements
-- Upload Initial data model appropriate for all user stories
-#### *Winter 2025 Sprint 1*
-- Basic MVC framework instantiated
-- API keys secured
-- Database schema
-#### *Winter 2025 Sprint 2*
-- Mapping integration
-    - Leaflet.js
-- Database & EF Core setup
-- Sprint 1 Retrospective
-#### *Winter 2025 Sprint 3*
-- JIT Modeling and Design of product
-- User accounts
-- Produce Correct Map Layering Techniques
-- Get started on Sprint 4 before the first day of spring term.
-#### *Spring 2025 Sprint 1*
-- Get started on home page layout/tabs
-- User authentication
-  - Security
-  - Accessing user location
-- User fire subscription
-  - Users can track specific fires
-#### *Spring 2025 Sprint 2*
-- Implement notifications on changes to fires
-  - Fire containment, growth, etc.
-- History log of previous fires
-- Add accessibility features
-#### *Spring 2025 Sprint 3*
-- Resource page
-  - Fire safety information
-  - Emergency hotlines
-- Evacuation Zone page
-- Integrate Weather API
-- Add ability to see fire progression in last 24 hrs
-#### *Spring 2025 Sprint 4*
-- Clean up pages/ make them look presentable
-- Add an “About page”
-- Add language options
-- Penetration Testing for potential bugs/missing features 
-#### *Spring 2025 Sprint 5*
-- Last minute bug fixes, documentation, maintenance.
-- Practice AES presentation
-#### *AES*
-- Present
+| Checkpoint | Date |
+| ----------- | ------------- |
+| Milestone 1 | Jan. 15, 2025 |
+| Milestone 2 | Jan. 20, 2025 |
+| Milestone 3 | Jan. 27, 2025 |
+| Milestone 4 | Feb. 3, 2025 |
+| Sprint 1 | Feb. 17, 2025 |
+| Sprint 2 | Mar. 3, 2025 |
+| Sprint 3 | Mar. 17, 2025 |
+| Sprint 4 | Mar. 31, 2025 |
+| Sprint 5 | Apr. 14, 2025 |
+| Sprint 6 | Apr. 28, 2025 |
+| Sprint 7 | May 12, 2025 |
+| Sprint 8 | May 26, 2025 |
+
 ---
 
 ### *Revised Needs & Features:*
