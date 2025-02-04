@@ -13,8 +13,8 @@ Our team will be utilizing Bootstrap for CSS, and JQuery where applicable. Our f
 		- `f12_search_bar`
 		- `f13_fire_markers`
 	- Database
-		- Tables: `fireData`
-		- Columns: `fireId`
+		- Tables: `FireData`
+		- Columns: `FireId`
 - Tool Versions
 	- .NET version 9.0.1
 	- VS Code version 1.96.4
