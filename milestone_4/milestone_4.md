@@ -1,6 +1,6 @@
 # Milestone 4
 ## Architectural Decisions
-Our team will be utilizing Bootstrap for CSS, and JQuery where applicable. Our folders, files, projects, solutions, git branches, and database tables will all follow snake_case. See examples below.
+Our team will be utilizing Bootstrap for CSS, and JQuery where applicable. Our folders, files, projects, solutions, and git branches will all follow snake_case. The database will follow PascalCase per the DB syntax svg examples. See examples below.
 - Naming Conventions
 	- Folders & Files
 		- `/models/example_model.cs`
@@ -13,8 +13,8 @@ Our team will be utilizing Bootstrap for CSS, and JQuery where applicable. Our f
 		- `f12_search_bar`
 		- `f13_fire_markers`
 	- Database
-		- Tables: `fire_data`
-		- Columns: `fire_id`
+		- Tables: `fireData`
+		- Columns: `fireId`
 - Tool Versions
 	- .NET version 9.0.1
 	- VS Code version 1.96.4
