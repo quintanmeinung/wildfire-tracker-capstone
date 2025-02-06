@@ -1,0 +1,183 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfire_Tests/ProjectWildfire_Tests.csproj": {}
+  },
+  "projects": {
+    "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfireWeb/ProjectWildfireWeb.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfireWeb/ProjectWildfireWeb.csproj",
+        "projectName": "ProjectWildfireWeb",
+        "projectPath": "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfireWeb/ProjectWildfireWeb.csproj",
+        "packagesPath": "/Users/minitech/.nuget/packages/",
+        "outputPath": "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfireWeb/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/minitech/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfire_Tests/ProjectWildfire_Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfire_Tests/ProjectWildfire_Tests.csproj",
+        "projectName": "ProjectWildfire_Tests",
+        "projectPath": "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfire_Tests/ProjectWildfire_Tests.csproj",
+        "packagesPath": "/Users/minitech/.nuget/packages/",
+        "outputPath": "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfire_Tests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/minitech/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfireWeb/ProjectWildfireWeb.csproj": {
+                "projectPath": "/Users/minitech/Documents/Computer Science/CS461/CS461 Git/The-Architechs/ProjectWildfire/ProjectWildfireWeb/ProjectWildfireWeb.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.12.0, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[4.2.2, )"
+            },
+            "NUnit.Analyzers": {
+              "target": "Package",
+              "version": "[4.4.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[4.6.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
