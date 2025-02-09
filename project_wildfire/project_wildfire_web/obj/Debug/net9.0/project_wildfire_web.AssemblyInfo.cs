@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("project_wildfire_web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8193388552f896faedd3979666dd215fcb08549d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8f0e17a03feec57158ceb4c5a47b55b210204df9")]
 [assembly: System.Reflection.AssemblyProductAttribute("project_wildfire_web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("project_wildfire_web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
