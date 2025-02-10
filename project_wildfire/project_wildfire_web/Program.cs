@@ -2,13 +2,21 @@ namespace project_wildfire_web;
 
 public class Program
 {
+
+    private string connectionString = null;
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-
+/* 
+        builder.Services.AddDbContext<StreamingDataDbContext>(
+                options => options
+                .UseLazyLoadingProxies()    
+                .UseSqlServer(
+                    builder.Configuration.GetConnectionString("StreamingDataConnection")));
+ */
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
