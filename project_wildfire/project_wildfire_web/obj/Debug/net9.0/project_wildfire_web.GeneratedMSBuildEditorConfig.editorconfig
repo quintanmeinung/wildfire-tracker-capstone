@@ -17,41 +17,41 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = project_wildfire_web
 build_property.RootNamespace = project_wildfire_web
-build_property.ProjectDir = /Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/
+build_property.ProjectDir = C:\Users\Quintan\Desktop\The-Architechs\project_wildfire\project_wildfire_web\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web
+build_property.MSBuildProjectDirectory = C:\Users\Quintan\Desktop\The-Architechs\project_wildfire\project_wildfire_web
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+[C:/Users/Quintan/Desktop/The-Architechs/project_wildfire/project_wildfire_web/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+[C:/Users/Quintan/Desktop/The-Architechs/project_wildfire/project_wildfire_web/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+[C:/Users/Quintan/Desktop/The-Architechs/project_wildfire/project_wildfire_web/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[C:/Users/Quintan/Desktop/The-Architechs/project_wildfire/project_wildfire_web/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[C:/Users/Quintan/Desktop/The-Architechs/project_wildfire/project_wildfire_web/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+[C:/Users/Quintan/Desktop/The-Architechs/project_wildfire/project_wildfire_web/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-oreijt8a5f
+[C:/Users/Quintan/Desktop/The-Architechs/project_wildfire/project_wildfire_web/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-mxa94wx81h

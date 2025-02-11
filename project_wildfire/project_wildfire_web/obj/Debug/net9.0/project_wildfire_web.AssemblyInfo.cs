@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("2384a56c-7930-4644-b761-11363855d8e6")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("project_wildfire_web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8f0e17a03feec57158ceb4c5a47b55b210204df9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c54b2451fb58d58e6bbb90011049179e3169e9b4")]
 [assembly: System.Reflection.AssemblyProductAttribute("project_wildfire_web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("project_wildfire_web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

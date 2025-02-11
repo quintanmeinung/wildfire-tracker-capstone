@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("project_wildfire_tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8f0e17a03feec57158ceb4c5a47b55b210204df9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c54b2451fb58d58e6bbb90011049179e3169e9b4")]
 [assembly: System.Reflection.AssemblyProductAttribute("project_wildfire_tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("project_wildfire_tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

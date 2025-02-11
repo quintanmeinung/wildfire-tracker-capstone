@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_tests/project_wildfire_tests.csproj": {}
+    "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_tests\\project_wildfire_tests.csproj": {}
   },
   "projects": {
-    "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_tests/project_wildfire_tests.csproj": {
+    "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_tests\\project_wildfire_tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_tests/project_wildfire_tests.csproj",
+        "projectUniqueName": "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_tests\\project_wildfire_tests.csproj",
         "projectName": "project_wildfire_tests",
-        "projectPath": "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_tests/project_wildfire_tests.csproj",
-        "packagesPath": "/Users/elomeligil/.nuget/packages/",
-        "outputPath": "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_tests/obj/",
+        "projectPath": "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_tests\\project_wildfire_tests.csproj",
+        "packagesPath": "C:\\Users\\Quintan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/elomeligil/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Quintan\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -26,8 +26,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/project_wildfire_web.csproj": {
-                "projectPath": "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/project_wildfire_web.csproj"
+              "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj": {
+                "projectPath": "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj"
               }
             }
           }
@@ -85,21 +85,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/project_wildfire_web.csproj": {
+    "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/project_wildfire_web.csproj",
+        "projectUniqueName": "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj",
         "projectName": "project_wildfire_web",
-        "projectPath": "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/project_wildfire_web.csproj",
-        "packagesPath": "/Users/elomeligil/.nuget/packages/",
-        "outputPath": "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/obj/",
+        "projectPath": "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj",
+        "packagesPath": "C:\\Users\\Quintan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/elomeligil/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Quintan\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -151,9 +151,17 @@
               "target": "Package",
               "version": "[9.0.1, )"
             },
+            "Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[9.0.0, )"
+            },
+            "NetTopologySuite": {
+              "target": "Package",
+              "version": "[2.5.0, )"
             }
           },
           "imports": [
@@ -175,7 +183,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,28 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "S:\\School Related\\Winter 2025\\CS 461\\Architechs Fork\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj": {}
+    "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj": {}
   },
   "projects": {
-    "S:\\School Related\\Winter 2025\\CS 461\\Architechs Fork\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj": {
+    "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "S:\\School Related\\Winter 2025\\CS 461\\Architechs Fork\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj",
+        "projectUniqueName": "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj",
         "projectName": "project_wildfire_web",
-        "projectPath": "S:\\School Related\\Winter 2025\\CS 461\\Architechs Fork\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj",
-        "packagesPath": "C:\\Users\\MikeD\\.nuget\\packages\\",
-        "outputPath": "S:\\School Related\\Winter 2025\\CS 461\\Architechs Fork\\The-Architechs\\project_wildfire\\project_wildfire_web\\obj\\",
+        "projectPath": "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj",
+        "packagesPath": "C:\\Users\\Quintan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Quintan\\Desktop\\The-Architechs\\project_wildfire\\project_wildfire_web\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\MikeD\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Quintan\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -69,9 +66,17 @@
               "target": "Package",
               "version": "[9.0.1, )"
             },
+            "Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[9.0.0, )"
+            },
+            "NetTopologySuite": {
+              "target": "Package",
+              "version": "[2.5.0, )"
             }
           },
           "imports": [
