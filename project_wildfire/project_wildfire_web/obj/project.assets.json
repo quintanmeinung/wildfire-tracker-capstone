@@ -7752,24 +7752,27 @@
     ]
   },
   "packageFolders": {
-    "/Users/elomeligil/.nuget/packages/": {}
+    "C:\\Users\\MikeD\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/project_wildfire_web.csproj",
+      "projectUniqueName": "S:\\School Related\\Winter 2025\\CS 461\\Architechs Fork\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj",
       "projectName": "project_wildfire_web",
-      "projectPath": "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/project_wildfire_web.csproj",
-      "packagesPath": "/Users/elomeligil/.nuget/packages/",
-      "outputPath": "/Users/elomeligil/Documents/CS461 GIt/The-Architechs/project_wildfire/project_wildfire_web/obj/",
+      "projectPath": "S:\\School Related\\Winter 2025\\CS 461\\Architechs Fork\\The-Architechs\\project_wildfire\\project_wildfire_web\\project_wildfire_web.csproj",
+      "packagesPath": "C:\\Users\\MikeD\\.nuget\\packages\\",
+      "outputPath": "S:\\School Related\\Winter 2025\\CS 461\\Architechs Fork\\The-Architechs\\project_wildfire\\project_wildfire_web\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/elomeligil/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\MikeD\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -7840,7 +7843,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
