@@ -1,3 +1,6 @@
+using project_wildfire_web.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace project_wildfire_web;
 
 public class Program
@@ -5,6 +8,13 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        var DbPassword = builder.Configuration["WildfireProj:DBPassword"];
+        var PartialConnectionString = builder.Configuration.GetConnectionString("WildfireAzure");
+        var FullConnectionString = PartialConnectionString.Replace("{password}", DbPassword);
+
+        builder.Services.AddDbContext<WildfireDbContext>(options =>
+            options.UseSqlServer(FullConnectionString));
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
