@@ -56,7 +56,7 @@ https://github.com/rhlt/leaflet-geolet/
 			title: 'Find current location',
 			className: null,
 			activeClassName: null,
-			style: { display: 'flex', color: '' },
+			style: { display: 'flex', color: 'green' },
 			activeStyle: { display: 'flex', color: '#E00' },
 			html: '<svg width="16" height="16" viewport="0 0 16 16" style="margin:auto auto"><circle cx="8" cy="8" r="7" style="fill:none;stroke:currentColor;stroke-width:2px"/><circle cx="8" cy="8" r="4" style="fill:currentColor"/></svg>',
 			geoOptions: { enableHighAccuracy: true, maximumAge: 30000, timeout: 27000 },
@@ -65,7 +65,7 @@ https://github.com/rhlt/leaflet-geolet/
 			popupContent: null,
 			updatePopupWhenOpen: true,
 			autoPan: true,
-			minZoom: 9
+			minZoom: 14
 		},
 		
 		_a: null,

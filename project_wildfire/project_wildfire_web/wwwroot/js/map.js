@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add Geolocation Button
     if (typeof L.geolet !== "undefined") {
-        L.geolet({ position: 'bottomleft' }).addTo(map);
+        L.geolet({ position: 'bottomleft', title: 'Find Current Location' }).addTo(map);
     } else {
         console.error("Geolet plugin failed to load.");
     }
