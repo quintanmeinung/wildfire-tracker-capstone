@@ -4,6 +4,8 @@ Copyright (c) 2020 Ruben Holthuijsen; available under the MIT license
 https://github.com/rhlt/leaflet-geolet/
 */
 
+//Here is the link to the github repo in case changes need to be made to the button https://github.com/rhlt/leaflet-geolet?tab=readme-ov-file
+
 (function () {
 	
 	var _consolePrefix = '[GEOLET] ';
