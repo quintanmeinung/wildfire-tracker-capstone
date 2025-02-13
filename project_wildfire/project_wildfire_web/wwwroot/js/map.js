@@ -43,9 +43,11 @@ function success(position){
         .openPopup();
 }
 
-//Handle errors
-function handleError() {
-    
+//Handle errors from geolocation
+function handleError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+    }
 }
 
 //Check if the browser as the navigator.geolocation object
