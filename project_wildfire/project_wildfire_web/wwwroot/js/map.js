@@ -34,11 +34,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //function for successful retrieval of browser geolocation -- success callback 
 function success(position){
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
+    const crds = position.cords;
 
     //Add marker to map showing users browser location
-    L.marker([latitude, longitude]).addTo(map)
+    L.marker([crds.latitude, crds.longitude]).addTo(map)
         .bindPopup("Your current location")
         .openPopup();
 }
@@ -47,12 +46,14 @@ function success(position){
 function handleError(error) {
     switch(error.code) {
         case error.PERMISSION_DENIED:
+            console.log("Permission Denied");
+            break;
     }
 }
 
 //Check if the browser as the navigator.geolocation object
 if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(success);
+    navigator.geolocation.getCurrentPosition(success,handleError);
 }
 
 });
