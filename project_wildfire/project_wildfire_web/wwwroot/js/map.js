@@ -28,4 +28,29 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error("Leaflet Compass plugin failed to load.");
     }
+
+
+/*********** HTML5 USER LOCATION REQUEST *****************/
+
+//function for successful retrieval of browser geolocation -- success callback 
+function success(position){
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    //Add marker to map showing users browser location
+    L.marker([latitude, longitude]).addTo(map)
+        .bindPopup("Your current location")
+        .openPopup();
+}
+
+//Handle errors
+function handleError() {
+    
+}
+
+//Check if the browser as the navigator.geolocation object
+if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(success);
+}
+
 });
