@@ -1,15 +1,48 @@
 document.addEventListener("DOMContentLoaded", function () {
     var map = L.map('map').setView([44.9429, -123.0351], 10); // Salem, Oregon
 
-    // Use OpenStreetMap as the base layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+    // Define base layers
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    });
 
-    // Example: Add a marker at Salem, OR
-    L.marker([44.9429, -123.0351]).addTo(map)
+    var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
+    });
+
+    // Alternative satellite layer using ESRI
+    var satellite = L.tileLayer('https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        attribution: '© Esri'
+    });
+
+    // Set default base layer
+    osm.addTo(map);
+
+    // Define overlay layers
+    var cities = L.layerGroup([
+        L.marker([44.9429, -123.0351]).addTo(map)
         .bindPopup("Salem, Oregon - Default View")
-        .openPopup();
+        .openPopup()
+
+    ]);
+
+    // Base map options
+    var baseMaps = {
+        "Street Map": osm,
+        "Satellite": satellite,
+        "Topographic Map": topo
+    };
+
+    // Overlay options
+    var overlayMaps = {
+        "Cities": cities
+    };
+
+    // Add layer control to the map
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
 
     // Add Geolocation Button
     if (typeof L.geolet !== "undefined") {
