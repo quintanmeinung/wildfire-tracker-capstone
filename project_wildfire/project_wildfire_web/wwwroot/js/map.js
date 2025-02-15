@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var map = L.map('map').setView([44.9429, -123.0351], 10); // Salem, Oregon
-
+    var map = L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
+    
     // Use OpenStreetMap as the base layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Example: Add a marker at Salem, OR
-    L.marker([44.9429, -123.0351]).addTo(map)
+    // Example: Add a marker at Monmouth, OR
+    L.marker([44.84, -123.23]).addTo(map)
         .bindPopup("Salem, Oregon - Default View")
         .openPopup();
 
