@@ -12,12 +12,64 @@ document.addEventListener("DOMContentLoaded", function () {
     defaultMarker.openPopup();
     defaultMarker.addTo(map);
 
-    // Add Geolocation Button
-    if (typeof L.geolet !== "undefined") {
-        L.geolet({ position: 'bottomleft', title: 'Find Current Location' }).addTo(map);
-    } else {
-        console.error("Geolet plugin failed to load.");
+    /*********** HTML5 USER LOCATION REQUEST *****************/
+
+    //function for successful retrieval of browser geolocation -- success callback 
+        
+    //Check if geolocation is available in browser
+    if("geolocation" in navigator){
+                        
+        navigator.geolocation.getCurrentPosition(success,handleError);
     }
+    else {
+        console.log("Geolocation not supported by this browser");
+    }
+
+    //success callback function
+    function success(position){
+        //Delete default marker from map
+        map.removeLayer(defaultMarker);
+        
+        const crds = position.coords;
+        //Set the map view to users location
+        map.panTo([crds.latitude, crds.longitude]);
+
+        //Add marker to map showing users browser location
+        var userMarker = L.marker([crds.latitude, crds.longitude])
+            userMarker.bindPopup("Your current location");
+            userMarker.openPopup();
+            userMarker.addTo(map);
+
+        addGeolet(map);
+
+    }
+
+    //Handle errors from geolocation
+    function handleError(error) {
+        addGeolet(map);
+
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                console.log("Permission Denied");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                console.log("Location information unavailable ");
+                break;
+            case error.TIMEOUT:
+                console.log("the request timed out");
+                break;
+            case error.UNKNOWN_ERROR:
+                console.log("An unknown error occured");
+                break;
+        }
+    }
+
+    // Add Geolocation Button
+    // if (typeof L.geolet !== "undefined") {
+    //     L.geolet({ position: 'bottomleft', title: 'Find Current Location' }).addTo(map);
+    // } else {
+    //    console.error("Geolet plugin failed to load.");
+    // }
 
     // Ensure Leaflet Compass is available before initializing
     if (L.control.compass) {
@@ -31,44 +83,15 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Leaflet Compass plugin failed to load.");
     }
 
-
-/*********** HTML5 USER LOCATION REQUEST *****************/
-
-//function for successful retrieval of browser geolocation -- success callback 
-    
-//Check if geolocation is available in browser
-    if("geolocation" in navigator){
-                    
-        navigator.geolocation.getCurrentPosition(success,handleError);
-    }
-    else {
-        console.log("Geolocation not supported by this browser");
-    }
-
-    //success callback function
-    function success(position){
-        //Delete default marker from map
-        map.removeLayer(defaultMarker);
-           
-        const crds = position.coords;
-         //Set the map view to users location
-        map.panTo([crds.latitude, crds.longitude]);
-
-        //Add marker to map showing users browser location
-        var userMarker = L.marker([crds.latitude, crds.longitude])
-            userMarker.bindPopup("Your current location");
-            userMarker.openPopup();
-            userMarker.addTo(map);
-    }
-
-    //Handle errors from geolocation
-    function handleError(error) {
-        switch(error.code) {
-            case error.PERMISSION_DENIED:
-                console.log("Permission Denied");
-                break;
+    function addGeolet(map) {
+        if (typeof L.geolet !== "undefined") {
+            L.geolet({ position: 'bottomleft', title: 'Find Current Location' }).addTo(map);
+            console.log("Geolet added to map");
+        } else {
+            console.error("Geolet plugin failed to load.");
         }
     }
+
 
 
 
