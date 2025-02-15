@@ -6,10 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Example: Add a marker at Monmouth, OR
-    L.marker([44.84, -123.23]).addTo(map)
-        .bindPopup("Salem, Oregon - Default View")
-        .openPopup();
+    // Default marker at Monmouth, OR
+    var defaultMarker = L.marker([44.84,-123.23])
+    defaultMarker.bindPopup('Monmouth Oregon')
+    defaultMarker.openPopup();
+    defaultMarker.addTo(map);
 
     // Add Geolocation Button
     if (typeof L.geolet !== "undefined") {
@@ -25,7 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
             autoActive: true,      // Automatically activates on page load
             showDigit: true        // Shows numeric heading values
         }).addTo(map);
-    } else {
+    } 
+    else {
         console.error("Leaflet Compass plugin failed to load.");
     }
 
@@ -33,27 +35,41 @@ document.addEventListener("DOMContentLoaded", function () {
 /*********** HTML5 USER LOCATION REQUEST *****************/
 
 //function for successful retrieval of browser geolocation -- success callback 
-function success(position){
-    const crds = position.cords;
-
-    //Add marker to map showing users browser location
-    L.marker([crds.latitude, crds.longitude]).addTo(map)
-        .bindPopup("Your current location")
-        .openPopup();
-}
-
-//Handle errors from geolocation
-function handleError(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            console.log("Permission Denied");
-            break;
+    
+//Check if geolocation is available in browser
+    if("geolocation" in navigator){
+                    
+        navigator.geolocation.getCurrentPosition(success,handleError);
     }
-}
+    else {
+        console.log("Geolocation not supported by this browser");
+    }
 
-//Check if the browser as the navigator.geolocation object
-if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(success,handleError);
-}
+    //success callback function
+    function success(position){
+        //Delete default marker from map
+        map.removeLayer(defaultMarker);
+           
+        const crds = position.coords;
+         //Set the map view to users location
+        map.panTo([crds.latitude, crds.longitude]);
+
+        //Add marker to map showing users browser location
+        var userMarker = L.marker([crds.latitude, crds.longitude])
+            userMarker.bindPopup("Your current location");
+            userMarker.openPopup();
+            userMarker.addTo(map);
+    }
+
+    //Handle errors from geolocation
+    function handleError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                console.log("Permission Denied");
+                break;
+        }
+    }
+
+
 
 });
