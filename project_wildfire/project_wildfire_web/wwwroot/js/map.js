@@ -1,6 +1,68 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize the map
-    var map = L.map('map').setView([44.9429, -123.0351], 10);
+    var map = L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
+    
+    // Use OpenStreetMap as the base layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Default marker at Monmouth, OR
+    var defaultMarker = L.marker([44.84,-123.23])
+    defaultMarker.bindPopup('Monmouth Oregon')
+    defaultMarker.openPopup();
+    defaultMarker.addTo(map);
+
+    /*********** HTML5 USER LOCATION REQUEST *****************/
+
+    //function for successful retrieval of browser geolocation -- success callback 
+        
+    //Check if geolocation is available in browser
+    if("geolocation" in navigator){
+                        
+        navigator.geolocation.getCurrentPosition(success,handleError);
+    }
+    else {
+        console.log("Geolocation not supported by this browser");
+    }
+
+    //success callback function
+    function success(position){
+        //Delete default marker from map
+        map.removeLayer(defaultMarker);
+        
+        const crds = position.coords;
+        //Set the map view to users location
+        map.panTo([crds.latitude, crds.longitude]);
+
+        //Add marker to map showing users browser location
+        var userMarker = L.marker([crds.latitude, crds.longitude])
+            userMarker.bindPopup("Your current location");
+            userMarker.openPopup();
+            userMarker.addTo(map);
+
+        addGeolet(map);
+
+    }
+
+    //Handle errors from geolocation
+    function handleError(error) {
+        addGeolet(map);
+
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                console.log("Permission Denied");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                console.log("Location information unavailable ");
+                break;
+            case error.TIMEOUT:
+                console.log("the request timed out");
+                break;
+            case error.UNKNOWN_ERROR:
+                console.log("An unknown error occured");
+                break;
+        }
+    }
 
     // Define base layers
     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -42,11 +104,11 @@ document.addEventListener("DOMContentLoaded", function () {
     L.control.layers(baseMaps, overlayMaps).addTo(map);
 
     // Add Geolocation Button
-    if (typeof L.geolet !== "undefined") {
-        L.geolet({ position: 'bottomleft', title: 'Find Current Location' }).addTo(map);
-    } else {
-        console.error("Geolet plugin failed to load.");
-    }
+    // if (typeof L.geolet !== "undefined") {
+    //     L.geolet({ position: 'bottomleft', title: 'Find Current Location' }).addTo(map);
+    // } else {
+    //    console.error("Geolet plugin failed to load.");
+    // }
 
     // Initialize compass
     if (typeof L.control.compass !== "undefined") {
@@ -55,9 +117,22 @@ document.addEventListener("DOMContentLoaded", function () {
             autoActive: true,
             showDigit: true
         }).addTo(map);
-    } else {
+    } 
+    else {
         console.error("Leaflet Compass plugin failed to load.");
     }
+
+    function addGeolet(map) {
+        if (typeof L.geolet !== "undefined") {
+            L.geolet({ position: 'bottomleft', title: 'Find Current Location' }).addTo(map);
+            console.log("Geolet added to map");
+        } else {
+            console.error("Geolet plugin failed to load.");
+        }
+    }
+
+
+
 
 // Create a legend control
 var legend = L.control({ position: 'bottomright' });
@@ -117,4 +192,4 @@ legend.onAdd = function () {
 
 // Add the legend to the map
 legend.addTo(map);
-})
+});
