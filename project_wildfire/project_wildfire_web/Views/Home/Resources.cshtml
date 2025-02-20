@@ -5,4 +5,60 @@
 <div class="resources-page">
     <h2 class="text-center display-4">Welcome to our Resource page</h2>
     <p class="text-center">Here you will find useful links and information about fire safety, food pantries, and evacuation routes.</p>
+
+    <div class="accordion mx-auto" id="resourceAccordion" style="max-width: 800px;">
+        <!-- Food Pantries -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#foodPantries">
+                    Food Pantries
+                </button>
+            </h2>
+            <div id="foodPantries" class="accordion-collapse collapse" data-bs-parent="#resourceAccordion">
+                <div class="accordion-body">
+                    <ul>
+                        <li><a href="https://example.com" target="_blank">Local Food Bank</a></li>
+                        <li><a href="https://example.com" target="_blank">Community Pantry Locations</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fire Safety -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fireSafety">
+                    Fire Safety
+                </button>
+            </h2>
+            <div id="fireSafety" class="accordion-collapse collapse" data-bs-parent="#resourceAccordion">
+                <div class="accordion-body">
+                    <p>Here are some fire safety tips:</p>
+                    <ul>
+                        <li>Have an evacuation plan.</li>
+                        <li>Check your smoke detectors regularly.</li>
+                        <li><a href="https://example.com">Fire Safety Resources</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Evacuation Routes -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#evacRoutes">
+                    Evacuation Routes
+                </button>
+            </h2>
+            <div id="evacRoutes" class="accordion-collapse collapse" data-bs-parent="#resourceAccordion">
+                <div class="accordion-body">
+                    <p>Find your nearest evacuation route here:</p>
+                    <ul>
+                        <li><a href="https://example.com">Statewide Evacuation Maps</a></li>
+                        <li><a href="https://example.com">Local Emergency Shelters</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
