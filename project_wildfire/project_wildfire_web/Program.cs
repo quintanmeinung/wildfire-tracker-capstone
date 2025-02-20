@@ -1,5 +1,7 @@
 using project_wildfire_web.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using project_wildfire_web.Areas.Identity.Data;
 
 namespace project_wildfire_web;
 
@@ -15,6 +17,8 @@ public class Program
 
         builder.Services.AddDbContext<WildfireDbContext>(options =>
             options.UseSqlServer(FullConnectionString));
+
+        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<project_wildfire_webIdentityDbContext>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
