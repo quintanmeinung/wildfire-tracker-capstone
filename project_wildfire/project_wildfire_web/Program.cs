@@ -10,15 +10,29 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
+        // Add wildfire database context
+        var DbPassword = builder.Configuration["WildfireProj:DBPassword"]
+            ?? throw new InvalidOperationException("Database Password Not Found");
 
-        var DbPassword = builder.Configuration["WildfireProj:DBPassword"];
-        var PartialConnectionString = builder.Configuration.GetConnectionString("WildfireAzure");
-        var FullConnectionString = PartialConnectionString.Replace("{password}", DbPassword);
+        var PartialConnectionString = builder.Configuration.GetConnectionString("WebfireDbConnectionString") 
+            ?? throw new InvalidOperationException("Connection String Not Found");
+
+        var FullConnectionString = PartialConnectionString.Replace("STANDINPASSWORD", DbPassword);
 
         builder.Services.AddDbContext<WildfireDbContext>(options =>
             options.UseSqlServer(FullConnectionString));
 
-        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<project_wildfire_webIdentityDbContext>();
+        // Add Identity database context
+        var IdentityDbPartialConnectionString = builder.Configuration.GetConnectionString("WebfireIdentityDbContextConnection")
+            ?? throw new InvalidOperationException("Connection String Not Found");
+
+        var IdentityDbFullConnectionString = IdentityDbPartialConnectionString.Replace("STANDINPASSWORD", DbPassword);
+
+        builder.Services.AddDbContext<WebfireIdentityDbContext>(options =>
+            options.UseSqlServer(FullConnectionString));
+
+        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WebfireIdentityDbContext>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
@@ -36,6 +50,7 @@ public class Program
         app.UseHttpsRedirection();
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapStaticAssets();
@@ -43,6 +58,7 @@ public class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
+        app.MapRazorPages();
 
         app.Run();
     }

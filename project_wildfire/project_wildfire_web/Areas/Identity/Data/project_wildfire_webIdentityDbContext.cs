@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace project_wildfire_web.Areas.Identity.Data;
 
-public class project_wildfire_webIdentityDbContext : IdentityDbContext<IdentityUser>
+public class WebfireIdentityDbContext : IdentityDbContext<IdentityUser>
 {
-    public project_wildfire_webIdentityDbContext(DbContextOptions<project_wildfire_webIdentityDbContext> options)
+    public WebfireIdentityDbContext(DbContextOptions<WebfireIdentityDbContext> options)
         : base(options)
     {
     }
