@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite;
 
 namespace project_wildfire_web.Models;
 
