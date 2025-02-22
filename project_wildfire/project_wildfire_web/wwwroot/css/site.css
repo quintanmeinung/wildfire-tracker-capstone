@@ -30,8 +30,16 @@ body {
   text-align: start;
 }
 
+/*Controls the look of the resource page*/
 .resources-page {
   background-color: lightgray;
   min-height: 100vh;
   padding: 20px;
+}
+
+/*customizes the accordion buttons on resource page */
+.accordion-button {
+  font-size: 1.5rem; /* Makes text larger*/
+  padding: 15px 20px; /*Adjust vertical & horizontal padding*/
+  height: 60px; /*Increases button height*/
 }
