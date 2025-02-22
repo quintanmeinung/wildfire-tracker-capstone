@@ -12,25 +12,35 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         
         // Add wildfire database context
+        // Grabs & null checks password from user secrets
         var DbPassword = builder.Configuration["WildfireProj:DBPassword"]
             ?? throw new InvalidOperationException("Database Password Not Found");
 
+        // Grabs & null checks connection string from appsettings.json
         var PartialConnectionString = builder.Configuration.GetConnectionString("WebfireDbConnectionString") 
             ?? throw new InvalidOperationException("Connection String Not Found");
 
+        // Replaces placeholder password with actual password
         var FullConnectionString = PartialConnectionString.Replace("STANDINPASSWORD", DbPassword);
 
+        // Add database context with NetTopologySuite enabled
         builder.Services.AddDbContext<WildfireDbContext>(options =>
-            options.UseSqlServer(FullConnectionString));
+            options.UseSqlServer(
+                FullConnectionString,
+                x => x.UseNetTopologySuite())
+                );
 
         // Add Identity database context
+        // Grabs & null checks connection string from appsettings.json
         var IdentityDbPartialConnectionString = builder.Configuration.GetConnectionString("WebfireIdentityDbContextConnection")
             ?? throw new InvalidOperationException("Connection String Not Found");
 
+        // Replaces placeholder password with actual password
         var IdentityDbFullConnectionString = IdentityDbPartialConnectionString.Replace("STANDINPASSWORD", DbPassword);
 
+        // Add Identity database context
         builder.Services.AddDbContext<WebfireIdentityDbContext>(options =>
-            options.UseSqlServer(FullConnectionString));
+            options.UseSqlServer(IdentityDbFullConnectionString));
 
         builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WebfireIdentityDbContext>();
 
