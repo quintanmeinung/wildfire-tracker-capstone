@@ -2,29 +2,76 @@
     ViewData["Title"] = "Home Page";
 }
 
-
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Wildfire Tracking Application</h1>
 </div>
 
+<head>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+
+<div id="compass-degree"></div>
+<div id="compass-top-right"></div>
+
 <!-- Map Container -->
-<div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+<div id="map" style="height: 1000px; width: 100%; margin-top: 20px;"></div>
 
 <!-- Include Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
+<!-- Custom CSS file -->
+<link href="~/css/leaflet.css" rel="stylesheet" type="text/css" />
+
+<!-- Custom Compass Image - Positioned at Top Right, below Layer Control -->
+<div class="compass-container">
+    <div id="compass" class="compass-img">
+        <img src="~/images/compass.png" alt="Compass" />
+    </div>
+</div>
+
+<!-- Legend Info Modal -->
+<div class="modal fade" id="legendInfoModal" tabindex="-1" aria-labelledby="legendInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="legendInfoModalLabel">Legend Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Dynamic legend info will appear here -->
+                <p id="legendInfoContent"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
+
     <!-- Include Leaflet JS -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+     
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+   
+    @* <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> *@
     <script src="https://unpkg.com/leaflet-compass/dist/leaflet-compass.min.js"></script>
 
     <!-- Include Geolet.js -->
-    <script src="~/js/geolet.js"></script>
-    
     <!-- Include External Map Script -->
     <script src="~/js/map.js"></script>
+    
+    <script src="~/js/geolet.js"></script>
+
+    
 
      <!-- Leaflet Compass CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-compass/dist/leaflet-compass.css" />
+
+    <!-- Bootstrap JS Bundle (for modal functionality) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 }
