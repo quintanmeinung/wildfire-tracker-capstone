@@ -50,6 +50,24 @@
     </div>
 </div>
 
+<!-- Legend Info Modal -->
+<div class="modal fade" id="legendInfoModal" tabindex="-1" aria-labelledby="legendInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="legendInfoModalLabel">Legend Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="legendInfoContent">Legend details will appear here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
 
     <!-- Include Leaflet JS -->
@@ -66,6 +84,8 @@
     <script src="~/js/map.js"></script>
     <script src="~/js/accessibility.js"></script>
     <script src="~/js/geolet.js"></script>
+    <script src="~/js/addLegend.js"></script>
+
 
     
 
