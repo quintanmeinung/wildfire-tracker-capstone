@@ -78,3 +78,20 @@ function attachLegendEvents() {
         });
     });
 }
+
+/**
+ * Function to find the modal content and update it when needed for testing
+ */
+function updateLegendInfo(content) {
+    const legendInfoContent = document.getElementById("legendInfoContent");
+  
+    if (!legendInfoContent) {
+      console.error("Legend modal content element not found.");
+      return;
+    }
+  
+    legendInfoContent.innerHTML = content;
+  }
+  
+  module.exports = { updateLegendInfo };
+  
