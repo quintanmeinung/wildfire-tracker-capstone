@@ -10,14 +10,18 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Humanizer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using project_wildfire_web.Models;
 
 namespace project_wildfire_web.Areas.Identity.Pages.Account
 {
@@ -29,13 +33,15 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly WildfireDbContext _wildfireDbContext;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            WildfireDbContext wildfireDbContext)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,6 +49,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _wildfireDbContext = wildfireDbContext;
         }
 
         /// <summary>
@@ -70,6 +77,15 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [RegularExpression(@"^[A-Za-z\s'-]{1,50}$", ErrorMessage = "Names can only be letters, spaces, hyphens, and apostrophes")]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [RegularExpression(@"^[A-Za-z\s'-]{1,50}$", ErrorMessage = "Names can only be letters, spaces, hyphens, and apostrophes")]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -121,6 +137,16 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    User visitor = new()
+                    {
+                        UserId = user.Id,
+                        FirstName = Input.FirstName,
+                        LastName = Input.LastName,
+                    };
+
+                    _wildfireDbContext.Add(visitor);
+                    await _wildfireDbContext.SaveChangesAsync();
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
