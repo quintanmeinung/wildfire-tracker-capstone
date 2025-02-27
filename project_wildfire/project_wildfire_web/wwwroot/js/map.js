@@ -129,60 +129,6 @@ function addGeolet(map) {
 }
 
 /**
- * Initializes and adds a collapsible legend to the map.
- */
-function addLegend(map) {
-    var legend = L.control({ position: 'bottomright' });
-
-    legend.onAdd = function () {
-        var div = L.DomUtil.create('div', 'info legend collapsible-legend');
-        div.innerHTML = `
-            <button class="legend-toggle">Legend ▼</button>
-            <div class="legend-content" style="display: none;">
-                <div class="legend-item" data-info="Designated Zone for Evacuation.">
-                    <i style="background:rgb(19, 188, 72)"></i> Evacuation Zone
-                </div>
-                <div class="legend-item" data-info="Stay on constant alert for fire updates.">
-                    <i style="background: #ffffb2"></i> Stay Alert
-                </div>
-                <div class="legend-item" data-info="Prepare to bring all essentials and other items of interest.">
-                    <i style="background: #fecc5c"></i> Prepare to Evacuate
-                </div>
-                <div class="legend-item" data-info="Only bring essential items.">
-                    <i style="background: #fd8d3c"></i> Evacuate Now
-                </div>
-                <div class="legend-item" data-info="Leave all materials behind.">
-                    <i style="background: #f03b20"></i> Evacuate Immediately
-                </div>
-                <div class="legend-item" data-info="Perimeter of the nearby fire.">
-                    <i style="background: #bd0026"></i> Fire Perimeter
-                </div>
-            </div>
-        `;
-
-        // Toggle legend visibility
-        div.querySelector('.legend-toggle').addEventListener('click', function () {
-            var content = div.querySelector('.legend-content');
-            var button = div.querySelector('.legend-toggle');
-            content.style.display = content.style.display === 'none' ? 'block' : 'none';
-            button.innerHTML = content.style.display === 'none' ? 'Legend ▼' : 'Legend ▲';
-        });
-
-        // Add click event to legend items for modal display
-        div.querySelectorAll('.legend-item').forEach(item => {
-            item.addEventListener('click', function () {
-                document.getElementById('legendInfoContent').innerText = item.dataset.info;
-                new bootstrap.Modal(document.getElementById('legendInfoModal')).show();
-            });
-        });
-
-        return div;
-    };
-
-    legend.addTo(map);
-}
-
-/**
  * Initializes the Leaflet compass control if available.
  */
 function initializeCompass(map) {
