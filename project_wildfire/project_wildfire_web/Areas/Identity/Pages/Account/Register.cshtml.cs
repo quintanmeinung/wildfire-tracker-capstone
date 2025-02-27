@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using project_wildfire_web.Models;
+using project_wildfire_web.Services;
 
 namespace project_wildfire_web.Areas.Identity.Pages.Account
 {
@@ -33,7 +34,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly WildfireDbContext _wildfireDbContext;
+        private readonly AccountService _accountService;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -41,7 +42,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            WildfireDbContext wildfireDbContext)
+            AccountService accountService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -49,7 +50,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _wildfireDbContext = wildfireDbContext;
+            _accountService = accountService;
         }
 
         /// <summary>
@@ -138,15 +139,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    User visitor = new()
-                    {
-                        UserId = user.Id,
-                        FirstName = Input.FirstName,
-                        LastName = Input.LastName,
-                    };
-
-                    _wildfireDbContext.Add(visitor);
-                    await _wildfireDbContext.SaveChangesAsync();
+                    await _accountService.GeneratePrimaryUserAsync(user.Id, Input);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

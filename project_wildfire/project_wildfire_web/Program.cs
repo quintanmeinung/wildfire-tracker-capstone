@@ -2,6 +2,7 @@ using project_wildfire_web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using project_wildfire_web.Areas.Identity.Data;
+using project_wildfire_web.Services;
 
 namespace project_wildfire_web;
 
@@ -45,6 +46,7 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+        builder.Services.AddScoped<AccountService>();
 
         var app = builder.Build();
 
