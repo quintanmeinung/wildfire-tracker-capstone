@@ -53,10 +53,7 @@ public partial class WildfireDbContext : DbContext
             entity.ToTable("User");
 
             entity.Property(e => e.UserId).ValueGeneratedNever();
-            entity.Property(e => e.Username)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-
+            
             entity.HasMany(d => d.Fires).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(
                     "UserFireSubscription",
