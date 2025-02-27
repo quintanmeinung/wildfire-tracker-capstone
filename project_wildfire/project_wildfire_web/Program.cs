@@ -10,7 +10,6 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
         // Add wildfire database context
         // Grabs & null checks password from user secrets
         var DbPassword = builder.Configuration["WildfireProj:DBPassword"]
