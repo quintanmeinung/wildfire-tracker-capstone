@@ -6,9 +6,11 @@ namespace project_wildfire_web.Models;
 
 public partial class User
 {
-    public int UserId { get; set; }
+    public required string UserId { get; set; }
 
-    public string Username { get; set; } = null!;
+    public string? FirstName { get; set; }
+
+    public string? LastName {get; set; }
 
     public Geometry? UserLocation { get; set; }
 
