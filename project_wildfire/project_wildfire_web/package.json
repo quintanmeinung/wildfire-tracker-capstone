@@ -1,0 +1,20 @@
+{
+    "name": "project_wildfire_web",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+      "test": "jest"
+    },
+    "jest": {
+    "testEnvironment": "jsdom"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "devDependencies": {
+      "jest": "^29.7.0",
+      "jest-environment-jsdom": "^29.7.0",
+      "jsdom": "^26.0.0"
+    }
+  }
