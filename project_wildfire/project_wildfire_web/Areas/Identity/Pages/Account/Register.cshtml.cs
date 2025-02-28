@@ -21,8 +21,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using project_wildfire_web.DAL.Concrete;
 using project_wildfire_web.Models;
-using project_wildfire_web.Services;
+using project_wildfire_web.DAL.Abstract;
 
 namespace project_wildfire_web.Areas.Identity.Pages.Account
 {
@@ -34,7 +35,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly AccountService _accountService;
+        private readonly IUserRepository _userRepository;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -42,7 +43,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            AccountService accountService)
+            IUserRepository userRepository)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -50,7 +51,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _accountService = accountService;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -139,7 +140,14 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _accountService.GeneratePrimaryUserAsync(user.Id, Input);
+                    // Adds user to wildfire DB
+                    User visitor = new()
+                    {
+                        UserId = user.Id,
+                        FirstName = Input.FirstName,
+                        LastName = Input.LastName,
+                    };
+                    await _userRepository.AddUserAsync(visitor);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

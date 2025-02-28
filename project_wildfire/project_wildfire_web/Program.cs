@@ -2,7 +2,12 @@ using project_wildfire_web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using project_wildfire_web.Areas.Identity.Data;
+<<<<<<< HEAD
 using project_wildfire_web.Services;
+=======
+using project_wildfire_web.DAL.Abstract;
+using project_wildfire_web.DAL.Concrete;
+>>>>>>> f6_repository_pattern
 
 namespace project_wildfire_web;
 
@@ -47,6 +52,10 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddScoped<AccountService>();
+
+        // Add repository services
+        builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         var app = builder.Build();
 
