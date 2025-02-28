@@ -2,12 +2,8 @@ using project_wildfire_web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using project_wildfire_web.Areas.Identity.Data;
-<<<<<<< HEAD
-using project_wildfire_web.Services;
-=======
 using project_wildfire_web.DAL.Abstract;
 using project_wildfire_web.DAL.Concrete;
->>>>>>> f6_repository_pattern
 
 namespace project_wildfire_web;
 
