@@ -14,16 +14,9 @@
         <option value="large">Large</option>
         <option value="xlarge">Extra Large</option>
     </select>
+    <button id="contrastToggle">Toggle High Contrast</button>
+    <button id="speechToggle">Enable Text-to-Speech</button>
 </div>
-
-<div class="contrast-toggle">
-    <button id="contrastToggle" class="contrast-btn">Toggle High Contrast</button>
-</div>
-
-<div class="speech-toggle">
-    <button id="speechToggle" class="speech-btn">Enable Text-to-Speech</button>
-</div>
-
 
 <head>
     <!-- Bootstrap CSS -->
@@ -82,7 +75,7 @@
     <!-- Include Geolet.js -->
     <!-- Include External Map Script -->
     <script src="~/js/map.js"></script>
-    <script src="~/js/accessibility.js"></script>
+    <script type="module" src="js/map.js"></script> <!-- changed this so i could import AQI.js into map.js -->
     <script src="~/js/geolet.js"></script>
     <script src="~/js/addLegend.js"></script>
 

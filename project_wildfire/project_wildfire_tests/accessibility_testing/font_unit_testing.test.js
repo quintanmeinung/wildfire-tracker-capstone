@@ -1,34 +1,67 @@
-const { adjustFontSize } = require('../../project_wildfire_web/wwwroot/js/accessibility');
+/**
+ * @jest-environment jsdom
+ */
+
+global.TextEncoder = require("util").TextEncoder;
+global.TextDecoder = require("util").TextDecoder;
+
 const { JSDOM } = require('jsdom');
+const path = require('path');
 
-describe('adjustFontSize function', () => {
-    let dom, document, body;
+// Ensure correct path to accessibility.js
+const accessibilityScript = require('../../project_wildfire_web/wwwroot/js/accessibility');
 
-    beforeEach(() => {
-        dom = new JSDOM(`<!DOCTYPE html><body style="font-size: 16px;"></body>`);
-        document = dom.window.document;
-        body = document.body;
-    });
+describe('Accessibility Features', () => {
+  let document, fontSizeDropdown, contrastButton, speechButton;
 
-    test('should increase font size', () => {
-        adjustFontSize(2, document);
-        expect(body.style.fontSize).toBe('18px');
-    });
+  beforeEach(() => {
+    // Mock a DOM with the needed elements
+    const dom = new JSDOM(`
+      <!DOCTYPE html>
+      <body>
+        <div class="accessibility-controls">
+          <select id="fontSize">
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </div>
 
-    test('should decrease font size', () => {
-        adjustFontSize(-2, document);
-        expect(body.style.fontSize).toBe('14px');
-    });
+        <div class="contrast-toggle">
+          <button id="contrastToggle">Toggle High Contrast</button>
+        </div>
 
-    test('should not exceed max font size (e.g., 32px)', () => {
-        body.style.fontSize = '32px';
-        adjustFontSize(2, document);
-        expect(body.style.fontSize).toBe('32px');
-    });
+        <div class="speech-toggle">
+          <button id="speechToggle">Enable Text-to-Speech</button>
+        </div>
+      </body>
+    `);
 
-    test('should not go below min font size (e.g., 12px)', () => {
-        body.style.fontSize = '12px';
-        adjustFontSize(-2, document);
-        expect(body.style.fontSize).toBe('12px');
-    });
+    document = dom.window.document;
+    global.document = document; // Allow global access
+
+    // Get references to elements
+    fontSizeDropdown = document.getElementById("fontSize");
+    contrastButton = document.getElementById("contrastToggle");
+    speechButton = document.getElementById("speechToggle");
+
+    // Mock window object if needed
+    global.window = dom.window;
+  });
+
+  test('Font size should change when dropdown is updated', () => {
+    accessibilityScript.adjustFontSize(fontSizeDropdown.value);
+    expect(document.body.style.fontSize).toBe('medium'); // Adjust based on function behavior
+  });
+
+  test('Contrast mode should toggle when button is clicked', () => {
+    contrastButton.click();
+    expect(document.body.classList.contains('high-contrast')).toBe(true);
+  });
+
+  test('Text-to-Speech should start when button is clicked', () => {
+    const mockSpeak = jest.spyOn(window.speechSynthesis, 'speak').mockImplementation(() => {});
+    speechButton.click();
+    expect(mockSpeak).toHaveBeenCalled();
+  });
 });
