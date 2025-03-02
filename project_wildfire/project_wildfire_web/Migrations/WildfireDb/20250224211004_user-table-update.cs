@@ -5,7 +5,7 @@
 namespace project_wildfire_web.Migrations.WildfireDb
 {
     /// <inheritdoc />
-    public partial class usertableupdate : Migration
+    public partial class UserTableUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
