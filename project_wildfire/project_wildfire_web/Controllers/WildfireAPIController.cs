@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using project_wildfire_web.Models;
+using project_wildfire_web.DAL.Abstract;
 
 namespace project_wildfire_web.Controllers;
 
     [ApiController]
-    [Route("api/WildfireController")]
+    [Route("api/WildfireAPIController")]
     
     public class WildfireController : ControllerBase
     {
