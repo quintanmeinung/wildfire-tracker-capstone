@@ -12,90 +12,58 @@
                     <h2>CREATE ACCOUNT</h2>
                 </div>
                 <div class="card-body">
-                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                        <div class="row d-flex justify-content-center mt-3"> <!-- Name Row -->
-                            <div class="col-2 d-flex justify-content-left align-items-center"><b>Name</b></div>
-                            <div class="col-3 pt-3">
-                                <input asp-for="Input.FirstName" class="form-control"/>
-                                <small class="form-text text-muted">First</small>
-                            </div>
-                            <div class="col-3 pt-3">
-                                <input asp-for="Input.LastName" class="form-control"/>
-                                <small class="form-text text-muted">Last</small>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center mb-3">
-                            <div class="col-8">
-                                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-                                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                            </div>
-                            
-                        </div>
-
-                        <div class="row d-flex justify-content-center"> <!-- Email Row -->
-                            <div class="col-2 d-flex justify-content-left align-items-center"><b>Email</b></div>
-                            <div class="col-6 pt-3">
-                                <input asp-for="Input.Email" class="form-control mb-3" autocomplete="username" aria-required="true" />
-                            </div>
-                        </div>
-                        <div class="row justify-content-center mb-3">
-                            <div class="col-8">
-                                <span asp-validation-for="Input.Email" class="text-danger"></span>
-                            </div>
-                        </div>
-                        @* 
-                        <div class="row d-flex justify-content-center"> <!-- Phone Row -->
-                            <div class="col-2 d-flex justify-content-left align-items-center"><b>Phone</b></div>
-                            <div class="col-6 pt-3">
-                        
-                                <input class="form-control mb-3" aria-required="false" />
-                        
-                            </div>
-                        </div>
-                        *@
-                        <div class="row d-flex justify-content-center"> <!-- Password Row -->
-                            <div class="col-2 d-flex justify-content-left align-items-center"><b>Password</b></div>
-                            <div class="col-6 pt-3">
-                        
-                                <input asp-for="Input.Password" class="form-control mb-3" autocomplete="new-password" aria-required="true" />
+                    <div class="row d-flex justify-content-center mt-3">
+                        <div class="col-8">
+                            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                                 
-                            </div>
-                        </div>
-                        <div class="row justify-content-center mb-3">
-                            <div class="col-8">
-                                <span asp-validation-for="Input.Password" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row d-flex justify-content-center"> <!-- Confirm Password Row -->
-                            <div class="col-2 d-flex justify-content-left align-items-center"><b></b></div>
-                            <div class="col-6 pt-3" >
+                                <div class="row mb-3">
+                                    <label asp-for="Input.FirstName" class="form-label">Name</label>
+                                    <div class="col-md">
+                                        <input asp-for="Input.FirstName" class="form-control" placeholder="First"/>
+                                    </div>
+                                
+                                    <div class="col-md">
+                                        <input asp-for="Input.LastName" class="form-control" placeholder="Last"/>
+                                    </div>
+                                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                </div>
 
-                                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-                                <label asp-for="Input.ConfirmPassword">
-                                    <small class="form-text text-muted">Confirm Password</small>
-                                </label>
+                            
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <label asp-for="Input.Email" class="form-label">Email</label>
+                                        <input asp-for="Input.Email" class="form-control" aria-required="true" />
+                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                        
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <label asp-for="Input.Password" class="form-label">Password</label>
+                                        <input asp-for="Input.Password" class="form-control" aria-required="true" />
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        
+                                        
+                               
+                                    </div>
+                                </div>
+
+                                <div class="row mb-5">
+                                    <div class="col">
+                                        <label asp-for="Input.ConfirmPassword" class="form-label">Confirm Password</label>
+                                        <input asp-for="Input.ConfirmPassword" class="form-control" aria-required="true" />
+                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                
                                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-
-                            </div>
-                        </div>
-                        <div class="row justify-content-center mb-3">
-                            <div class="col-8">
-                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row d-flex justify-content-center"> <!-- Register Button Row -->
-                            <div class="col-md-4 mt-5">
-                                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-                            </div>
-                            <div class="col-md-4"></div>
-                        </div>
-                        <div class="row d-flex justify-content-center"> <!-- Link to login Row -->
-                            <div class="col-md-5 mt-3">
+            
+                                <button id="registerSubmit" type="submit" class="w-100 mb-2 btn btn-lg btn-primary">Register</button>
+                
                                 <small>Already have an account? <a asp-area="Identity" asp-page="/Account/Login">Login here</a></small>
-                            </div>
-                            <div class="col-md-3"></div>
-                        </div>
-                    </form>
+                
+                            </form> 
                 </div>
             </div>
         </div>
