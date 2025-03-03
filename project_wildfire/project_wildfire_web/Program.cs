@@ -51,8 +51,17 @@ public class Program
         // Add repository services
         builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IWildfireRepository, WildfireRepository>();
+        builder.Services.AddHttpClient();
+
+
+        //adding swagger
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
@@ -62,7 +71,14 @@ public class Program
             app.UseHsts();
         }
 
+         app.UseSwagger();
+         app.UseSwaggerUI(options => {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json","wildfire API v1");
+                options.RoutePrefix = "swagger";
+         });
+
         app.UseHttpsRedirection();
+        app.UseStaticFiles();
         app.UseRouting();
 
         app.UseAuthentication();
