@@ -2,23 +2,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using CsvHelper.Configuration.Attributes;
 using project_wildfire_web.Models;
+using NetTopologySuite.Geometries;
+
 
 
 namespace project_wildfire_web.Models.DTO
 {
 public partial class FireDatumDTO
 {
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+
     //[Required]
-    //[Name("latitude")]
-  //  public int FireID {get; set;}
+    //public Geometry Location { get; set; } = null!;
 
-    [Required]
-    [Name("latitude")]
-    public double? Latitude { get; set; }
-
-    [Required]
-    [Name("longitude")]
-    public double? Longitude { get; set; }
 
     [Required]
     [Name("frp")]
@@ -37,11 +34,9 @@ namespace project_wildfire_web.ExtensionsMethods
     {   
         return new project_wildfire_web.Models.FireDatum
         {
-        Latitude = fireDatum.Latitude,
-        Longitude = fireDatum.Longitude,
+        Location = new Point(fireDatum.Longitude, fireDatum.Latitude) { SRID = 4326 },
         RadiativePower = fireDatum.RadiativePower
         };
-
 
     }
         }

@@ -1,12 +1,16 @@
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using project_wildfire_web.Models;
+using project_wildfire_web.Models.DTO;
 using project_wildfire_web.DAL.Abstract;
+using project_wildfire_web.ExtensionsMethods;
 using CsvHelper;
 using CsvHelper.Configuration;
+
 
 namespace project_wildfire_web.Controllers;
 
@@ -43,6 +47,7 @@ namespace project_wildfire_web.Controllers;
             return Ok(wildfires);
         }
 
+        //Fetch Wildfires
         [HttpGet("fetch")]
         public async Task<IActionResult> FetchWildfires()
         {
@@ -79,6 +84,11 @@ namespace project_wildfire_web.Controllers;
             using var csv = new CsvReader(reader, csvConfig);
 
             var wildfireData = csv.GetRecords<FireDatumDTO>().ToList();
+            
+            var wildfireDataDTO = csv.GetRecords<FireDatumDTO>().ToList();
+            
+            var wildfires = wildfireDataDTO.Select(dto => dto.ToFireDatum()).ToList();
+
             return Ok(wildfireData);       
 
         }
