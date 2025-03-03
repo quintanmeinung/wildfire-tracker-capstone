@@ -9,6 +9,9 @@
 @if (SignInManager.IsSignedIn(User))
 {
     var user = UserRepository.GetUserById(UserManager.GetUserId(User));
+    var identityUser = UserManager.GetUserAsync(User).Result;
+    var userEmail = UserManager.GetEmailAsync(identityUser).Result;
+
     <li class="nav-item">
         @if (user.FirstName != null)
         {
@@ -16,7 +19,7 @@
         }
         else
         {
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName!</a>
+            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @userEmail!</a>
         }
         
     </li>
