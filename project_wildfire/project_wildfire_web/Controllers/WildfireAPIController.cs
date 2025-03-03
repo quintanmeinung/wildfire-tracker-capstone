@@ -112,7 +112,7 @@ namespace project_wildfire_web.Controllers;
 
                      var wildfires = wildfireDTOs.Select(dto => new FireDatum
                         {
-                            Location = new Point(dto.Longitude, dto.Latitude) { SRID = 4326 }, // ✅ Convert to Geometry Point
+                            Location = new Point(dto.Longitude, dto.Latitude) { SRID = 4326 }, // 
                             RadiativePower = dto.RadiativePower
                         }).ToList();
                     

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using project_wildfire_web.Areas.Identity.Data;
 using project_wildfire_web.DAL.Abstract;
 using project_wildfire_web.DAL.Concrete;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace project_wildfire_web;
 
@@ -29,6 +31,7 @@ public class Program
             options.UseSqlServer(
                 FullConnectionString,
                 x => x.UseNetTopologySuite())
+                 .EnableSensitiveDataLogging()
                 );
 
         // Add Identity database context
@@ -47,6 +50,10 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+        builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
+    });
 
         // Add repository services
         builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
