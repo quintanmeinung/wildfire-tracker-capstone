@@ -11,11 +11,12 @@ namespace project_wildfire_web.Controllers;
     [ApiController]
     [Route("api/WildfireAPIController")]
     
-    public class WildfireController : ControllerBase
+    public class WildfireAPIController : ControllerBase
     {
         private readonly IWildfireRepository _wildfireRepository;
+        private readonly ILogger<WildfireAPIController> _logger;
 
-        public WildfireController(IWildfireRepository wildfireRepository)
+        public WildfireAPIController(IWildfireRepository wildfireRepository)
         {
             _wildfireRepository = wildfireRepository;
         }
@@ -32,7 +33,11 @@ namespace project_wildfire_web.Controllers;
             return Ok(wildfires);
         }
 
+
+
     }
+
+
 
 
     
