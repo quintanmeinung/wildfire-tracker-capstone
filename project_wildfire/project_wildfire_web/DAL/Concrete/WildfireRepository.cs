@@ -1,4 +1,5 @@
 using project_wildfire_web.Models;
+using project_wildfire_web.DAL.Abstract;
 
 namespace project_wildfire_web.DAL.Concrete
 {
