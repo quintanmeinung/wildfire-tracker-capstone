@@ -19,3 +19,6 @@ public class WebfireIdentityDbContext : IdentityDbContext<IdentityUser>
         // Add your customizations after calling base.OnModelCreating(builder);
     }
 }
+
+
+
