@@ -11,7 +11,7 @@ namespace project_wildfire_web.Models;
     public partial class FireDatum
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  // 🔥 Ensures FireId is auto-incremented
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
         [Column("FireId")]
         public int FireId { get; set; }
 
