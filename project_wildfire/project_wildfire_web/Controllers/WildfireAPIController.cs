@@ -10,6 +10,7 @@ using project_wildfire_web.DAL.Abstract;
 using project_wildfire_web.ExtensionsMethods;
 using CsvHelper;
 using CsvHelper.Configuration;
+using NetTopologySuite.Geometries;
 
 
 namespace project_wildfire_web.Controllers;
@@ -92,6 +93,50 @@ namespace project_wildfire_web.Controllers;
             return Ok(wildfires);       
 
         }
+
+        [HttpPost("save")]
+        public async Task<IActionResult> SaveWildfireData()
+        {
+            try
+            {
+                var response = await FetchWildfires();
+
+                if (response is OkObjectResult okResult)
+                {
+                    var wildfireDTOs = okResult.Value as List<FireDatumDTO>;
+                    if (wildfireDTOs == null || !wildfireDTOs.Any())
+                    {
+                        _logger.LogWarning("No wildfire data fetched.");
+                        return BadRequest("No wildfire data received.");
+                    }
+
+                     var wildfires = wildfireDTOs.Select(dto => new FireDatum
+                        {
+                            Location = new Point(dto.Longitude, dto.Latitude) { SRID = 4326 }, // 
+                            RadiativePower = dto.RadiativePower
+                        }).ToList();
+                    
+                    await _wildfireRepository.AddWildfiresAsync(wildfires);
+
+                    return CreatedAtAction(nameof(GetWildfires), wildfires);
+                }
+                else
+                {
+                    {
+                        _logger.LogError("Failed to fetch wildfire data from NASA.");
+                        return StatusCode(500, "Failed to fetch wildfire data.");
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error saving wildfire data: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
+            
+        }
+
+
 
 
 
