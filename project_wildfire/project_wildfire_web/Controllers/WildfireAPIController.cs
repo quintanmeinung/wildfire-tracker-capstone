@@ -83,13 +83,13 @@ namespace project_wildfire_web.Controllers;
             
             using var csv = new CsvReader(reader, csvConfig);
 
-            var wildfireData = csv.GetRecords<FireDatumDTO>().ToList();
+            var wildfires = csv.GetRecords<FireDatumDTO>().ToList();
             
-            var wildfireDataDTO = csv.GetRecords<FireDatumDTO>().ToList();
+            //var wildfireDataDTO = csv.GetRecords<FireDatumDTO>().ToList();
             
-            var wildfires = wildfireDataDTO.Select(dto => dto.ToFireDatum()).ToList();
+            //var wildfires = wildfireDataDTO.Select(dto => dto.ToFireDatum()).ToList();
 
-            return Ok(wildfireData);       
+            return Ok(wildfires);       
 
         }
 

@@ -10,7 +10,12 @@ namespace project_wildfire_web.Models.DTO
 {
 public partial class FireDatumDTO
 {
+    [Required]
+    [Name("latitude")]
     public double Latitude { get; set; }
+
+    [Required]
+    [Name("longitude")]
     public double Longitude { get; set; }
 
     //[Required]
@@ -34,7 +39,7 @@ namespace project_wildfire_web.ExtensionsMethods
     {   
         return new project_wildfire_web.Models.FireDatum
         {
-        Location = new Point(fireDatum.Longitude, fireDatum.Latitude) { SRID = 4326 },
+        Location = new Point(fireDatum.Latitude, fireDatum.Longitude) { SRID = 4326 },
         RadiativePower = fireDatum.RadiativePower
         };
 
