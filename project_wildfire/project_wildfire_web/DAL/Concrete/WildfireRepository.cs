@@ -1,6 +1,6 @@
 using project_wildfire_web.Models;
 
-namespace project_wildfire_web.Repository
+namespace project_wildfire_web.DAL.Concrete
 {
     public class WildfireRepository : IWildfireRepository
     {
