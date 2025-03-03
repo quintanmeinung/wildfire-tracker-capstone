@@ -14,5 +14,11 @@ namespace project_wildfire_web.DAL.Concrete
         {
             return _context.FireData.ToList();
         }
+
+        public async Task AddWildfiresAsync(List<FireDatum> wildfires)
+        {
+            await _context.FireData.AddRangeAsync(wildfires);
+            await _context.SaveChangesAsync();
+        }
     }
 }
