@@ -17,8 +17,9 @@ CREATE TABLE [FireData] (
 
 -- Create the User table
 CREATE TABLE [User] (
-    [UserId] int PRIMARY KEY,
-    [Username] varchar(50) NOT NULL,
+    [UserId] nvarchar(450) PRIMARY KEY,
+    [FirstName] varchar(50) NOT NULL,
+    [LastName] varchar(50) NOT NULL,
     [UserLocation] geography
 );
 

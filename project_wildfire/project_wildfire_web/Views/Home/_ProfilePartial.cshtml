@@ -1,0 +1,108 @@
+@using project_wildfire_web.Areas.Identity.Pages.Account.Manage
+@model project_wildfire_web.Models.ProfileViewModel
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profileModalLabel">PROFILE</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="profileModalBody">
+        @if (Model == null)
+        {
+            <p>Profile information not available. Please log in or create a profile.</p>
+        }
+        else
+        {
+            <div class="container">
+                <div class="row">
+                    <div class="col mb-3">
+                         <h2 class="mb-0">
+                            @if (!string.IsNullOrEmpty(Model.FirstName) && !string.IsNullOrEmpty(Model.LastName))
+                            {
+                                <p>@Model.FirstName @Model.LastName</p>
+                            } 
+                            else if (!string.IsNullOrEmpty(Model.Email))
+                            {
+                                @Model.Email
+                            }
+                            else
+                            {
+                                <p>User</p>
+                            }
+                        </h2>
+                        <a class="btn btn-sm btn-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-area="Identity" asp-page="/Account/Manage/Index">Account Settings</a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="row">
+                   
+                    <h4 class="mt-1"><u>Notifications</u></h4>
+                    <div class="container ml-1">
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <td>Phone:</td>
+                                    <td>
+                                    @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                                    {
+                                        <p>@Model.PhoneNumber</p>
+                                    } else {
+                                        <p>Not provided</p>
+                                    }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Email:</td>
+                                    <td>
+                                    @if (!string.IsNullOrEmpty(Model.Email))
+                                    {
+                                        <p>@Model.Email</p>
+                                    } else {
+                                        <p>Not provided</p>
+                                    }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                        
+                    <h4 class="mt-2"><u>Saved Locations</u></h4>
+                    <div class="container ml-1">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <td><u>Name</u></td>
+                                    <td><u>Address</u></td>
+                                    <td><u>Latitude</u></td>
+                                    <td><u>Longitude</u></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @if (Model.SavedLocations != null)
+                                    {
+                                        @foreach (var location in Model.SavedLocations)
+                                        {
+                                            <td>@location</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td>No saved locations</td>
+                                    } 
+                                </tr>
+                                    
+                            </tbody>
+                        </table>
+                    </div>
+                        
+                            
+                </div>
+            </div>  
+        }        
+      </div>
+    </div>
+  </div>
+</div>

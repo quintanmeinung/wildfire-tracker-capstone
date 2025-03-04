@@ -26,7 +26,8 @@ public partial class WildfireDbContext : DbContext
         {
             entity.HasKey(e => e.FireId).HasName("PK__FireData__E1DECA144B6D0E6B");
 
-            entity.Property(e => e.FireId).ValueGeneratedNever();
+            //entity.Property(e => e.FireId).ValueGeneratedNever();
+            entity.Property(e => e.FireId).ValueGeneratedOnAdd();
             entity.Property(e => e.RadiativePower).HasColumnType("decimal(10, 2)");
 
             entity.HasOne(d => d.Weather).WithMany(p => p.FireData)

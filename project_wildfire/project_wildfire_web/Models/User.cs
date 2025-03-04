@@ -6,7 +6,7 @@ namespace project_wildfire_web.Models;
 
 public partial class User
 {
-    public required string UserId { get; set; }
+    public string? UserId { get; set; }
 
     public string? FirstName { get; set; }
 
