@@ -23,9 +23,9 @@ namespace project_wildfire_web.DAL.Concrete
             return context.Users.ToList();
         }
 
-        public User GetUserById(string userId)
+        public async Task<User> GetUserByIdAsync(string userId)
         {
-            var user = context.Users.Find(userId);
+            var user = await context.Users.FindAsync(userId);
             if (user == null)
             {
                 throw new KeyNotFoundException($"User with ID {userId} not found.");
@@ -60,24 +60,5 @@ namespace project_wildfire_web.DAL.Concrete
             context.SaveChanges();
         }
 
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
     }
 }
