@@ -8,7 +8,7 @@ using NetTopologySuite.Geometries;
 
 namespace project_wildfire_web.Models.DTO
 {
-public partial class FireDatumDTO
+public partial class FireDTO
 {
     [Required]
     [Name("latitude")]
@@ -33,14 +33,15 @@ public partial class FireDatumDTO
 namespace project_wildfire_web.ExtensionsMethods
     {
     
-        public static class FireDatumExtensions
+        public static class FireExtensions
         {
-    public static FireDatum ToFireDatum (this project_wildfire_web.Models.DTO.FireDatumDTO fireDatum)
+    public static Fire ToFire (this Models.DTO.FireDTO fire)
     {   
-        return new project_wildfire_web.Models.FireDatum
+        return new Fire
         {
-        Location = new Point(fireDatum.Latitude, fireDatum.Longitude) { SRID = 4326 },
-        RadiativePower = fireDatum.RadiativePower
+        Latitude = (decimal)fire.Latitude,
+        Longitude = (decimal)fire.Longitude,
+        RadiativePower = fire.RadiativePower
         };
 
     }
