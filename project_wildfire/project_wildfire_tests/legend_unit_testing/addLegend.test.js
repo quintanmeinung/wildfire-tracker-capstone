@@ -1,3 +1,4 @@
+
 const { updateLegendInfo } = require('../../project_wildfire_web/wwwroot/js/addLegend'); 
 const { JSDOM } = require('jsdom');
 
