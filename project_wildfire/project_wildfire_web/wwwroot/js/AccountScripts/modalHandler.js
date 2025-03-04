@@ -1,4 +1,4 @@
-/* document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     // Get the profile link
     var profileLink = document.getElementById("manage");
 
@@ -12,4 +12,4 @@
             profileModal.show(); // Show the modal
         });
     }
-}); */
+});

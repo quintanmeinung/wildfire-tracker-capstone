@@ -51,9 +51,9 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
-    });
+        {
+            options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
+        });
 
         // Add repository services
         builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
