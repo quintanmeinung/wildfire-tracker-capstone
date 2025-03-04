@@ -1,0 +1,63 @@
+@model project_wildfire_web.Models.ProfileViewModel
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profileModalLabel">PROFILE</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="profileModalBody">
+        @if (Model == null)
+        {
+            <p>Profile information not available. Please log in or create a profile.</p>
+        }
+        else
+        {
+            <div class="container">
+                <div class="row">
+                    @if (!string.IsNullOrEmpty(Model.FirstName) && !string.IsNullOrEmpty(Model.LastName))
+                    {
+                        <p>@Model.FirstName @Model.LastName</p>
+                    } 
+                    else if (!string.IsNullOrEmpty(Model.Email))
+                    {
+                        <p>@Model.Email</p>
+                    }
+                    else
+                    {
+                        <p>User</p>
+                    }
+                   
+                    <h6>Notifications</h6>
+                    @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                    {
+                        <p>Phone: @Model.PhoneNumber</p>
+                    } 
+                    else
+                    {
+                        <p>Phone: Not provided</p>
+                    }
+                   
+                    <p>Email: @(!string.IsNullOrEmpty(Model.Email) ? Model.Email : "Not provided")</p>
+                    
+                    <h6>Saved Locations</h6>
+                    @if (Model.SavedLocations != null && Model.SavedLocations.Any())
+                    {
+                        <ul>
+                            @foreach (var location in Model.SavedLocations)
+                            {
+                                <li>@location</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No saved locations</p>
+                    }
+                </div>
+            </div>  
+        }        
+      </div>
+    </div>
+  </div>
+</div>
