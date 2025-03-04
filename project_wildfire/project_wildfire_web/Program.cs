@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using project_wildfire_web.Areas.Identity.Data;
 using project_wildfire_web.DAL.Abstract;
 using project_wildfire_web.DAL.Concrete;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace project_wildfire_web;
 
@@ -29,6 +31,7 @@ public class Program
             options.UseSqlServer(
                 FullConnectionString,
                 x => x.UseNetTopologySuite())
+                 .EnableSensitiveDataLogging()
                 );
 
         // Add Identity database context
@@ -47,12 +50,26 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
+        });
 
         // Add repository services
         builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IWildfireRepository, WildfireRepository>();
+        builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+        builder.Services.AddHttpClient();
+        
+        //adding swagger
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        
 
         var app = builder.Build();
+
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
@@ -62,7 +79,14 @@ public class Program
             app.UseHsts();
         }
 
+         app.UseSwagger();
+         app.UseSwaggerUI(options => {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json","wildfire API v1");
+                options.RoutePrefix = "swagger";
+         });
+
         app.UseHttpsRedirection();
+        app.UseStaticFiles();
         app.UseRouting();
 
         app.UseAuthentication();

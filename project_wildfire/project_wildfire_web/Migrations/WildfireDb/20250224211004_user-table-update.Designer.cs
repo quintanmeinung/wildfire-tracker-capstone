@@ -13,7 +13,7 @@ namespace project_wildfire_web.Migrations.WildfireDb
 {
     [DbContext(typeof(WildfireDbContext))]
     [Migration("20250224211004_user-table-update")]
-    partial class usertableupdate
+    partial class UserTableUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
