@@ -94,47 +94,24 @@ namespace project_wildfire_web.Controllers;
 
         }
 
-        /* [HttpPost("save")]
-        public async Task<IActionResult> SaveWildfireData()
-        {
-            try
-            {
-                var response = await FetchWildfires();
+        //Fetch All NASA API Wildfires
+             
+        [HttpGet("fetchAll")]
+         public async Task<string> GetFireDataCsvAsync()
+           {
+                string apiKey = _configuration["NASA:FirmsApiKey"];
+                string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{apiKey}/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
 
-                if (response is OkObjectResult okResult)
-                {
-                    var wildfireDTOs = okResult.Value as List<FireDatumDTO>;
-                    if (wildfireDTOs == null || !wildfireDTOs.Any())
-                    {
-                        _logger.LogWarning("No wildfire data fetched.");
-                        return BadRequest("No wildfire data received.");
-                    }
+               // string url = "https://firms.modaps.eosdis.nasa.gov/api/path-to-your-csv";
+                var response = await _httpClient.GetAsync(endpoint);
+                
+                response.EnsureSuccessStatusCode(); // Throws an error if the response is not successful
 
-                     var wildfires = wildfireDTOs.Select(dto => new FireDatum
-                        {
-                            Location = new Point(dto.Longitude, dto.Latitude) { SRID = 4326 }, // 
-                            RadiativePower = dto.RadiativePower
-                        }).ToList();
-                    
-                    await _wildfireRepository.AddWildfiresAsync(wildfires);
-
-                    return CreatedAtAction(nameof(GetWildfires), wildfires);
-                }
-                else
-                {
-                    {
-                        _logger.LogError("Failed to fetch wildfire data from NASA.");
-                        return StatusCode(500, "Failed to fetch wildfire data.");
-                    }
-                }
+                return await response.Content.ReadAsStringAsync();
             }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error saving wildfire data: {ex.Message}");
-                return StatusCode(500, "Internal server error.");
-            }
-            
-        } */
+        
+
+       
 
 
 
