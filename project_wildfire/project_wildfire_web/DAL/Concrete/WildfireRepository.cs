@@ -5,20 +5,20 @@ namespace project_wildfire_web.DAL.Concrete
 {
     public class WildfireRepository : IWildfireRepository
     {
-        private readonly WildfireDbContext _context;
+        private readonly FireDataDbContext _context;
 
-        public WildfireRepository(WildfireDbContext context)
+        public WildfireRepository(FireDataDbContext context)
         {
             _context = context;
         }
-        public ICollection<FireDatum> GetWildfires()
+        public ICollection<Fire> GetWildfires()
         {
-            return _context.FireData.ToList();
+            return _context.Fires.ToList();
         }
 
-        public async Task AddWildfiresAsync(List<FireDatum> wildfires)
+        public async Task AddWildfiresAsync(List<Fire> wildfires)
         {
-            await _context.FireData.AddRangeAsync(wildfires);
+            await _context.Fires.AddRangeAsync(wildfires);
             await _context.SaveChangesAsync();
         }
     }
