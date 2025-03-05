@@ -4,9 +4,9 @@ using project_wildfire_web.Models.DTO;
 
 namespace project_wildfire_web.Models;
 
-public class FireDatumDTOMap : ClassMap<FireDatumDTO>
+public class FireDTOMap : ClassMap<FireDTO>
 {
-    public FireDatumDTOMap()
+    public FireDTOMap()
     {
         Map(m => m.Latitude).Name("latitude");
         Map(m => m.Longitude).Name("longitude");

@@ -5,9 +5,9 @@ namespace project_wildfire_web.DAL.Abstract
 {
     public interface IWildfireRepository
     {
-        ICollection<FireDatum> GetWildfires();
+        ICollection<Fire> GetWildfires();
 
-        Task AddWildfiresAsync(List<FireDatum> wildfires);
+        Task AddWildfiresAsync(List<Fire> wildfires);
 
     }
 }

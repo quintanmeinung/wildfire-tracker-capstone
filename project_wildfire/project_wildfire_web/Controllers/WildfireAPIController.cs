@@ -37,7 +37,7 @@ namespace project_wildfire_web.Controllers;
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<FireDatum>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Fire>))]
 
         public IActionResult GetWildfires()
         {
@@ -84,7 +84,7 @@ namespace project_wildfire_web.Controllers;
             
             using var csv = new CsvReader(reader, csvConfig);
 
-            var wildfires = csv.GetRecords<FireDatumDTO>().ToList();
+            var wildfires = csv.GetRecords<FireDTO>().ToList();
             
             //var wildfireDataDTO = csv.GetRecords<FireDatumDTO>().ToList();
             
@@ -94,7 +94,7 @@ namespace project_wildfire_web.Controllers;
 
         }
 
-        [HttpPost("save")]
+        /* [HttpPost("save")]
         public async Task<IActionResult> SaveWildfireData()
         {
             try
@@ -134,7 +134,7 @@ namespace project_wildfire_web.Controllers;
                 return StatusCode(500, "Internal server error.");
             }
             
-        }
+        } */
 
 
 

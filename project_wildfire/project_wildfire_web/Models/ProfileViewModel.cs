@@ -6,6 +6,6 @@ public class ProfileViewModel
     public required string? Email { get; set; }
     public string? PhoneNumber { get; set; }
     public string? Location { get; set; }
-    public required ICollection<SavedLocation> SavedLocations { get; set; }
-    public required ICollection<FireDatum> FireSubscriptions { get; set; }
+    public required ICollection<UserLocation> SavedLocations { get; set; }
+    public required ICollection<Fire> FireSubscriptions { get; set; }
 }
