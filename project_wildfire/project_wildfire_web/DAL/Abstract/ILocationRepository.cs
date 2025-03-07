@@ -2,13 +2,13 @@ using project_wildfire_web.Models;
 
 namespace project_wildfire_web.DAL.Abstract
 {
-    public interface ILocationRepository : IRepository<SavedLocation>
+    public interface ILocationRepository : IRepository<UserLocation>
     {
-        ICollection<SavedLocation> GetUserLocations(string userId);
-        SavedLocation GetLocationById(int locationId);
-        Task AddLocationAsync(SavedLocation location);
+        ICollection<UserLocation> GetUserLocations(string userId);
+        UserLocation GetLocationById(int locationId);
+        Task AddLocationAsync(UserLocation location);
         Task DeleteLocationAsync(int locationId, string userId);
-        Task UpdateLocationAsync(SavedLocation location);
+        Task UpdateLocationAsync(UserLocation location);
         void Save();
 
     }
