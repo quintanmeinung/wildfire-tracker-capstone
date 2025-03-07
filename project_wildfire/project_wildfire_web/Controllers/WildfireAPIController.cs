@@ -48,7 +48,7 @@ namespace project_wildfire_web.Controllers;
         }
 
         //Fetch Wildfires
-        [HttpGet("fetch")]
+        /* [HttpGet("fetch")]
         public async Task<IActionResult> FetchWildfires()
         {
             _logger.LogInformation("Calling NASA Firms API");
@@ -91,7 +91,7 @@ namespace project_wildfire_web.Controllers;
 
             return Ok(wildfires);
 
-        }
+        } */
 
         /* [HttpPost("save")]
         public async Task<IActionResult> SaveWildfireData()

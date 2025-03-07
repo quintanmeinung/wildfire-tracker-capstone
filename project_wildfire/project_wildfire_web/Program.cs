@@ -40,7 +40,7 @@ public class Program
 
 
         // Add API configuration
-        string firmsApiKey = builder.Configuration["NASA:FirmsApiKey"];
+        string? firmsApiKey = builder.Configuration["NASA:FirmsApiKey"];
         if (string.IsNullOrEmpty(firmsApiKey))
         {
             throw new Exception("NASA:FirmsApiKey is missing from configuration");

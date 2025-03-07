@@ -13,7 +13,6 @@ public class NasaService : INasaService
         _logger = logger;
     }
 
-    // Hits /search/movie?={movie name} endpoint for movie search
     public async Task<List<Fire>> GetFiresAsync()
     {
         throw new NotImplementedException();   
