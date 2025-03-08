@@ -6,6 +6,8 @@ using project_wildfire_web.DAL.Abstract;
 using project_wildfire_web.DAL.Concrete;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using project_wildfire_web.Services;
+using System.Net.Http.Headers;
 
 namespace project_wildfire_web;
 
@@ -14,39 +16,46 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        // Add wildfire database context
-        // Grabs & null checks password from user secrets
-        var DbPassword = builder.Configuration["WildfireProj:DBPassword"]
-            ?? throw new InvalidOperationException("Database Password Not Found");
 
-        // Grabs & null checks connection string from appsettings.json
-        var PartialConnectionString = builder.Configuration.GetConnectionString("WebfireDbConnectionString") 
-            ?? throw new InvalidOperationException("Connection String Not Found");
+        // Retrieve primary DB connection string
+        var WebfireConnectionString = builder.Configuration.GetConnectionString("WebfireConnectionString");
 
-        // Replaces placeholder password with actual password
-        var FullConnectionString = PartialConnectionString.Replace("STANDINPASSWORD", DbPassword);
-
-        // Add database context with NetTopologySuite enabled
+        // Add primary DB Context with NetTopologySuite support
         builder.Services.AddDbContext<FireDataDbContext>(options =>
             options.UseSqlServer(
-                FullConnectionString,
+                WebfireConnectionString,
                 x => x.UseNetTopologySuite())
                  .EnableSensitiveDataLogging()
                 );
 
-        // Add Identity database context
-        // Grabs & null checks connection string from appsettings.json
-        var IdentityDbPartialConnectionString = builder.Configuration.GetConnectionString("WebfireIdentityDbContextConnection")
-            ?? throw new InvalidOperationException("Connection String Not Found");
+        // Retrieve Identity DB connection string
+        var AuthConnectionString = builder.Configuration.GetConnectionString("AuthConnectionString");
 
-        // Replaces placeholder password with actual password
-        var IdentityDbFullConnectionString = IdentityDbPartialConnectionString.Replace("STANDINPASSWORD", DbPassword);
-
-        // Add Identity database context
+        // Add Identity DB context
         builder.Services.AddDbContext<WebfireIdentityDbContext>(options =>
-            options.UseSqlServer(IdentityDbFullConnectionString));
+            options.UseSqlServer(AuthConnectionString));
 
+        // Add Identity services
         builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WebfireIdentityDbContext>();
+
+
+        // Add API configuration
+        string? firmsApiKey = builder.Configuration["NASA:FirmsApiKey"];
+        if (string.IsNullOrEmpty(firmsApiKey))
+        {
+            throw new Exception("NASA:FirmsApiKey is missing from configuration");
+        }
+        string apiBaseUrl = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/ApiKeyHere/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
+        string fullUri = apiBaseUrl.Replace("ApiKeyHere", firmsApiKey);
+
+        builder.Services.AddHttpClient<INasaService, NasaService>((httpClient, services) =>
+        {
+            // Verify with Nasa API if headers are correct
+            httpClient.BaseAddress = new Uri(fullUri);
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            return new NasaService(httpClient, services.GetRequiredService<ILogger<NasaService>>());
+        });
+
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();

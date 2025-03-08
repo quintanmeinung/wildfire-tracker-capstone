@@ -12,20 +12,21 @@ namespace project_wildfire_web.DAL.Concrete
 {
     public class LocationRepository : Repository<UserLocation>, ILocationRepository
     {
-        private readonly FireDataDbContext context;
+        private readonly FireDataDbContext _context;
 
         public LocationRepository(FireDataDbContext context) : base(context)
         {
-            this.context = context;
+            _context = context;
         }
 
         public ICollection<UserLocation> GetUserLocations(string userId)
         {
-            /* var locations = context.SavedLocations
+            var locations = _context.UserLocations
+                .Include(ul => ul.User)
                 .Where(ul => ul.UserId == userId)
-                .Select(ul => ul.Location)
-                .ToList(); */
-            throw new NotImplementedException();
+                .ToList();
+
+            return locations;
         }
 
         public UserLocation GetLocationById(int locationId)
@@ -51,7 +52,7 @@ namespace project_wildfire_web.DAL.Concrete
 
         public void Save()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
     }
 
