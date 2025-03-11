@@ -34,7 +34,7 @@ describe('fetchAQIData', () => {
         await fetchAQIData(mockStationId);
 
         expect(fetch).toHaveBeenCalledWith(
-            `https://api.waqi.info/feed/${mockStationId}/?token=152b70cd77ae9f824be07461d6ca46df5ff8b7c3`
+            `/api/aqi/get-aqi-data?stationId=${mockStationId}`
         );
     });
 
