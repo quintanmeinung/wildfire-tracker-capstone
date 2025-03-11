@@ -11,9 +11,9 @@ namespace project_wildfire_web.DAL.Concrete
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        private readonly WildfireDbContext context;
+        private readonly FireDataDbContext context;
 
-        public UserRepository(WildfireDbContext context) : base(context)
+        public UserRepository(FireDataDbContext context) : base(context)
         {
             this.context = context;
         }

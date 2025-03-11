@@ -27,7 +27,7 @@ public class Program
         var FullConnectionString = PartialConnectionString.Replace("STANDINPASSWORD", DbPassword);
 
         // Add database context with NetTopologySuite enabled
-        builder.Services.AddDbContext<WildfireDbContext>(options =>
+        builder.Services.AddDbContext<FireDataDbContext>(options =>
             options.UseSqlServer(
                 FullConnectionString,
                 x => x.UseNetTopologySuite())
@@ -60,6 +60,7 @@ public class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IWildfireRepository, WildfireRepository>();
         builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+        builder.Services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
         builder.Services.AddHttpClient();
         
         //adding swagger

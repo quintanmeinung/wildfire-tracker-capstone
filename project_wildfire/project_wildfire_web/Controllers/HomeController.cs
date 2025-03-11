@@ -52,7 +52,7 @@ public class HomeController : Controller
                 profileViewModel.Email = user.Email;
                 profileViewModel.PhoneNumber = user.PhoneNumber;
                 
-                //profileViewModel.SavedLocations = _locationRepository.GetUserLocations(user.Id);
+                // profileViewModel.SavedLocations = _locationRepository.GetUserLocations(user.Id);
                 profileViewModel.SavedLocations = [];
                 profileViewModel.FireSubscriptions = [];
             }
@@ -60,6 +60,7 @@ public class HomeController : Controller
         
         // Pass the model to the view
         return View(profileViewModel);
+        return View();
     }
 
     public IActionResult Privacy()
