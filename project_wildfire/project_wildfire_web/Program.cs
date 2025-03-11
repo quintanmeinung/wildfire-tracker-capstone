@@ -66,6 +66,8 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Configuration.AddUserSecrets<Program>();
         
 
         var app = builder.Build();
@@ -98,6 +100,9 @@ public class Program
             pattern: "{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
         app.MapRazorPages();
+
+        //for aqi controller
+        app.MapControllers(); 
 
         app.Run();
     }
