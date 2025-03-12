@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using CsvHelper.Configuration.Attributes;
 using project_wildfire_web.Models;
 using NetTopologySuite.Geometries;
+using project_wildfire_web.Models.DTO;
 
 
 
@@ -12,11 +13,11 @@ public partial class FireDTO
 {
     [Required]
     [Name("latitude")]
-    public double Latitude { get; set; }
+    public decimal Latitude { get; set; }
 
     [Required]
     [Name("longitude")]
-    public double Longitude { get; set; }
+    public decimal Longitude { get; set; }
 
     //[Required]
     //public Geometry Location { get; set; } = null!;
@@ -31,20 +32,26 @@ public partial class FireDTO
 }
 
 namespace project_wildfire_web.ExtensionsMethods
+{
+    public static class FireDtoExtensions
     {
-    
-        public static class FireExtensions
-        {
-    public static Fire ToFire (this Models.DTO.FireDTO fire)
-    {   
-        return new Fire
-        {
-        Latitude = (decimal)fire.Latitude,
-        Longitude = (decimal)fire.Longitude,
-        RadiativePower = fire.RadiativePower
-        };
+        public static FireDTO ToFireDTO (this Fire fire)
+        {   
+            // Check for null radiative power
+            decimal? radPower = fire.RadiativePower;
 
-    }
+            // Set to 0 if null
+            radPower = radPower ?? 0.0m;
+
+            return new FireDTO
+            {
+            Latitude = fire.Latitude,
+            Longitude = fire.Longitude,
+
+            // Cast radPower back to non-null decimal
+            RadiativePower = (decimal)radPower
+            };
+
         }
-
     }
+}
