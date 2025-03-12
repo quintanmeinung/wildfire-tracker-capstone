@@ -7,7 +7,7 @@ using project_wildfire_web.DAL.Abstract;
 using Microsoft.EntityFrameworkCore;
 using project_wildfire_web.DAL.Concrete;
 using System.Linq.Expressions;
-
+/* 
 namespace project_wildfire_web.DAL.Concrete;
 
 public class UserPreferencesRepository : IUserPreferencesRepository
@@ -19,4 +19,4 @@ public class UserPreferencesRepository : IUserPreferencesRepository
         _context = context;
     }
 
-}
+} */
