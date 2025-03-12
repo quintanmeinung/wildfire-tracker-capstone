@@ -50,6 +50,10 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+
+        builder.Logging.ClearProviders(); 
+        builder.Logging.AddConsole();
+        
         builder.Services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
@@ -67,6 +71,9 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        // Add session management
+        builder.Services.AddSession();
         
 
         var app = builder.Build();
@@ -99,6 +106,9 @@ public class Program
             pattern: "{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
         app.MapRazorPages();
+
+        //Session storage middleware
+        app.UseSession();
 
         app.Run();
     }

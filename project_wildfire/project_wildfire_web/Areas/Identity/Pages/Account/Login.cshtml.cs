@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using project_wildfire_web.DAL.Concrete;
+using project_wildfire_web.Models;
+using project_wildfire_web.DAL.Abstract;
 
 namespace project_wildfire_web.Areas.Identity.Pages.Account
 {
@@ -21,11 +24,12 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        private readonly IUserPreferencesRepository _userPreferencesRepository;
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IUserPreferencesRepository userPreferencesRepository)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userPreferencesRepository = userPreferencesRepository;
         }
 
         /// <summary>
@@ -111,10 +115,29 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                // Also loads up the User Preference settings from previous session.
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    // ✅ Find user by email FIRST
+                    var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+                    if (user == null)
                     _logger.LogInformation("User logged in.");
+                    // ✅ Fetch user preferences from the database
+                    _logger.LogInformation($"Fetching preferences for user: {user.Id}");
+                    var preferences = await _userPreferencesRepository.GetUserPreferencesAsync(user.Id);
+                    if (preferences != null)
+                    {
+                        HttpContext.Session.SetString("FontSize", preferences.FontSize);
+                        HttpContext.Session.SetString("ContrastMode", preferences.ContrastMode.ToString());
+                        HttpContext.Session.SetString("TextToSpeech", preferences.TextToSpeech.ToString());
+                        _logger.LogInformation($"Loaded Preferences - FontSize: {preferences.FontSize}, ContrastMode: {preferences.ContrastMode}, TextToSpeech: {preferences.TextToSpeech}");
+                    }
+                    else
+                    {
+                        _logger.LogWarning($"No preferences found for user: {user.Id}");
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
