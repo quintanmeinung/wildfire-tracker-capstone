@@ -1,9 +1,9 @@
-// AQI.js
+const L = require('leaflet'); //helps pass the test when mocking
 
-// Fetches AQI Data from API
-export async function fetchAQIData(stationId) {
-    const apiKey = "152b70cd77ae9f824be07461d6ca46df5ff8b7c3";
-    const apiUrl = `https://api.waqi.info/feed/${stationId}/?token=${apiKey}`;
+
+// Fetches AQI Data 
+async function fetchAQIData(stationId) {
+    const apiUrl = `/api/aqi/get-aqi-data?stationId=${stationId}`;
 
     try {
         const response = await fetch(apiUrl);
@@ -26,8 +26,9 @@ export async function fetchAQIData(stationId) {
     }
 }
 
+
 // Function to determine AQI color
-export function getAQIColor(aqi) {
+function getAQIColor(aqi) {
     return aqi <= 50 ? "green" :
            aqi <= 100 ? "yellow" :
            aqi <= 150 ? "orange" :
@@ -36,7 +37,7 @@ export function getAQIColor(aqi) {
 }
 
 // Function to add AQI markers to the map
-export async function addAQIMarker(map, stationId) {
+async function addAQIMarker(map, stationId) {
     const aqiData = await fetchAQIData(stationId);
 
     if (aqiData) {
@@ -50,3 +51,10 @@ export async function addAQIMarker(map, stationId) {
         .addTo(map);
     }
 }
+
+// This is the key change - CommonJS export
+module.exports = {
+    fetchAQIData,
+    getAQIColor,
+    addAQIMarker
+};
