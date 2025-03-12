@@ -27,6 +27,7 @@ async function fetchAQIData(stationId) {
 }
 
 
+
 // Function to determine AQI color
 function getAQIColor(aqi) {
     return aqi <= 50 ? "green" :
@@ -58,5 +59,4 @@ async function addAQIMarker(map, stationId) {
     getAQIColor,
     addAQIMarker
 }; */
-
 export {fetchAQIData, getAQIColor, addAQIMarker};

@@ -10,30 +10,31 @@ using Microsoft.AspNetCore.Identity;
 
 namespace project_wildfire_web.DAL.Concrete
 {
-    public class LocationRepository : Repository<SavedLocation>, ILocationRepository
+    public class LocationRepository : Repository<UserLocation>, ILocationRepository
     {
-        private readonly WildfireDbContext context;
+        private readonly FireDataDbContext _context;
 
-        public LocationRepository(WildfireDbContext context) : base(context)
+        public LocationRepository(FireDataDbContext context) : base(context)
         {
-            this.context = context;
+            _context = context;
         }
 
-        public ICollection<SavedLocation> GetUserLocations(string userId)
+        public ICollection<UserLocation> GetUserLocations(string userId)
         {
-            /* var locations = context.SavedLocations
+            var locations = _context.UserLocations
+                .Include(ul => ul.User)
                 .Where(ul => ul.UserId == userId)
-                .Select(ul => ul.Location)
-                .ToList(); */
-            throw new NotImplementedException();
+                .ToList();
+
+            return locations;
         }
 
-        public SavedLocation GetLocationById(int locationId)
+        public UserLocation GetLocationById(int locationId)
         {
             throw new NotImplementedException();
         }
         
-        public Task AddLocationAsync(SavedLocation location)
+        public Task AddLocationAsync(UserLocation location)
         {
             // Save user-saved location with the user's ID
             throw new NotImplementedException();
@@ -44,14 +45,14 @@ namespace project_wildfire_web.DAL.Concrete
             throw new NotImplementedException();
         }
 
-        public Task UpdateLocationAsync(SavedLocation location)
+        public Task UpdateLocationAsync(UserLocation location)
         {
             throw new NotImplementedException();
         }
 
         public void Save()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
     }
 

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
@@ -27,39 +28,45 @@ public class HomeController : Controller
         _userRepository = userRepository;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        // ProfileViewModel populates the partial profile modal
-        var profileViewModel = new ProfileViewModel
-        {
-            Email = string.Empty,
-            SavedLocations = [],
-            FireSubscriptions = []
-        };
-        
         // If the user is authenticated, populate the model with their data
-        if (User.Identity.IsAuthenticated)
+        if (User?.Identity?.IsAuthenticated == true)
         {
-            // Get the current user
-            var user = _userManager.GetUserAsync(User).Result;
-            var primaryUser = _userRepository.GetUserByIdAsync(user.Id.ToString()).Result;
-            
-            if (user != null)
+            // Find the identity user record
+            var authUser = await _userManager.GetUserAsync(User);
+            if (authUser == null)
             {
-                // Populate the model with user data
-                profileViewModel.FirstName = primaryUser.FirstName;
-                profileViewModel.LastName = primaryUser.LastName;
-                profileViewModel.Email = user.Email;
-                profileViewModel.PhoneNumber = user.PhoneNumber;
-                
-                //profileViewModel.SavedLocations = _locationRepository.GetUserLocations(user.Id);
-                profileViewModel.SavedLocations = [];
-                profileViewModel.FireSubscriptions = [];
+                return NotFound("Unable to retreive identity user by ID.");
             }
+            // Find the primary user record
+            var primaryUser = await _userRepository.GetUserByIdAsync(authUser.Id);
+            if (primaryUser == null)
+            {
+                return NotFound("Unable to retreive primary user by ID.");
+            }
+
+            var savedLocations = _locationRepository.GetUserLocations(primaryUser.UserId);
+
+            // Generate view model for the profile page
+            var profileViewModel = new ProfileViewModel
+            {
+                Id = primaryUser.UserId,
+                FirstName = primaryUser.FirstName,
+                LastName = primaryUser.LastName,
+                Email = authUser.Email,
+                PhoneNumber = authUser.PhoneNumber,
+                // SavedLocations needs to be populated 
+                FireSubscriptions = primaryUser.Fires
+            };
+            Console.WriteLine("ProfileViewModel: " + profileViewModel);
+
+            // Pass the model to the view
+            return View(profileViewModel);
         }
+        // If user is not authenticated, no model is sent
+        return View();
         
-        // Pass the model to the view
-        return View(profileViewModel);
     }
 
     public IActionResult Privacy()
