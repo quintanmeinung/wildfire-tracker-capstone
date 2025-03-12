@@ -36,7 +36,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IUserRepository _userRepository;
-        private readonly IUserPreferencesRepository _userPreferencesRepository;
+        //private readonly IUserPreferencesRepository _userPreferencesRepository;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -44,10 +44,10 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IUserRepository userRepository,
-            IUserPreferencesRepository userPreferencesRepository)
+            IUserRepository userRepository
+            /* IUserPreferencesRepository userPreferencesRepository */)
         {
-            _userPreferencesRepository = userPreferencesRepository;
+            /* _userPreferencesRepository = userPreferencesRepository; */
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
