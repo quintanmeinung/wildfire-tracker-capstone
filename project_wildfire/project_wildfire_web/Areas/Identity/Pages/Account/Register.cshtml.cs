@@ -154,14 +154,17 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                         LastName = Input.LastName,
                     };
 
-                    // Adds user preferences to wildfire DB
+                    // Adds user preferences to the database after successful registration
                     UserPreferences visitorPreferences = new()
                     {
                         UserId = user.Id,
-                        FontSize = Input.FontSize,
-                        ContrastMode = Input.ContrastMode,
-                        TextToSpeech = Input.TextToSpeech,
+                        FontSize = "medium",   // Default font size
+                        ContrastMode = false,  // Default contrast mode off
+                        TextToSpeech = false   // Default text-to-speech off
                     };
+
+                    await _userPreferencesRepository.AddUserPreferenceAsync(visitorPreferences);
+                    await _userPreferencesRepository.SaveUserPreference();
 
                     await _userRepository.AddUserAsync(visitor);
 
