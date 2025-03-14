@@ -1,6 +1,6 @@
-const L = require('leaflet'); //helps pass the test when mocking
+/* const L = require('leaflet'); //helps pass the test when mocking
 
-
+ */
 // Fetches AQI Data 
 async function fetchAQIData(stationId) {
     const apiUrl = `/api/aqi/get-aqi-data?stationId=${stationId}`;
@@ -25,6 +25,7 @@ async function fetchAQIData(stationId) {
         return null;
     }
 }
+
 
 
 // Function to determine AQI color
@@ -53,8 +54,9 @@ async function addAQIMarker(map, stationId) {
 }
 
 // This is the key change - CommonJS export
-module.exports = {
+/* module.exports = {
     fetchAQIData,
     getAQIColor,
     addAQIMarker
-};
+}; */
+export {fetchAQIData, getAQIColor, addAQIMarker};

@@ -13,7 +13,6 @@ public class UserPreferencesRepository : IUserPreferencesRepository
         _context = context;
     }
 
-<<<<<<< HEAD
     // ✅ Add new user preferences
     public async Task AddUserPreferenceAsync(UserPreferences preferences)
     {
@@ -53,6 +52,3 @@ public class UserPreferencesRepository : IUserPreferencesRepository
     }
 }
 
-=======
-} */
->>>>>>> 67b689b388a552f38b16d056b249c81201829597
