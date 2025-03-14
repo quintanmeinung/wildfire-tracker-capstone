@@ -1,4 +1,4 @@
-import { addAQIMarker } from './AQI.js'; //imports AQI.js file
+import { addAQIMarker } from './AQI.js'; //imports AQI.js file 
 
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize the map
