@@ -73,7 +73,7 @@ public class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IWildfireRepository, WildfireRepository>();
         builder.Services.AddScoped<ILocationRepository, LocationRepository>();
-        //builder.Services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
+        builder.Services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
         builder.Services.AddHttpClient();
         
         //adding swagger
@@ -81,6 +81,11 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+<<<<<<< HEAD
+=======
+        // Add session management
+        builder.Services.AddSession();
+>>>>>>> 579bf247af54c53f8d3f788302ff5e180af94ae3
         builder.Configuration.AddUserSecrets<Program>();
         
 
@@ -115,6 +120,11 @@ public class Program
             .WithStaticAssets();
         app.MapRazorPages();
 
+<<<<<<< HEAD
+=======
+        //Session storage middleware
+        app.UseSession();
+>>>>>>> 579bf247af54c53f8d3f788302ff5e180af94ae3
         //for aqi controller
         app.MapControllers(); 
 
