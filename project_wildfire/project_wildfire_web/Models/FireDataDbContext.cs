@@ -11,6 +11,7 @@ public partial class FireDataDbContext : DbContext
     {
     }
 
+    public virtual DbSet<UserPreferences> UserPreferences { get; set; }
     public virtual DbSet<AqiStation> AqiStations { get; set; }
 
     public virtual DbSet<Fire> Fires { get; set; }
@@ -76,6 +77,21 @@ public partial class FireDataDbContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserLocations_Users");
+        });
+
+        modelBuilder.Entity<UserPreferences>(entity =>
+        {
+            entity.HasNoKey();
+
+            entity.Property(e => e.FontSize).HasColumnType("string");
+            entity.Property(e => e.ContrastMode).HasColumnType("boolean");
+            entity.Property(e => e.TextToSpeech).HasColumnType("boolean");
+            entity.Property(e => e.UserId).HasMaxLength(450);
+
+            entity.HasOne(d => d.User).WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UserPreferences_Users");
         });
 
         OnModelCreatingPartial(modelBuilder);

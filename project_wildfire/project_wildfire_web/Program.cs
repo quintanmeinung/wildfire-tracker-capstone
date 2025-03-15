@@ -59,6 +59,10 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+
+        builder.Logging.ClearProviders(); 
+        builder.Logging.AddConsole();
+        
         builder.Services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
@@ -77,7 +81,12 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+<<<<<<< HEAD
+        // Add session management
+        builder.Services.AddSession();
+=======
         builder.Configuration.AddUserSecrets<Program>();
+>>>>>>> 6bada0dde95c15b3bf303223f27fb828b76428a2
         
 
         var app = builder.Build();
@@ -111,8 +120,13 @@ public class Program
             .WithStaticAssets();
         app.MapRazorPages();
 
+<<<<<<< HEAD
+        //Session storage middleware
+        app.UseSession();
+=======
         //for aqi controller
         app.MapControllers(); 
+>>>>>>> 6bada0dde95c15b3bf303223f27fb828b76428a2
 
         app.Run();
     }
