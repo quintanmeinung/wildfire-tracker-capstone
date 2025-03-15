@@ -59,6 +59,10 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+
+        builder.Logging.ClearProviders(); 
+        builder.Logging.AddConsole();
+        
         builder.Services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;

@@ -36,7 +36,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IUserRepository _userRepository;
-        //private readonly IUserPreferencesRepository _userPreferencesRepository;
+        private readonly IUserPreferencesRepository _userPreferencesRepository;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -44,10 +44,10 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IUserRepository userRepository
-            /* IUserPreferencesRepository userPreferencesRepository */)
+            IUserRepository userRepository,
+            IUserPreferencesRepository userPreferencesRepository )
         {
-            /* _userPreferencesRepository = userPreferencesRepository; */
+            _userPreferencesRepository = userPreferencesRepository; 
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -154,14 +154,17 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                         LastName = Input.LastName,
                     };
 
-                    // Adds user preferences to wildfire DB
-                    /* UserPreferences visitorPreferences = new()
+                    // Adds user preferences to the database after successful registration
+                    UserPreferences visitorPreferences = new()
                     {
                         UserId = user.Id,
-                        FontSize = Input.FontSize,
-                        ContrastMode = Input.ContrastMode,
-                        TextToSpeech = Input.TextToSpeech,
-                    }; */
+                        FontSize = "medium",   // Default font size
+                        ContrastMode = false,  // Default contrast mode off
+                        TextToSpeech = false   // Default text-to-speech off
+                    };
+
+                    await _userPreferencesRepository.AddUserPreferenceAsync(visitorPreferences);
+                    await _userPreferencesRepository.SaveUserPreference();
 
                     await _userRepository.AddUserAsync(visitor);
 
