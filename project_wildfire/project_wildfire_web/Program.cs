@@ -81,8 +81,6 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        // Add session management
-        builder.Services.AddSession();
         builder.Configuration.AddUserSecrets<Program>();
         
 
@@ -117,8 +115,6 @@ public class Program
             .WithStaticAssets();
         app.MapRazorPages();
 
-        //Session storage middleware
-        app.UseSession();
         //for aqi controller
         app.MapControllers(); 
 
