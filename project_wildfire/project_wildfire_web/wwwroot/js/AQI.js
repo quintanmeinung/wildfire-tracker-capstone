@@ -38,7 +38,7 @@ function getAQIColor(aqi) {
 }
 
 // Function to add AQI markers to the map
-async function addAQIMarker(map, stationId) {
+async function addAQIMarker(layer, stationId) {
     const aqiData = await fetchAQIData(stationId);
 
     if (aqiData) {
@@ -49,7 +49,7 @@ async function addAQIMarker(map, stationId) {
             fillOpacity: 0.7
         })
         .bindPopup(`<strong>${aqiData.location}</strong><br>AQI: ${aqiData.aqi}`)
-        .addTo(map);
+        .addTo(layer);
     }
 }
 
