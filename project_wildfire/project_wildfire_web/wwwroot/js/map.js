@@ -23,13 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize compass
     initializeCompass(map);
 
-    //Add AQI Markers
-    addAQIMarker(map,"A503596"); //Salem Chemeketa Community College
-    addAQIMarker(map, "@91"); //Silverton, Oregon
-    addAQIMarker(map, "@83"); //Lyons, Oregon
-    addAQIMarker(map, "@89"); //Salem, Oregon
-    addAQIMarker(map, "A503590"); //Dallas, Oregon
-    addAQIMarker(map, "@11923"); //Turner Cascade Jr.High, Oregon
 });
 
 /**
@@ -62,13 +55,26 @@ function createBaseLayers() {
 /**
  * Creates and returns overlay layers.
  */
-function createOverlayLayers() {
+function createOverlayLayers(map) {
+    // Create a layer group for cities
     var cities = L.layerGroup([
         L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View")
     ]);
 
+    //layer group for AQI stations
+    const aqiLayer = L.layerGroup();
+
+    // Adds AQI markers to the AQI layer
+    addAQIMarker(aqiLayer, "A503596"); // Salem Chemeketa Community College
+    addAQIMarker(aqiLayer, "@91"); // Silverton, Oregon
+    addAQIMarker(aqiLayer, "@83"); // Lyons, Oregon
+    addAQIMarker(aqiLayer, "@89"); // Salem, Oregon
+    addAQIMarker(aqiLayer, "A503590"); // Dallas, Oregon
+    addAQIMarker(aqiLayer, "@11923"); // Turner Cascade Jr.High, Oregon
+
     return {
-        "Cities": cities
+        "Cities": cities,
+        "AQI Stations": aqiLayer 
     };
 }
 
