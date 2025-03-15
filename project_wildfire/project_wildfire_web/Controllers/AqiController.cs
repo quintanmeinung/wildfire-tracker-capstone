@@ -64,3 +64,4 @@ public class AqiController : ControllerBase
                aqi <= 300 ? "purple" : "maroon";
     }
 }
+
