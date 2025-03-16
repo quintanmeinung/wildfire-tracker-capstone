@@ -36,6 +36,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IUserRepository _userRepository;
+        private readonly IUserPreferencesRepository _userPreferencesRepository;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -43,8 +44,10 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IUserPreferencesRepository userPreferencesRepository )
         {
+            _userPreferencesRepository = userPreferencesRepository; 
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -115,6 +118,9 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            public bool ContrastMode { get; internal set; }
+            public string FontSize { get; internal set; }
+            public bool TextToSpeech { get; internal set; }
         }
 
 
@@ -147,6 +153,19 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                         FirstName = Input.FirstName,
                         LastName = Input.LastName,
                     };
+
+                    // Adds user preferences to the database after successful registration
+                    UserPreferences visitorPreferences = new()
+                    {
+                        UserId = user.Id,
+                        FontSize = "medium",   // Default font size
+                        ContrastMode = false,  // Default contrast mode off
+                        TextToSpeech = false   // Default text-to-speech off
+                    };
+
+                    await _userPreferencesRepository.AddUserPreferenceAsync(visitorPreferences);
+                    await _userPreferencesRepository.SaveUserPreference();
+
                     await _userRepository.AddUserAsync(visitor);
 
                     var userId = await _userManager.GetUserIdAsync(user);

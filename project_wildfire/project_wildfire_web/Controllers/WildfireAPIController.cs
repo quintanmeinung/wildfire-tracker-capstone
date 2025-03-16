@@ -11,6 +11,7 @@ using project_wildfire_web.ExtensionsMethods;
 using CsvHelper;
 using CsvHelper.Configuration;
 using NetTopologySuite.Geometries;
+using project_wildfire_web.Services;
 
 
 namespace project_wildfire_web.Controllers;
@@ -20,28 +21,26 @@ namespace project_wildfire_web.Controllers;
     
     public class WildfireAPIController : ControllerBase
     {
-        private readonly IWildfireRepository _wildfireRepository;
         private readonly ILogger<WildfireAPIController> _logger;
-        private readonly IConfiguration _configuration;
-        private readonly HttpClient _httpClient;
+        private readonly INasaService _nasaService;
 
 
 
-        public WildfireAPIController(IConfiguration configuration, HttpClient httpClient, ILogger<WildfireAPIController> logger, IWildfireRepository wildfireRepository)
+        public WildfireAPIController(
+            ILogger<WildfireAPIController> logger, 
+            INasaService nasaService
+            )
         {
-            _httpClient = httpClient;
-            _wildfireRepository = wildfireRepository;
-            _configuration = configuration;
             _logger = logger;
-
+            _nasaService = nasaService;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Fire>))]
 
-        public IActionResult GetWildfires()
+        public async Task<IActionResult> GetWildfiresAsync()
         {
-            var wildfires = _wildfireRepository.GetWildfires();
+            List<Fire> wildfires = await _nasaService.GetFiresAsync();
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -49,7 +48,7 @@ namespace project_wildfire_web.Controllers;
         }
 
         //Fetch Wildfires
-        [HttpGet("fetch")]
+        /* [HttpGet("fetch")]
         public async Task<IActionResult> FetchWildfires()
         {
             _logger.LogInformation("Calling NASA Firms API");
@@ -90,9 +89,9 @@ namespace project_wildfire_web.Controllers;
             
             //var wildfires = wildfireDataDTO.Select(dto => dto.ToFireDatum()).ToList();
 
-            return Ok(wildfires);       
+            return Ok(wildfires);
 
-        }
+        } */
 
         //Fetch All NASA API Wildfires
              
