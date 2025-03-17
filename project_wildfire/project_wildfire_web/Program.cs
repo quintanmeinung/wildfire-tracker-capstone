@@ -51,9 +51,11 @@ public class Program
         builder.Services.AddHttpClient<INasaService, NasaService>((httpClient, services) =>
         {
             // Verify with Nasa API if headers are correct
+            var configuration = services.GetRequiredService<IConfiguration>();
+
             httpClient.BaseAddress = new Uri(fullUri);
             httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-            return new NasaService(httpClient, services.GetRequiredService<ILogger<NasaService>>());
+            return new NasaService(httpClient, services.GetRequiredService<ILogger<NasaService>>(), configuration);
         });
 
 

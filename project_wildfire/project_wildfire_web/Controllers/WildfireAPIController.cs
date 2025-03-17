@@ -38,12 +38,12 @@ namespace project_wildfire_web.Controllers;
             _wildfireRepository = wildfirefireRepository;
         }
 
-        [HttpGet]
+        [HttpGet("fetchWildfires")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Fire>))]
 
         public async Task<IActionResult> GetWildfiresAsync()
         {
-            List<Fire> wildfires = await _nasaService.GetFiresAsync();
+            List<FireDTO> wildfires = await _nasaService.GetFiresAsync();
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
