@@ -23,28 +23,60 @@ namespace project_wildfire_web.Controllers;
     {
         private readonly ILogger<WildfireAPIController> _logger;
         private readonly INasaService _nasaService;
+        private readonly IConfiguration _configuration;
+        //private readonly HttpClient _httpClient;
+        private readonly IWildfireRepository _wildfireRepository;
 
 
 
-        public WildfireAPIController(
-            ILogger<WildfireAPIController> logger, 
-            INasaService nasaService
-            )
+
+
+        public WildfireAPIController(IWildfireRepository wildfirefireRepository, ILogger<WildfireAPIController> logger, INasaService nasaService)
         {
             _logger = logger;
             _nasaService = nasaService;
+            _wildfireRepository = wildfirefireRepository;
         }
 
-        [HttpGet]
+        [HttpGet("fetchWildfires")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Fire>))]
 
         public async Task<IActionResult> GetWildfiresAsync()
         {
-            List<Fire> wildfires = await _nasaService.GetFiresAsync();
+            List<FireDTO> wildfires = await _nasaService.GetFiresAsync();
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(wildfires);
+        }
+
+        [HttpPost ("postData")]
+        public async Task<IActionResult> SaveDataToDB()
+        {
+            _logger.LogInformation("Post FireDTO to DB");
+            var fetchResult = await GetWildfiresAsync();
+
+            if (fetchResult is ObjectResult result && result.Value is List<FireDTO> wildfiresDto)
+            {
+                if (!wildfiresDto.Any())
+                {
+                    return BadRequest("Invalid or empty data.");
+                }
+
+                var wildfires = wildfiresDto.Select(dto => new Fire
+                {
+                    Longitude = dto.Longitude,
+                    Latitude = dto.Latitude,
+                    RadiativePower = dto.RadiativePower
+                }).ToList();
+
+                await _wildfireRepository.AddWildfiresAsync(wildfires);
+                return Ok(new { message = "Wildfire data successfully saved to the database." });
+            }
+
+            return StatusCode(500, "Failed to fetch wildfires from NASA API.");
+        }
+
         }
 
         //Fetch Wildfires
@@ -93,53 +125,36 @@ namespace project_wildfire_web.Controllers;
 
         } */
 
-        /* [HttpPost("save")]
-        public async Task<IActionResult> SaveWildfireData()
-        {
-            try
-            {
-                var response = await FetchWildfires();
+        //Fetch All NASA API Wildfires
+             
+        /* [HttpGet("fetchAll")]
+         public async Task<string> GetFireDataCsvAsync()
+           {
+              /*   string apiKey = _configuration["NASA:FirmsApiKey"];
+                string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{apiKey}/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
 
-                if (response is OkObjectResult okResult)
+               // string url = "https://firms.modaps.eosdis.nasa.gov/api/path-to-your-csv";
+                var response = await _httpClient.GetAsync(endpoint);
+                
+                response.EnsureSuccessStatusCode(); // Throws an error if the response is not successful
+
+                return await response.Content.ReadAsStringAsync(); 
+
+                var wildfires = await _nasaService.GetFiresAsync();
+
+                if (wildfires == null || !wildfires.Any())
                 {
-                    var wildfireDTOs = okResult.Value as List<FireDatumDTO>;
-                    if (wildfireDTOs == null || !wildfireDTOs.Any())
-                    {
-                        _logger.LogWarning("No wildfire data fetched.");
-                        return BadRequest("No wildfire data received.");
-                    }
-
-                     var wildfires = wildfireDTOs.Select(dto => new FireDatum
-                        {
-                            Location = new Point(dto.Longitude, dto.Latitude) { SRID = 4326 }, // 
-                            RadiativePower = dto.RadiativePower
-                        }).ToList();
-                    
-                    await _wildfireRepository.AddWildfiresAsync(wildfires);
-
-                    return CreatedAtAction(nameof(GetWildfires), wildfires);
+                    return BadRequest("No wildfires found.");
                 }
-                else
-                {
-                    {
-                        _logger.LogError("Failed to fetch wildfire data from NASA.");
-                        return StatusCode(500, "Failed to fetch wildfire data.");
-                    }
-                }
+
+                return Ok(wildfires);
             }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error saving wildfire data: {ex.Message}");
-                return StatusCode(500, "Internal server error.");
-            }
-            
-        } */
+        
+
+       */
 
 
-
-
-
-    }
+    
 
 
 
