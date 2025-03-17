@@ -23,16 +23,19 @@ namespace project_wildfire_web.Controllers;
     {
         private readonly ILogger<WildfireAPIController> _logger;
         private readonly INasaService _nasaService;
+        private readonly IConfiguration _configuration;
+        //private readonly HttpClient _httpClient;
+        private readonly IWildfireRepository _wildfireRepository;
 
 
 
-        public WildfireAPIController(
-            ILogger<WildfireAPIController> logger, 
-            INasaService nasaService
-            )
+
+
+        public WildfireAPIController(IWildfireRepository wildfirefireRepository, ILogger<WildfireAPIController> logger, INasaService nasaService)
         {
             _logger = logger;
             _nasaService = nasaService;
+            _wildfireRepository = wildfirefireRepository;
         }
 
         [HttpGet]
@@ -95,10 +98,10 @@ namespace project_wildfire_web.Controllers;
 
         //Fetch All NASA API Wildfires
              
-        [HttpGet("fetchAll")]
+        /* [HttpGet("fetchAll")]
          public async Task<string> GetFireDataCsvAsync()
            {
-                string apiKey = _configuration["NASA:FirmsApiKey"];
+              /*   string apiKey = _configuration["NASA:FirmsApiKey"];
                 string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{apiKey}/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
 
                // string url = "https://firms.modaps.eosdis.nasa.gov/api/path-to-your-csv";
@@ -106,14 +109,20 @@ namespace project_wildfire_web.Controllers;
                 
                 response.EnsureSuccessStatusCode(); // Throws an error if the response is not successful
 
-                return await response.Content.ReadAsStringAsync();
+                return await response.Content.ReadAsStringAsync(); 
+
+                var wildfires = await _nasaService.GetFiresAsync();
+
+                if (wildfires == null || !wildfires.Any())
+                {
+                    return BadRequest("No wildfires found.");
+                }
+
+                return Ok(wildfires);
             }
         
 
-       
-
-
-
+       */
 
 
     }
