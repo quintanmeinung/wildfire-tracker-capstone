@@ -37,7 +37,9 @@ public class NasaService : INasaService
             return new List<FireDTO>(); // Return empty list instead of null
         }
 
-        string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{apiKey}/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
+        //string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{apiKey}/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
+        string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{apiKey}/VIIRS_SNPP_NRT/USA/1/2025-03-15";
+
 
         HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
         if (!response.IsSuccessStatusCode)
@@ -67,6 +69,7 @@ public class NasaService : INasaService
        // return csv.GetRecords<Fire>().ToList();
        return wildFires;
     }
+
 
 
 

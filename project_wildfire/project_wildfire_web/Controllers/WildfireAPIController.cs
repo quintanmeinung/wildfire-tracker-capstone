@@ -47,6 +47,11 @@ namespace project_wildfire_web.Controllers;
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
+            if (wildfires == null)
+            {
+                _logger.LogError("NASA Service returned null.");
+                return StatusCode(500, "NASA Service is unavailable or returned no data.");
+            }
             return Ok(wildfires);
         }
 
@@ -54,6 +59,10 @@ namespace project_wildfire_web.Controllers;
         public async Task<IActionResult> SaveDataToDB()
         {
             _logger.LogInformation("Post FireDTO to DB");
+
+            //Clear fires from db
+            await _wildfireRepository.ClearWildfiresAsync();
+
             var fetchResult = await GetWildfiresAsync();
 
             if (fetchResult is ObjectResult result && result.Value is List<FireDTO> wildfiresDto)
@@ -77,81 +86,11 @@ namespace project_wildfire_web.Controllers;
             return StatusCode(500, "Failed to fetch wildfires from NASA API.");
         }
 
-        }
 
-        //Fetch Wildfires
-        /* [HttpGet("fetch")]
-        public async Task<IActionResult> FetchWildfires()
-        {
-            _logger.LogInformation("Calling NASA Firms API");
-
-            string apiKey = _configuration["NASA:FirmsApiKey"];
-            if(string.IsNullOrEmpty(apiKey))
-            {
-                _logger.LogError("NASA FIRMS API key missing");
-                return StatusCode(500, "Internal Server Error: Missing API Key");
-            }
-
-            //PNW coordinates for fires
-            string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{apiKey}/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
-
-            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
-            string responseBody;
-            if (response.IsSuccessStatusCode)
-            {
-                responseBody = await response.Content.ReadAsStringAsync();
-            }
-            else
-            {
-                _logger.LogError($"Failed to fetch nasa data- {response.StatusCode}\n{response.Content}"); 
-                return null;
-            }
-             // var response = await _httpClient.GetStreamAsync(apiUrl);
-            using var reader = new StringReader(responseBody);
-            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                HeaderValidated = null
-            };
-            
-            using var csv = new CsvReader(reader, csvConfig);
-
-            var wildfires = csv.GetRecords<FireDTO>().ToList();
-            
-            //var wildfireDataDTO = csv.GetRecords<FireDatumDTO>().ToList();
-            
-            //var wildfires = wildfireDataDTO.Select(dto => dto.ToFireDatum()).ToList();
-
-            return Ok(wildfires);
-
-        } */
-
-        //Fetch All NASA API Wildfires
-             
-        /* [HttpGet("fetchAll")]
-         public async Task<string> GetFireDataCsvAsync()
-           {
-              /*   string apiKey = _configuration["NASA:FirmsApiKey"];
-                string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{apiKey}/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
-
-               // string url = "https://firms.modaps.eosdis.nasa.gov/api/path-to-your-csv";
-                var response = await _httpClient.GetAsync(endpoint);
-                
-                response.EnsureSuccessStatusCode(); // Throws an error if the response is not successful
-
-                return await response.Content.ReadAsStringAsync(); 
-
-                var wildfires = await _nasaService.GetFiresAsync();
-
-                if (wildfires == null || !wildfires.Any())
-                {
-                    return BadRequest("No wildfires found.");
-                }
-
-                return Ok(wildfires);
-            }
         
 
-       */
+        }
+
 
 
     

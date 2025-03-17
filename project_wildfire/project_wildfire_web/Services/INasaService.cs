@@ -9,4 +9,5 @@ public interface INasaService
 { 
     Task<List<FireDTO>> GetFiresAsync ();
 
+
 }

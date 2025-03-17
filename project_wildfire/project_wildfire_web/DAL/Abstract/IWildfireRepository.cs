@@ -8,6 +8,8 @@ namespace project_wildfire_web.DAL.Abstract
         ICollection<Fire> GetWildfires();
 
         Task AddWildfiresAsync(List<Fire> wildfires);
+        Task ClearWildfiresAsync();
+
 
     }
 }
