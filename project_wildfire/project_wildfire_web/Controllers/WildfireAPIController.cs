@@ -50,6 +50,35 @@ namespace project_wildfire_web.Controllers;
             return Ok(wildfires);
         }
 
+        [HttpPost ("postData")]
+        public async Task<IActionResult> SaveDataToDB()
+        {
+            _logger.LogInformation("Post FireDTO to DB");
+            var fetchResult = await GetWildfiresAsync();
+
+            if (fetchResult is ObjectResult result && result.Value is List<FireDTO> wildfiresDto)
+            {
+                if (!wildfiresDto.Any())
+                {
+                    return BadRequest("Invalid or empty data.");
+                }
+
+                var wildfires = wildfiresDto.Select(dto => new Fire
+                {
+                    Longitude = dto.Longitude,
+                    Latitude = dto.Latitude,
+                    RadiativePower = dto.RadiativePower
+                }).ToList();
+
+                await _wildfireRepository.AddWildfiresAsync(wildfires);
+                return Ok(new { message = "Wildfire data successfully saved to the database." });
+            }
+
+            return StatusCode(500, "Failed to fetch wildfires from NASA API.");
+        }
+
+        }
+
         //Fetch Wildfires
         /* [HttpGet("fetch")]
         public async Task<IActionResult> FetchWildfires()
@@ -125,7 +154,7 @@ namespace project_wildfire_web.Controllers;
        */
 
 
-    }
+    
 
 
 
