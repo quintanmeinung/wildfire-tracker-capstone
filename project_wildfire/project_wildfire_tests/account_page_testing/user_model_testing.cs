@@ -9,14 +9,19 @@ namespace Project.Wildfire.Tests.Models
     public class UserTests
     {
         [Test]
-        public void User_WhenCreated_HasEmptyFiresList()
+        public void InitialUser_HasNullProperties()
+        // Except for fires
         {
             // Arrange & Act
             var user = new User();
             
             // Assert
+            Assert.That(user.UserId, Is.Null);
+            Assert.That(user.FirstName, Is.Null);
+            Assert.That(user.LastName, Is.Null);
             Assert.That(user.Fires, Is.Not.Null);
             Assert.That(user.Fires, Is.Empty);
+            
         }
 
         [Test]
@@ -35,5 +40,21 @@ namespace Project.Wildfire.Tests.Models
             Assert.That(user.FirstName, Is.EqualTo("John"));
             Assert.That(user.LastName, Is.EqualTo("Doe"));
         }
+
+        [Test]
+        public void Fires_WhenAddingItem_UpdatesCollection()
+        {
+            // Arrange
+            var user = new User();
+            var fire = new Fire { FireId = 1 };
+            
+            // Act
+            user.Fires.Add(fire);
+            
+            // Assert
+            Assert.That(user.Fires, Contains.Item(fire));
+            Assert.That(user.Fires.Count, Is.EqualTo(1));
+        }
+
     }
 }
