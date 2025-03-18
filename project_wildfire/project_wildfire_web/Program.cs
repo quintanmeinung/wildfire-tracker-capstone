@@ -51,9 +51,11 @@ public class Program
         builder.Services.AddHttpClient<INasaService, NasaService>((httpClient, services) =>
         {
             // Verify with Nasa API if headers are correct
+            var configuration = services.GetRequiredService<IConfiguration>();
+
             httpClient.BaseAddress = new Uri(fullUri);
             httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-            return new NasaService(httpClient, services.GetRequiredService<ILogger<NasaService>>());
+            return new NasaService(httpClient, services.GetRequiredService<ILogger<NasaService>>(), configuration);
         });
 
 
@@ -73,7 +75,7 @@ public class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IWildfireRepository, WildfireRepository>();
         builder.Services.AddScoped<ILocationRepository, LocationRepository>();
-        //builder.Services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
+        builder.Services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
         builder.Services.AddHttpClient();
         
         //adding swagger
@@ -83,6 +85,7 @@ public class Program
 
         // Add session management
         builder.Services.AddSession();
+        builder.Configuration.AddUserSecrets<Program>();
         
 
         var app = builder.Build();
@@ -118,6 +121,8 @@ public class Program
 
         //Session storage middleware
         app.UseSession();
+        //for aqi controller
+        app.MapControllers(); 
 
         app.Run();
     }
