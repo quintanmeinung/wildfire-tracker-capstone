@@ -15,45 +15,69 @@ public class AqiController : ControllerBase
         _configuration = configuration;
     }
 
-    [HttpGet("get-aqi-data")]
-    public async Task<IActionResult> GetAqiData([FromQuery] string stationId)
+   [HttpGet("get-aqi-data")]
+public async Task<IActionResult> GetAqiData([FromQuery] string stationId)
+{
+    var apiKey = _configuration["AQI_API_KEY"];
+
+    if (string.IsNullOrEmpty(apiKey))
     {
-        var apiKey = _configuration["AQI_API_KEY"];
-
-        if (string.IsNullOrEmpty(apiKey))
-        {
-            return StatusCode(500, "API Key is not configured.");
-        }
-
-        var url = $"https://api.waqi.info/feed/{stationId}/?token={apiKey}";
-
-        using var client = new HttpClient();
-        var response = await client.GetStringAsync(url);
-        var json = JsonDocument.Parse(response);
-
-        if (json.RootElement.GetProperty("status").GetString() != "ok")
-        {
-            return BadRequest("Failed to fetch AQI data.");
-        }
-
-        var data = json.RootElement.GetProperty("data");
-
-        var aqi = data.GetProperty("aqi").GetInt32();
-        var location = data.GetProperty("city").GetProperty("name").GetString();
-        var lat = data.GetProperty("city").GetProperty("geo")[0].GetDouble();
-        var lon = data.GetProperty("city").GetProperty("geo")[1].GetDouble();
-
-        var result = new
-        {
-            aqi,
-            location,
-            lat,
-            lon,
-            color = GetAQIColor(aqi)
-        };
-
-        return Ok(result);
+        return StatusCode(500, "API Key is not configured.");
     }
+
+    var url = $"https://api.waqi.info/feed/{stationId}/?token={apiKey}";
+
+    using var client = new HttpClient();
+    var response = await client.GetStringAsync(url);
+    var json = JsonDocument.Parse(response);
+
+    if (json.RootElement.GetProperty("status").GetString() != "ok")
+    {
+        return BadRequest("Failed to fetch AQI data.");
+    }
+
+    var data = json.RootElement.GetProperty("data");
+
+    var aqi = data.GetProperty("aqi").GetInt32();
+    var location = data.GetProperty("city").GetProperty("name").GetString();
+    var lat = data.GetProperty("city").GetProperty("geo")[0].GetDouble();
+    var lon = data.GetProperty("city").GetProperty("geo")[1].GetDouble();
+    var dominantPollutant = data.GetProperty("dominentpol").GetString();
+
+    // Handle nullable fields
+    var pm25 = data.GetProperty("iaqi").TryGetProperty("pm25", out var pm25Value) ? pm25Value.GetProperty("v").GetDouble() : (double?)null;
+    var pm10 = data.GetProperty("iaqi").TryGetProperty("pm10", out var pm10Value) ? pm10Value.GetProperty("v").GetDouble() : (double?)null;
+    var no2 = data.GetProperty("iaqi").TryGetProperty("no2", out var no2Value) ? no2Value.GetProperty("v").GetDouble() : (double?)null;
+
+    // Time data
+    var lastUpdated = data.GetProperty("time").GetProperty("iso").GetString();
+
+    // Attribution data
+    var attributions = data.GetProperty("attributions")
+        .EnumerateArray()
+        .Select(a => new
+        {
+            name = a.GetProperty("name").GetString(),
+            url = a.GetProperty("url").GetString()
+        }).ToList();
+
+    var result = new
+    {
+        aqi,
+        location,
+        lat,
+        lon,
+        dominantPollutant,
+        pm25,
+        pm10,
+        no2,
+        lastUpdated,
+        attributions,
+        color = GetAQIColor(aqi)
+    };
+
+    return Ok(result);
+}
 
     private string GetAQIColor(int aqi)
     {
@@ -64,4 +88,3 @@ public class AqiController : ControllerBase
                aqi <= 300 ? "purple" : "maroon";
     }
 }
-
