@@ -64,6 +64,21 @@ public class WildfireAPIControllerTests
         Assert.That(((List<FireDTO>)okResult.Value).Count, Is.EqualTo(2));
     }
 
+     [Test]
+        public async Task ClearWildfiresAsync_RemovesAllWildfires()
+        {
+            // Arrange
+            _mockWildfireRepository.Setup(repo => repo.ClearWildfiresAsync()).Returns(Task.CompletedTask);
+            _mockWildfireRepository.Setup(repo => repo.GetWildfireCountAsync()).ReturnsAsync(0);
+
+            // Act
+            await _mockWildfireRepository.Object.ClearWildfiresAsync();
+            var wildfireCount = await _mockWildfireRepository.Object.GetWildfireCountAsync();
+
+            // Assert
+            Assert.That(wildfireCount, Is.EqualTo(0));
+        }
+
     [Test]  
     public async Task FetchWildfires_Returns_500_If_ApiKey_Missing()
     {
