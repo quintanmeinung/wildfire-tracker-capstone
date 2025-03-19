@@ -29,5 +29,10 @@ namespace project_wildfire_web.DAL.Concrete
             await _context.SaveChangesAsync();  // commit the changes to the db 
             await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT ('Fires', RESEED, 0)");
         }
+
+         public async Task<int> GetWildfireCountAsync()
+        {
+            return await _context.Fires.CountAsync();
+        }
     }
 }
