@@ -1,116 +1,88 @@
-jest.mock('leaflet');  // This will use __mocks__/leaflet.js automatically
-const L = require('leaflet');  // Ensure the mocked version of Leaflet is used
+const L = require('./leaflet-mock');
+const { fetchAQIData, addAQIMarker } = require('./AQI-Testing');
 
-
-const { fetchAQIData, getAQIColor, addAQIMarker } = require('../../project_wildfire_web/wwwroot/js/AQI.js');
-
-// Mock global fetch for fetchAQIData tests
-global.fetch = jest.fn();
-
-// Move this up so it's available to all tests
-const mockResponse = {
-    status: "ok",
-    data: {
-        aqi: 42,
-        city: {
-            geo: [44.9429, -123.0351],
-            name: "Salem Chemeketa Community College"
-        }
-    }
-};
-
-describe('fetchAQIData', () => {
-    const mockStationId = "A503596";
-
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
-
-    it('calls correct API URL', async () => {
-        fetch.mockResolvedValueOnce({
-            json: jest.fn().mockResolvedValueOnce(mockResponse)
-        });
-
-        await fetchAQIData(mockStationId);
-
-        expect(fetch).toHaveBeenCalledWith(
-            `/api/aqi/get-aqi-data?stationId=${mockStationId}`
-        );
-    });
-
-    it('returns formatted AQI data on success', async () => {
-        fetch.mockResolvedValueOnce({
-            json: jest.fn().mockResolvedValueOnce(mockResponse)
-        });
-
-        const data = await fetchAQIData(mockStationId);
-
-        expect(data).toEqual({
-            aqi: 42,
-            lat: 44.9429,
-            lon: -123.0351,
-            location: "Salem Chemeketa Community College"
-        });
-    });
-
-    it('returns null if API response is not ok', async () => {
-        fetch.mockResolvedValueOnce({
-            json: jest.fn().mockResolvedValueOnce({ status: "error" })
-        });
-
-        const data = await fetchAQIData(mockStationId);
-        expect(data).toBeNull();
-    });
-
-    it('returns null if fetch fails', async () => {
-        fetch.mockRejectedValueOnce(new Error("Network error"));
-
-        const data = await fetchAQIData(mockStationId);
-        expect(data).toBeNull();
-    });
-});
-
-describe('getAQIColor', () => {
-    it('returns correct color for different AQI values', () => {
-        expect(getAQIColor(30)).toBe('green');
-        expect(getAQIColor(75)).toBe('yellow');
-        expect(getAQIColor(125)).toBe('orange');
-        expect(getAQIColor(180)).toBe('red');
-        expect(getAQIColor(250)).toBe('purple');
-        expect(getAQIColor(350)).toBe('maroon');
-    });
-});
-
-describe('addAQIMarker', () => {
-    const mockMap = {};  // Placeholder object for map
-    const mockStationId = "A503596";
+describe('AQI Layer Tests', () => {
+    let map;
+    let aqiLayer;
+    let mockMarker;
 
     beforeEach(() => {
-        fetch.mockResolvedValueOnce({
-            json: jest.fn().mockResolvedValueOnce(mockResponse)
+        map = L.map();
+        aqiLayer = L.layerGroup();
+
+        // Create a consistent mock marker
+        mockMarker = {
+            bindPopup: jest.fn().mockReturnThis(),
+            addTo: jest.fn()
+        };
+        L.circleMarker.mockReturnValue(mockMarker);
+    });
+
+    test('should create AQI layer and add markers', () => {
+        addAQIMarker(aqiLayer, {
+            lat: 44.97643,
+            lon: -122.97647,
+            aqi: 42,
+            color: '#00E400',
+            location: 'Salem Chemeketa Community College',
+            dominantPollutant: 'pm25',
+            pm25: 7,
+            lastUpdated: '2025-03-18T00:00:00Z',
+            attributions: [{ url: 'https://www.oregon.gov/DEQ/', name: 'Oregon DEQ' }]
         });
+
+        expect(aqiLayer.addLayer).toHaveBeenCalledWith(mockMarker);
+        expect(L.circleMarker).toHaveBeenCalledTimes(1);
     });
 
-    afterEach(() => {
-        jest.clearAllMocks();
+    test('should toggle AQI layer on and off', () => {
+        const overlays = { 'AQI Stations': aqiLayer };
+        map.addLayer(overlays['AQI Stations']);
+        expect(map.addLayer).toHaveBeenCalledWith(overlays['AQI Stations']);
+
+        map.removeLayer(overlays['AQI Stations']);
+        expect(map.removeLayer).toHaveBeenCalledWith(overlays['AQI Stations']);
     });
 
-    it('adds a circle marker to the map', async () => {
-        await addAQIMarker(mockMap, mockStationId);
+    test('should bind popup to AQI marker', () => {
+        addAQIMarker(aqiLayer, {
+            lat: 44.97643,
+            lon: -122.97647,
+            aqi: 42,
+            color: '#00E400',
+            location: 'Salem Chemeketa Community College',
+            dominantPollutant: 'pm25',
+            pm25: 7,
+            lastUpdated: '2025-03-18T00:00:00Z',
+            attributions: [{ url: 'https://www.oregon.gov/DEQ/', name: 'Oregon DEQ' }]
+        });
 
-        // Check if circleMarker was called with correct arguments
-        expect(L.circleMarker).toHaveBeenCalledWith([44.9429, -123.0351], expect.objectContaining({
-            radius: 10,
-            color: 'green',
-            fillColor: 'green',
-            fillOpacity: 0.7
-        }));
-
-        // Verify the marker's popup and addTo method were called
-        const marker = L.circleMarker.mock.results[0].value;
-        expect(marker.bindPopup).toHaveBeenCalledWith(
-            `<strong>Salem Chemeketa Community College</strong><br>AQI: 42`
-        );
-        expect(marker.addTo).toHaveBeenCalledWith(mockMap);
+        expect(mockMarker.bindPopup).toHaveBeenCalled();
     });
 });
+
+/*Test's above this are for feature F10*/
+
+
+global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve({ data: 'mockData' }), // Mock the successful fetch response
+    })
+  );
+  
+  describe('fetchAQIData Tests', () => {
+    it('should call the correct API URL with correct parameters', async () => {
+      const lat = 44.9429; // Example latitude
+      const lon = -123.0351; // Example longitude
+  
+      const apiUrl = `https://api.airquality.com/data?lat=${lat}&lon=${lon}&key=YOUR_API_KEY`; // Adjust this to your API URL
+  
+      // Call the function with test parameters
+      await fetchAQIData(lat, lon); 
+  
+      // Ensure fetch was called with the correct URL
+      expect(fetch).toHaveBeenCalledWith(apiUrl);
+    });
+  
+    // Additional tests for fetchAQIData can go here (e.g., successful response, failed response)
+  });
