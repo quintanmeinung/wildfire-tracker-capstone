@@ -5,9 +5,13 @@
     "scripts": {
       "test": "jest"
     },
-    "jest": {
-    "testEnvironment": "jsdom"
-    },
+"jest": {
+  "testEnvironment": "jsdom",
+  "setupFilesAfterEnv": ["<rootDir>/project_wildfire_tests/setupTests.js"],
+  "roots": ["<rootDir>/project_wildfire_tests"],
+  "moduleFileExtensions": ["js", "jsx", "json", "node"],
+  "transform": {}
+},
     "keywords": [],
     "author": "",
     "license": "ISC",

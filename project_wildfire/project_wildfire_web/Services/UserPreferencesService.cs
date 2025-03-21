@@ -21,6 +21,8 @@ namespace project_wildfire_web.Services
         }
 
         // Save or update preferences
+        //This code is commented out to work with my test case, ignore for now until PK is created for UserPreferences Table
+        /*
         public async Task SavePreferences(UserPreferences preferences)
         {
             var existingPreferences = await _context.UserPreferences.FindAsync(preferences.UserId);
@@ -34,6 +36,33 @@ namespace project_wildfire_web.Services
                 existingPreferences.FontSize = preferences.FontSize;
                 existingPreferences.ContrastMode = preferences.ContrastMode;
                 existingPreferences.TextToSpeech = preferences.TextToSpeech;
+            }
+
+            await _context.SaveChangesAsync();
+        }*/
+
+        //Test Function for Saving Preferences with specific parameter
+        //Delete when no longer needed
+        public async Task SavePreferences(string userId, string fontSize, bool contrastMode, bool textToSpeech)
+        {
+            var preferences = await _context.UserPreferences.FindAsync(userId);
+
+            if (preferences == null)
+            {
+                preferences = new UserPreferences
+                {
+                    UserId = userId,
+                    FontSize = fontSize,
+                    ContrastMode = contrastMode,
+                    TextToSpeech = textToSpeech
+                };
+                _context.UserPreferences.Add(preferences);
+            }
+            else
+            {
+                preferences.FontSize = fontSize;
+                preferences.ContrastMode = contrastMode;
+                preferences.TextToSpeech = textToSpeech;
             }
 
             await _context.SaveChangesAsync();
