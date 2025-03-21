@@ -66,7 +66,7 @@ public class UserApiControllerTests
         };
         
         _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(userId))
-            .ReturnsAsync(user);
+            .ReturnsAsync(user as User);
             
         _userManagerMock.Setup(mgr => mgr.FindByIdAsync(userId))
             .ReturnsAsync(authUser);
@@ -112,7 +112,7 @@ public class UserApiControllerTests
         
         // Set up repository to return null (user not found)
         _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(userId))
-            .ReturnsAsync((User)null);
+            .ReturnsAsync(null as User);
             
         _userManagerMock.Setup(mgr => mgr.FindByIdAsync(userId))
             .ReturnsAsync(new IdentityUser()); // Auth user exists

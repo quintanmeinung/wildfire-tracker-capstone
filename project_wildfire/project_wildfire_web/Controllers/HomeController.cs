@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -59,7 +60,8 @@ public class HomeController : Controller
                 // SavedLocations needs to be populated 
                 FireSubscriptions = primaryUser.Fires
             };
-            Console.WriteLine("ProfileViewModel: " + profileViewModel);
+            Console.WriteLine("ProfileViewModel: ");
+            Console.WriteLine(JsonSerializer.Serialize(profileViewModel));
 
             // Pass the model to the view
             return View(profileViewModel);
