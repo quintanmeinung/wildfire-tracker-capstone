@@ -40,9 +40,43 @@
                 <div class="row my-3">
                     
                     <div class="col-8">
-                        <h4><u>Information</u></h4>
+                        <div class="row">
+                            <div class="col-3">
+                                <h4><u>Information</u></h4>
+                            </div>
+                            <div class="col align-text-bottom">
+                                <a href="#" id="editButton">edit</a>
+                            </div>
+                        </div>
+                        <form>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="firstNameInput">First Name</label>
+                                        <input id="firstNameInput" class="form-control" type="text" value="@Model.FirstName" readonly>
+                                    </div>
+                                    <div class="col">
+                                        <label for="lastNameInput">Last Name</label>
+                                        <input id="lastNameInput" class="form-control" type="text" value="@Model.LastName" readonly>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col">
+                                        <label for="emailInput">Email</label>
+                                        <input id="emailInput" class="form-control" type="text" value="@Model.Email" readonly>
+                                    </div>
+                                    <div class="col">
+                                        <label for="phoneInput">Phone</label>
+                                        <input id="phoneInput" class="form-control" type="tel" value="@Model.PhoneNumber" readonly>
+                                    </div>
+                                </div>
+                                         
+                            </div>
+                                
+                        </form>
                         
-                        <table class="table table-hover mt-3 align-middle">
+                        
+                        @* <table class="table table-hover mt-3 align-middle">
                             <tbody>
                                 <tr>
                                     <td><b>NAME:</b></td>
@@ -91,7 +125,7 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>                        
+                        </table>    *@                     
                     </div>
                     @* <div class="col-4">
                         <h5><u>Notifications</u></h5>

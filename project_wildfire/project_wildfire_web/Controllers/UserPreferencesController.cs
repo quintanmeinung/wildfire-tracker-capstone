@@ -60,7 +60,9 @@ public class UserPreferencesController : ControllerBase
                     TextToSpeech = preferences.TextToSpeech
                 };
 
-                await _preferencesService.SavePreferences(newPreferences);
+                await _preferencesService.SavePreferences(userId, preferences.FontSize, preferences.ContrastMode, preferences.TextToSpeech);
+                //Fix when we get PK
+                //await _preferencesService.SavePreferences(newPreferences);
             }
             else
             {
@@ -68,7 +70,10 @@ public class UserPreferencesController : ControllerBase
                 existingPreferences.FontSize = preferences.FontSize;
                 existingPreferences.ContrastMode = preferences.ContrastMode;
                 existingPreferences.TextToSpeech = preferences.TextToSpeech;
-                await _preferencesService.SavePreferences(existingPreferences);
+                await _preferencesService.SavePreferences(userId, preferences.FontSize, preferences.ContrastMode, preferences.TextToSpeech);
+
+                //Fix when we get PK
+                //await _preferencesService.SavePreferences(existingPreferences);
             }
 
             return Ok(new { message = "Preferences saved successfully!" });
