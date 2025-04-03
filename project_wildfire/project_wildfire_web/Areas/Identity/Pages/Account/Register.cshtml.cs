@@ -163,8 +163,8 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                         TextToSpeech = false   // Default text-to-speech off
                     };
 
-                    await _userPreferencesRepository.AddUserPreferenceAsync(visitorPreferences);
-                    await _userPreferencesRepository.SaveUserPreference();
+                   // await _userPreferencesRepository.AddUserPreferenceAsync(visitorPreferences);
+                    // await _userPreferencesRepository.SaveUserPreference();
 
                     await _userRepository.AddUserAsync(visitor);
 
