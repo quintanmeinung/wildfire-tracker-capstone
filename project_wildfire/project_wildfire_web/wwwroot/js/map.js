@@ -1,4 +1,6 @@
-import { addAQIMarker } from './AQI.js'; //imports AQI.js file 
+import { addAQIMarker } from './AQI.js'; //imports AQI.js file
+import { addFireMarkers } from './fireMarkers.js';
+
 
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize the map
@@ -72,9 +74,14 @@ function createOverlayLayers(map) {
     addAQIMarker(aqiLayer, "A503590"); // Dallas, Oregon
     addAQIMarker(aqiLayer, "@11923"); // Turner Cascade Jr.High, Oregon
 
+    // Layer group for fire markers
+    const fireLayer = L.layerGroup();
+    addFireMarkers(fireLayer); // Populate with placeholder fires
+
     return {
         "Cities": cities,
-        "AQI Stations": aqiLayer 
+        "AQI Stations": aqiLayer,
+        "Fire Reports": fireLayer
     };
 }
 
@@ -150,7 +157,6 @@ function initializeCompass(map) {
         console.error("Leaflet Compass plugin failed to load.");
     }
 }
-
 
 
 
