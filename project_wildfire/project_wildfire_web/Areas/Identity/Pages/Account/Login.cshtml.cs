@@ -121,7 +121,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                 {
                     // ✅ Find user by email FIRST
                     var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
-                    if (user == null)
+                    if (user != null)
                     _logger.LogInformation("User logged in.");
                     // ✅ Fetch user preferences from the database
                     _logger.LogInformation($"Fetching preferences for user: {user.Id}");
