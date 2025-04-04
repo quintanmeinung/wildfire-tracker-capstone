@@ -25,7 +25,56 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize compass
     initializeCompass(map);
 
+    var activeMarker = null; // Variable to store the active marker
+    // Handle map click event to add dynamic markers
+    map.on('click', function (e) {
+        if (activeMarker) {
+            map.removeLayer(activeMarker); // Remove the previous marker if it exists
+        }
+        activeMarker = L.marker(e.latlng).addTo(map);
+        var popup = document.createElement('div');
+        popup.id = 'save-location-popup';
+        popup.className = 'btn btn-primary';
+        popup.innerHTML = 'Save Location';
+        popup.addEventListener('click', function (e) {
+            var lat = e.latlng.lat.toFixed(5);
+            var lng = e.latlng.lng.toFixed(5);
+            saveLocationDialog(lat, lng); // Call the function to save the location
+        });
+
+        activeMarker.bindPopup(popup).openPopup();
+    });
+
 });
+
+/**
+ * Initializes the Leaflet map.
+ */
+function saveLocationDialog(lat, lng) {
+
+    var dialogBox = document.createElement('div');
+    dialogBox.id = 'save-location-dialog';
+    dialogBox.className = 'card';
+
+    var dialogBoxBody = document.createElement('div');
+    dialogBoxBody.className = 'card-body';
+
+    var dialogBoxTitle = document.createElement('h5');
+    dialogBoxTitle.className = 'card-title';
+    dialogBoxTitle.innerHTML = 'Save Location';
+    dialogBoxBody.appendChild(dialogBoxTitle);
+
+    var dialogBoxForm = document.createElement('form');
+    dialogBoxForm.id = 'save-location-form';
+    dialogBoxBody.appendChild(dialogBoxForm);
+
+    var dialogBoxNameField = document.createElement('input');
+    dialogBoxNameField.type = 'text';
+    dialogBoxNameField.className = 'form-control';
+    dialogBoxNameField.placeholder = 'Mom\'s House';
+    dialogBoxNameField.required = true;
+    dialogBoxForm.appendChild(dialogBoxNameField);
+}
 
 /**
  * Initializes the Leaflet map.
