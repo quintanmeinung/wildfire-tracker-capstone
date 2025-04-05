@@ -25,11 +25,11 @@ jobs:
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
-        working-directory: project_wildfire_web
+        working-directory: ./project_wildfire/project_wildfire_web
 
       - name: dotnet publish
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
-        working-directory: project_wildfire_web
+        working-directory: ./project_wildfire/project_wildfire_web 
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
