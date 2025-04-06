@@ -19,7 +19,7 @@ public class Program
 
         // Retrieve primary DB connection string
         var WebfireConnectionString = builder.Configuration.GetConnectionString("WebfireConnectionString");
-
+        Console.WriteLine($"[STARTUP] WebfireConnectionString: {WebfireConnectionString ?? "null"}");
         // Add primary DB Context with NetTopologySuite support
         builder.Services.AddDbContext<FireDataDbContext>(options =>
             options.UseSqlServer(
