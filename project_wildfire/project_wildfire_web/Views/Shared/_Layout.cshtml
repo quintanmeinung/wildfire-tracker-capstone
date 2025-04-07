@@ -36,6 +36,7 @@
         </nav>
     </header>
     <div class="container">
+        <div id="user-data" data-user-id="@User.FindFirst("sub")?.Value"></div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
