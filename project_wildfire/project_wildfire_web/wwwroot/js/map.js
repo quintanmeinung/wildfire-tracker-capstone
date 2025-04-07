@@ -1,4 +1,6 @@
-import { addAQIMarker } from './AQI.js'; //imports AQI.js file 
+import { addAQIMarker } from './AQI.js'; //imports AQI.js file
+import { addFireMarkers } from './fireMarkers.js';
+
 
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize the map
@@ -30,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
  */
 function initializeMap() {
     return L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
+    
 }
 
 /**
@@ -49,6 +52,8 @@ function createBaseLayers() {
             maxZoom: 19,
             attribution: '© OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
         })
+        
+        
     };
 }
 
@@ -72,9 +77,14 @@ function createOverlayLayers(map) {
     addAQIMarker(aqiLayer, "A503590"); // Dallas, Oregon
     addAQIMarker(aqiLayer, "@11923"); // Turner Cascade Jr.High, Oregon
 
+    // Layer group for fire markers
+    const fireLayer = L.layerGroup();
+    addFireMarkers(fireLayer); // Populate with placeholder fires
+
     return {
         "Cities": cities,
-        "AQI Stations": aqiLayer 
+        "AQI Stations": aqiLayer,
+        "Fire Reports": fireLayer
     };
 }
 
@@ -150,7 +160,6 @@ function initializeCompass(map) {
         console.error("Leaflet Compass plugin failed to load.");
     }
 }
-
 
 
 

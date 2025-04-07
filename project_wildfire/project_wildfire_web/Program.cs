@@ -19,6 +19,7 @@ public class Program
 
         // Retrieve primary DB connection string
         var WebfireConnectionString = builder.Configuration.GetConnectionString("WebfireConnectionString");
+        Console.WriteLine($"[STARTUP] WebfireConnectionString: {WebfireConnectionString ?? "null"}");
 
         // Add primary DB Context with NetTopologySuite support
         builder.Services.AddDbContext<FireDataDbContext>(options =>
@@ -36,7 +37,7 @@ public class Program
             options.UseSqlServer(AuthConnectionString));
 
         // Add Identity services
-        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WebfireIdentityDbContext>();
+        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<WebfireIdentityDbContext>();
 
 
         // Add API configuration
