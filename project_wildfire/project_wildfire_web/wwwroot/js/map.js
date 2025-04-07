@@ -1,5 +1,6 @@
 import { addAQIMarker } from './AQI.js'; //imports AQI.js file
 import { addFireMarkers } from './fireMarkers.js';
+import { userId } from './site.js'; // Import userId
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -25,39 +26,38 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize compass
     initializeCompass(map);
 
-    var activeMarker = null; // Variable to store user's most recent marker
+    // If the user is logged in, allow them to add dynamic markers
+    if (userId !== null) {
+        var activeMarker = null; // Variable to store user's most recent marker
 
-    // Handle map click event to add dynamic markers
-    map.on('click', function (e) {
-        if (activeMarker) {
-            map.removeLayer(activeMarker); // Remove the previous marker if it exists
-        }
-        // Create a new marker at the clicked location
-        activeMarker = L.marker(e.latlng).addTo(map);
-
-        // Create a popup with a button to save the location
-        var popup = document.createElement('div');
-        popup.id = 'save-location-popup';
-        popup.className = 'btn btn-primary';
-        popup.innerHTML = 'Save Location';
-        popup.addEventListener('click', function (e) {
-            var locationDto = {
-                // UserId is not in event, this needs to change
-                UserId: e.UserId,
-                Latitude: e.latlng.lat.toFixed(5), // Get the latitude from the event
-                Longitude: e.latlng.lng.toFixed(5), // Get the longitude from the event
-                Title: 'My Location' // Default title
-            };
-            var lat = e.latlng.lat.toFixed(5); // Get the latitude from the event
-            var lng = e.latlng.lng.toFixed(5); // Get the longitude from the event
-            saveLocationDialog(lat, lng); // Call the function to save the location
+        // Handle map click event to add dynamic markers
+        map.on('click', function (e) {
+            addMarkerOnClick(e, map, activeMarker)
         });
-
-        activeMarker.bindPopup(popup).openPopup();
-    });
-
+    }
 });
 
+function addMarkerOnClick(e, map, activeMarker) {
+    if (activeMarker) {
+        map.removeLayer(activeMarker); // Remove the previous marker if it exists
+    }
+    // Create a new marker at the clicked location
+    activeMarker = L.marker(e.latlng).addTo(map);
+
+    // Create a popup with a button to save the location
+    var popup = document.createElement('div');
+    popup.id = 'save-location-popup';
+    popup.className = 'btn btn-primary';
+    popup.innerHTML = 'Save Location';
+    popup.addEventListener('click', function (e) {
+        // Removed unused locationDto variable
+        var lat = e.latlng.lat.toFixed(5); // Get the latitude from the event
+        var lng = e.latlng.lng.toFixed(5); // Get the longitude from the event
+        saveLocationDialog(lat, lng); // Call the function to save the location
+    });
+
+    activeMarker.bindPopup(popup).openPopup();
+}
 /**
  * Initializes the Leaflet map.
  */
