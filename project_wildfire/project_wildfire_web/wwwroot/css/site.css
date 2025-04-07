@@ -71,3 +71,10 @@ body {
   font-size: 14px;
   cursor: pointer;
 }
+
+#map {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
