@@ -130,6 +130,7 @@ function saveLocation(dto) {
  */
 function initializeMap() {
     return L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
+    
 }
 
 /**
@@ -149,6 +150,8 @@ function createBaseLayers() {
             maxZoom: 19,
             attribution: '© OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
         })
+        
+        
     };
 }
 
