@@ -50,7 +50,6 @@ function addMarkerOnClick(e, map, activeMarker) {
     popup.className = 'btn btn-primary';
     popup.innerHTML = 'Save Location';
     popup.addEventListener('click', function (e) {
-        // Removed unused locationDto variable
         var lat = e.latlng.lat.toFixed(5); // Get the latitude from the event
         var lng = e.latlng.lng.toFixed(5); // Get the longitude from the event
         saveLocationDialog(lat, lng); // Call the function to save the location
@@ -58,9 +57,7 @@ function addMarkerOnClick(e, map, activeMarker) {
 
     activeMarker.bindPopup(popup).openPopup();
 }
-/**
- * Initializes the Leaflet map.
- */
+
 function saveLocationDialog(lat, lng) {
     // Create the dialog box element
     var dialogBox = document.createElement('div');
@@ -94,26 +91,24 @@ function saveLocationDialog(lat, lng) {
 
     dialogBoxSubmitButton.addEventListener('click', function (e) {
         e.preventDefault(); // Prevent form submission
-        var name = dialogBoxNameField.value;
-        saveLocation(name, lat, lng); // Call the function to save the location
+        var dto = {
+            userId: userId,
+            title: dialogBoxNameField.value,
+            lat: lat,
+            lng: lng
+        }
+        saveLocation(dto); // Call the function to save the location
     });
 }
 
-function saveLocation(title, lat, lng) {
-    // Create the location object
-    var location = {
-        title: title,
-        latitude: lat,
-        longitude: lng
-    };
-
+function saveLocation(dto) {
     // Fetch POST request to save the location
     fetch('/api/Location/SaveLocation', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(location)
+        body: JSON.stringify(dto)
     })
     .then(response => {
         if (response.ok) {
