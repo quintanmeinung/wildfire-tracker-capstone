@@ -20,6 +20,9 @@ public partial class FireDataDbContext : DbContext
 
     public virtual DbSet<UserLocation> UserLocations { get; set; }
 
+    public virtual DbSet<SavedLocation> SavedLocations { get; set; }
+
+
     //Commented out until we have PK for UserPreferences Table
     /*
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using project_wildfire_web.Models;
@@ -11,9 +12,11 @@ using project_wildfire_web.Models;
 namespace project_wildfire_web.Migrations.FireDataDb
 {
     [DbContext(typeof(FireDataDbContext))]
-    partial class FireDataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250410033605_AddSavedLocationsTable")]
+    partial class AddSavedLocationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
