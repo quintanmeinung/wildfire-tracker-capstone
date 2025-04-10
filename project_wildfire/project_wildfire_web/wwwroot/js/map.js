@@ -1,6 +1,6 @@
 import { addAQIMarker } from './AQI.js'; //imports AQI.js file
 import { addFireMarkers } from './fireMarkers.js';
-import { userId } from './site.js'; // Import userId
+import { getUserId } from './site.js'; // Import userId
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -26,18 +26,23 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize compass
     initializeCompass(map);
 
-    // If the user is logged in, allow them to add dynamic markers
-    if (userId !== null) {
-        var activeMarker = null; // Variable to store user's most recent marker
-
-        // Handle map click event to add dynamic markers
-        map.on('click', function (e) {
-            addMarkerOnClick(e, map, activeMarker)
-        });
+    // Add dynamic markers for logged-in users
+    var userId = getUserId(); // Get the user ID from the site.js file
+    if (userId !== "") {
+        initializeSavedLocations(map);
     }
 });
 
-function addMarkerOnClick(e, map, activeMarker) {
+function initializeSavedLocations(map) {
+    // Handle map click event to add dynamic markers
+    map.on('click', function (e) {
+        addMarkerOnClick(e, map)
+    });
+
+}
+
+let activeMarker = null; // Variable to store user's most recent marker
+function addMarkerOnClick(e, map) {
     if (activeMarker) {
         map.removeLayer(activeMarker); // Remove the previous marker if it exists
     }
