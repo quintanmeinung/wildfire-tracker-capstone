@@ -10,8 +10,6 @@ public partial class FireDataDbContext : DbContext
         : base(options)
     {
     }
-
-    public virtual DbSet<UserPreferences> UserPreferences { get; set; }
     public virtual DbSet<AqiStation> AqiStations { get; set; }
 
     public virtual DbSet<Fire> Fires { get; set; }
@@ -161,7 +159,7 @@ public partial class FireDataDbContext : DbContext
     });
 
     // ✅ Fix: Temporarily Define UserId as Primary Key for EF Core In-Memory Testing
-    modelBuilder.Entity<UserPreferences>(entity =>
+    /* modelBuilder.Entity<UserPreferences>(entity =>
     {
         // Temporary PK for testing (Does NOT affect real database)
         entity.HasKey(e => e.UserId);
@@ -175,7 +173,7 @@ public partial class FireDataDbContext : DbContext
             .HasForeignKey(d => d.UserId)
             .OnDelete(DeleteBehavior.ClientSetNull)
             .HasConstraintName("FK_UserPreferences_Users");
-    });
+    }); */
 
         OnModelCreatingPartial(modelBuilder);
     }
