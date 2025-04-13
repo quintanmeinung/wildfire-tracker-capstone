@@ -1,5 +1,7 @@
 import { addAQIMarker } from './AQI.js'; //imports AQI.js file
 import { addFireMarkers } from './fireMarkers.js';
+import { isLoggedIn } from './site.js';
+import { initializeSavedLocations } from './userLocationMarkers.js';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -25,6 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize compass
     initializeCompass(map);
 
+    // Initialize saving locations
+    if (isLoggedIn()) {
+        initializeSavedLocations(map);
+    }
 });
 
 /**
