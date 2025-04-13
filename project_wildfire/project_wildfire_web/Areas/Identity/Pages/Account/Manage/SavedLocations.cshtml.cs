@@ -1,45 +1,36 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using project_wildfire_web.Models;
-using System.Security.Claims;
 
-public class SavedLocationsModel : PageModel
+public class SavedLocationModel : PageModel
 {
     private readonly FireDataDbContext _context;
-    private readonly UserManager<IdentityUser> _userManager;
 
-    public SavedLocationsModel(FireDataDbContext context, UserManager<IdentityUser> userManager)
+    public SavedLocationModel(FireDataDbContext context)
     {
         _context = context;
-        _userManager = userManager;
     }
 
-    [BindProperty]
-    public SavedLocation? NewLocation { get; set; }
+    public IList<UserLocation> UserLocations { get; set; } = new List<UserLocation>();
 
-    public List<SavedLocation>? UserLocations { get; set; }
-
-    public async Task<IActionResult> OnGetAsync()
+    public async Task OnGetAsync()
     {
-        var userId = _userManager.GetUserId(User);
-        UserLocations = await _context.SavedLocations
-                                      .Where(l => l.UserId == userId)
-                                      .ToListAsync();
-        return Page();
-    }
+        // Optional: If you have Identity set up and want to show only this user's saved locations,
+        // uncomment the following lines:
+        //
+        // var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        // if (userId != null)
+        // {
+        //     UserLocations = await _context.UserLocations
+        //         .Where(u => u.UserId == userId)
+        //         .Include(u => u.User) // only if needed
+        //         .ToListAsync();
+        //     return;
+        // }
 
-    public async Task<IActionResult> OnPostAsync()
-    {
-        if (!ModelState.IsValid) return Page();
-
-        var userId = _userManager.GetUserId(User);
-        NewLocation.UserId = userId;
-
-        _context.SavedLocations.Add(NewLocation);
-        await _context.SaveChangesAsync();
-
-        return RedirectToPage();
+        // Otherwise, show all saved locations
+        UserLocations = await _context.UserLocations
+            .Include(u => u.User) // optional
+            .ToListAsync();
     }
 }

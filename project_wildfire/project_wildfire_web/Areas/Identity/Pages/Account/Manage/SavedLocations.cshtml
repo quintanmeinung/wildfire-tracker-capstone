@@ -1,49 +1,24 @@
 @page
-@model SavedLocationsModel
-@{
-    ViewData["Title"] = "Manage Saved Locations";
-}
+@model SavedLocationModel
 
-<h2>@ViewData["Title"]</h2>
+<h2>Saved Locations</h2>
 
-<form method="post">
-    <div class="form-group">
-        <label asp-for="NewLocation.Name" class="control-label"></label>
-        <input asp-for="NewLocation.Name" class="form-control" />
-        <span asp-validation-for="NewLocation.Name" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="NewLocation.Latitude" class="control-label"></label>
-        <input asp-for="NewLocation.Latitude" class="form-control" />
-        <span asp-validation-for="NewLocation.Latitude" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="NewLocation.Longitude" class="control-label"></label>
-        <input asp-for="NewLocation.Longitude" class="form-control" />
-        <span asp-validation-for="NewLocation.Longitude" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary mt-2">Add Location</button>
-</form>
-
-<hr />
-
-<h4>Saved Locations</h4>
-@if (Model.UserLocations?.Any() ?? false)
-{
-    <ul class="list-group">
-        @foreach (var location in Model.UserLocations)
-        {
-            <li class="list-group-item">
-                <strong>@location.Name</strong> - (@location.Latitude, @location.Longitude)
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p>No saved locations yet.</p>
-}
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var location in Model.UserLocations)
+    {
+        <tr>
+            <td>@location.Title</td>
+            <td>@location.Latitude</td>
+            <td>@location.Longitude</td>
+        </tr>
+    }
+    </tbody>
+</table>
