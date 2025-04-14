@@ -24,12 +24,12 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly IUserPreferencesRepository _userPreferencesRepository;
+        //private readonly IUserPreferencesRepository _userPreferencesRepository;
         public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IUserPreferencesRepository userPreferencesRepository)
         {
             _signInManager = signInManager;
             _logger = logger;
-            _userPreferencesRepository = userPreferencesRepository;
+            //_userPreferencesRepository = userPreferencesRepository;
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                     // ✅ Find user by email FIRST
                     var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
                     if (user != null)
-                    _logger.LogInformation("User logged in.");
+                    /*_logger.LogInformation("User logged in.");
                     // ✅ Fetch user preferences from the database
                     _logger.LogInformation($"Fetching preferences for user: {user.Id}");
                     var preferences = await _userPreferencesRepository.GetUserPreferencesAsync(user.Id);
@@ -136,7 +136,7 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                     else
                     {
                         _logger.LogWarning($"No preferences found for user: {user.Id}");
-                    }
+                    }*/
 
                     return LocalRedirect(returnUrl);
                 }
