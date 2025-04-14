@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace project_wildfire_web.Models;
 
@@ -14,8 +15,9 @@ public partial class UserLocation
     public decimal Latitude { get; set; }
 
     public decimal Longitude { get; set; }
-
-    public int NotificationRadius { get; set; }
+    
+    [Range(1, 100, ErrorMessage = "Radius must be 1-100 miles")]
+    public int NotificationRadius { get; set; } = 10;
 
     public virtual User User { get; set; } = null!;
 }

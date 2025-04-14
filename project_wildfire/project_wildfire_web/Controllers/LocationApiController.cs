@@ -13,6 +13,7 @@ using CsvHelper.Configuration;
 using NetTopologySuite.Geometries;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 namespace project_wildfire_web.Controllers;
@@ -39,20 +40,25 @@ public class LocationApiController : ControllerBase
         _locationRepository = locationRepository;
     }
 
-    [HttpPost("SaveLocation")]
+    [HttpPost]
+    [Route("api/Location/SaveLocation")]
     public async Task<IActionResult> SaveUserLocation([FromBody] UserLocationDTO userLocationDTO)
     {
-        // Find auth and primary user records for the given ID
-        var user = await _userRepository.GetUserByIdAsync(userLocationDTO.UserId);
-        var authUser = await _userManager.FindByIdAsync(userLocationDTO.UserId);
-
-        // Null check
-        if (user == null || authUser == null)
+        Console.WriteLine("Received request: {userLocationDTO}");
+        if (!ModelState.IsValid)
         {
-            return NotFound("User record not found.");
+            _logger.LogWarning("Invalid model state for UserLocationDTO: {ModelState}", ModelState);
+            return BadRequest(ModelState);
         }
+        // POSTs from dynamic user markers will not have userId
+        var authUser = await _userManager.GetUserAsync(User);
+
         // Add location to user's saved locations
-        var userLocation = userLocationDTO.ToUserLocation();
+        UserLocation userLocation = userLocationDTO.ToUserLocation();
+        if (authUser != null)
+        {
+            userLocation.UserId = authUser.Id;
+        }
 
         // Save changes
         try{

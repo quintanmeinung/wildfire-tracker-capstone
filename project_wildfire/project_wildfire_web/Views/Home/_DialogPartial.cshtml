@@ -3,39 +3,91 @@
 @using project_wildfire_web.Areas.Identity.Pages.Account.Manage
 
 <div class="modal fade" id="dialogModal" tabindex="-1" aria-labelledby="dialogModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-body pt-0" id="dialogModalBody">
-        <div class="container">
-            @* <form>
-                <div class="form-group">
-                    <div class="row"></div>
-                    <!-- Title -->
-                        <label for="titleInput">Title</label>
-                        <input id="titleInput" class="form-control" type="text">
-                    </div>
-                    <div class="row"></div>
-                        <!-- Address  -->
-                    </div>
-                    <div class="row"></div>
-                        <!-- Lat & Lng  -->
-                        <div class="col">
-                            <!-- Latitude  -->
+      <div class="modal-body p-0" id="dialogModalBody">
+        <div class="container px-0">
+            <form id="locationForm" asp-action="SaveLocation" asp-controller="Location" asp-protocol="https">
+                @Html.AntiForgeryToken()
+                <div class="card shadow-sm">
+                    <div class="card-body mx-5 py-3">
+                        <h4 class="mb-3">Save Location</h4>
+                        <!-- Title Field -->
+                        <div class="row form-group mb-4">
+                            <input type="text"
+                                asp-for="Title"
+                                id="titleInput"
+                                class="form-control form-control-lg" 
+                                placeholder="Title" 
+                                required>
+                            <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
-                        <div class="col">
-                            <!-- Longitude  -->
-                    </div>
-                    <div class="row"></div>
-                        <!-- Save & Cancel  -->
-                        <div class="col">
-                            <!-- Save -->
+
+                        <!-- Address Field -->
+                        <div class="row form-group mb-4">
+                            <input type="text"
+                                asp-for="Address"
+                                id="addressInput" 
+                                class="form-control" 
+                                placeholder="Address">
                         </div>
-                        <div class="col">
-                            <!-- Cancel -->
-                        <div>
-                    </div>   
+                        
+                        <!-- Alert Radius -->
+                        <div class="row form-group mb-4">
+                            <div class="col">
+                                <label asp-for="NotificationRadius" class="form-label">
+                                    Alert Radius: <span id="radiusValue">25</span> miles
+                                </label>
+                            </div>
+                            <div class="col">
+                                <input asp-for="NotificationRadius" 
+                                    type="range"
+                                    id="radiusInput" 
+                                    class="form-range" 
+                                    min="1" 
+                                    max="50" 
+                                    step="1"
+                                    oninput="updateRadiusValue(this.value)">
+                            </div>
+                        </div>
+
+                        <!-- Coordinates Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6 form-group mb-3 mb-md-0">
+                                <label for="latInput" class="form-label text-muted">Latitude</label>
+                                <input type="text"
+                                    asp-for="Latitude"
+                                    id="latInput" 
+                                    class="form-control bg-light" 
+                                    readonly
+                                    style="cursor: not-allowed">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="lngInput" class="form-label text-muted">Longitude</label>
+                                <input type="text" 
+                                    asp-for="Longitude"
+                                    id="lngInput" 
+                                    class="form-control bg-light"
+                                    readonly
+                                    style="cursor: not-allowed">
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top">
+                            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                                Cancel
+                            </button>
+                            <button type="submit" 
+                                class="btn btn-primary px-4"
+                                id="saveLocationButton">
+                                Save Location
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </form> *@
+            </form>
+
         </div>
       </div>
     </div>
