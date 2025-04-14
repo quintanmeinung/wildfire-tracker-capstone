@@ -9,6 +9,7 @@ document.getElementById("saveLocationButton").addEventListener("click", async fu
         Longitude: document.getElementById('lngInput').value,
         Radius: document.getElementById('radiusInput').value
     };
+    console.log(userLocationDto); // Log the DTO to the console for debugging
     // Call the function to save the location with lat, lng, and locationName
     saveLocation(userLocationDto).then(function (response) {
         if (response.ok) {
@@ -31,7 +32,6 @@ function updateRadiusValue(val) {
 
 // Async function to save the location
 async function saveLocation(userLocationDto) {
-    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
     try {
         const response = await fetch('/api/Location/SaveLocation', {
             method: 'POST',
