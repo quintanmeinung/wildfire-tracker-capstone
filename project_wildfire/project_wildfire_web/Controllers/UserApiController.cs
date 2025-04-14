@@ -65,9 +65,32 @@ public class UserApiController : ControllerBase
         return Ok();
     }
 
+    [HttpPost("UpdateEmail")]
+    public async Task<IActionResult> UpdateEmail([FromBody] string newEmail)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            return NotFound("User not found.");
+        }
+
+        var setEmailResult = await _userManager.SetEmailAsync(user, newEmail);
+        if (!setEmailResult.Succeeded)
+        {
+            return BadRequest(setEmailResult.Errors);
+        }
+
+        var setUserNameResult = await _userManager.SetUserNameAsync(user, newEmail);
+        if (!setUserNameResult.Succeeded)
+        {
+            return BadRequest(setUserNameResult.Errors);
+        }
+
+        return Ok("Email updated successfully.");
+    }
 }
 
 
 
 
-    
+
