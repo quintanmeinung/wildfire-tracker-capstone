@@ -19,6 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
+  <None Update="Features\WildfireMarker.feature">
+    <Generator>ReqnrollSingleFileGenerator</Generator>
+    <LastGenOutput>WildfireMarker.feature.cs</LastGenOutput>
+  </None>
+</ItemGroup>
+
+  <ItemGroup>
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
