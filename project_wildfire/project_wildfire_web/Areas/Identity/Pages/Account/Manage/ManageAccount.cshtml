@@ -63,6 +63,22 @@
                                 </div>
                             </div>
                         </form>
+                        <form method="post" asp-page-handler="UpdatePhoneNumber">
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Phone</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <input type="text" class="form-control" name="PhoneNumber" value="@Model.PhoneNumber" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-9 text-secondary">
+                                    <button type="submit" class="btn btn-primary px-4">Update Phone Number</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
