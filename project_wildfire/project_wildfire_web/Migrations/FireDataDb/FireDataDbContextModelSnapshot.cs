@@ -22,33 +22,6 @@ namespace project_wildfire_web.Migrations.FireDataDb
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SavedLocation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SavedLocations");
-                });
-
             modelBuilder.Entity("UserFireSubscription", b =>
                 {
                     b.Property<string>("UserId")
@@ -125,11 +98,20 @@ namespace project_wildfire_web.Migrations.FireDataDb
 
             modelBuilder.Entity("project_wildfire_web.Models.UserLocation", b =>
                 {
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Latitude")
                         .HasColumnType("decimal(8, 6)");
 
                     b.Property<decimal>("Longitude")
                         .HasColumnType("decimal(9, 6)");
+
+                    b.Property<int>("NotificationRadius")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasMaxLength(100)

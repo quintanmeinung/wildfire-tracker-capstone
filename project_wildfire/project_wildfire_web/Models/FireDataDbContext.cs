@@ -148,7 +148,7 @@ public partial class FireDataDbContext : DbContext
 
     modelBuilder.Entity<UserLocation>(entity =>
     {
-        entity.HasNoKey();
+        entity.HasKey(e => e.Id);
 
         entity.Property(e => e.Latitude).HasColumnType("decimal(8, 6)");
         entity.Property(e => e.Longitude).HasColumnType("decimal(9, 6)");
