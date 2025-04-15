@@ -13,7 +13,7 @@ https://github.com/rhlt/leaflet-geolet/
 	
 	if (!L || !L.map) {
 		//Was Leaflet loaded correctly?
-		console.error(_consolePrefix + 'Missing Leaflet');
+		console.error(_consolePrefix + 'Missing Leaflets');
 		return;
 	}
 	
