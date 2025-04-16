@@ -17,6 +17,7 @@
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
     <PackageReference Include="reqnroll" Version="2.4.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="135.0.7049.9500" />
+    <PackageReference Include="WebDriverManager" Version="2.17.5" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="Reqnroll.NUnit" Version="2.4.0" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />

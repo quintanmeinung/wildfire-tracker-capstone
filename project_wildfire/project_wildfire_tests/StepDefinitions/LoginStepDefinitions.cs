@@ -1,5 +1,7 @@
 using Reqnroll;
-using OpenQA.Selenium;
+using OpenQA.Selenium.Firefox;
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl;
 
 namespace project_wildfire_tests.StepDefinitions;
 
@@ -7,11 +9,16 @@ namespace project_wildfire_tests.StepDefinitions;
 public sealed class LoginStepDefinitions
 {
     
-    private readonly IWebDriver _driver;
+    private readonly FirefoxDriver _driver;
  
-    public LoginStepDefinitions(IWebDriver driver)
+    public LoginStepDefinitions()
     {
-        _driver = driver;
+        new DriverManager().SetUpDriver(new FirefoxConfig());
+        
+        var options = new FirefoxOptions();
+        options.AddArguments("--headless");
+        
+        _driver = new FirefoxDriver(options);
         _driver.Navigate().GoToUrl("http://localhost:5205");
     } 
 
@@ -24,16 +31,12 @@ public sealed class LoginStepDefinitions
     [When(@"I enter valid credentials")]
     public void WhenIEnterValidCredentials()
     {
-        /* _loginPage.EnterCredentials("validUsername", "validPassword");
-        _loginPage.SubmitLoginForm(); */
         Console.WriteLine("Entering valid credentials...");
     }
 
     [When(@"I enter invalid credentials")]
     public void WhenIEnterInvalidCredentials()
     {
-        /* _loginPage.EnterCredentials("invalidUsername", "invalidPassword");
-        _loginPage.SubmitLoginForm(); */
         Console.WriteLine("Entering invalid credentials...");
     }
 
@@ -41,14 +44,17 @@ public sealed class LoginStepDefinitions
     public void ThenIShouldBeLoggedIn()
     {
         Console.WriteLine("Checking if logged in...");
-        /* Assert.IsTrue(_loginPage.IsDashboardDisplayed(), "Dashboard is not displayed after login."); */
     }
 
     [Then(@"I should see an error message")]
     public void ThenIShouldSeeAnErrorMessage()
     {
         Console.WriteLine("Checking for error message...");
-        /* Assert.IsTrue(_loginPage.IsDashboardDisplayed(), "Dashboard is not displayed after login."); */
     }
 
+    [AfterScenario]
+    public void AfterScenario()
+    {
+        _driver.Quit();
+    }
 }
