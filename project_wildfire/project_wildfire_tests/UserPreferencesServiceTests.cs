@@ -9,7 +9,7 @@ using project_wildfire_web.Services;
 public class UserPreferencesServiceTests
 {
     private FireDataDbContext _dbContext;
-    private UserPreferencesService _preferencesService;
+    private User _preferencesService;
 
     [SetUp] // Runs before each test
     public void Setup()

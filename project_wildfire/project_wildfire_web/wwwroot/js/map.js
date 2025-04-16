@@ -1,7 +1,5 @@
 import { addAQIMarker } from './AQI.js'; //imports AQI.js file
 import { addFireMarkers } from './fireMarkers.js';
-import { isLoggedIn } from './site.js';
-import { initializeSavedLocations } from './userLocationMarkers.js';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -13,10 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
     baseLayers["Street Map"].addTo(map); // Default layer
 
     // Initialize overlays
-    var overlayLayers = createOverlayLayers();
+    var overlayLayers = createOverlayLayers(map, false);
 
     // Add layer control to the map
-    L.control.layers(baseLayers, overlayLayers).addTo(map);
+    var layerControl = L.control.layers(baseLayers, overlayLayers);
+    layerControl.addTo(map);
 
     // Handle geolocation
     handleGeolocation(map);
@@ -27,10 +26,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize compass
     initializeCompass(map);
 
-    // Initialize saving locations
-    if (isLoggedIn()) {
-        initializeSavedLocations(map);
-    }
+    // Fetch and add wildfire data as markers
+    fetch('/api/WildfireAPIController/fetchWildfires')
+    .then(response => response.json())
+    .then(data => {
+        // Assuming addFireMarkers is updated to handle dynamic data
+        addFireMarkers(overlayLayers["Fire Reports"], data);
+        layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
+    })
+    .catch(error => {
+        console.error('Error fetching wildfire data:', error);
+        alert('Failed to fetch wildfire data.');
+    });
+
 });
 
 /**
@@ -68,24 +76,13 @@ function createBaseLayers() {
  */
 function createOverlayLayers(map) {
     // Create a layer group for cities
-    var cities = L.layerGroup([
-        L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View")
-    ]);
+    var cities = L.layerGroup().addLayer(L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View"));
 
-    //layer group for AQI stations
-    const aqiLayer = L.layerGroup();
+    // Initialize AQI layer with any predefined markers
+    const aqiLayer = initializeAqiLayer();
 
-    // Adds AQI markers to the AQI layer
-    addAQIMarker(aqiLayer, "A503596"); // Salem Chemeketa Community College
-    addAQIMarker(aqiLayer, "@91"); // Silverton, Oregon
-    addAQIMarker(aqiLayer, "@83"); // Lyons, Oregon
-    addAQIMarker(aqiLayer, "@89"); // Salem, Oregon
-    addAQIMarker(aqiLayer, "A503590"); // Dallas, Oregon
-    addAQIMarker(aqiLayer, "@11923"); // Turner Cascade Jr.High, Oregon
-
-    // Layer group for fire markers
+    // Fire layer initialized but not populated yet
     const fireLayer = L.layerGroup();
-    addFireMarkers(fireLayer); // Populate with placeholder fires
 
     return {
         "Cities": cities,
@@ -93,6 +90,19 @@ function createOverlayLayers(map) {
         "Fire Reports": fireLayer
     };
 }
+
+function initializeAqiLayer() {
+    const aqiLayer = L.layerGroup();
+    // Example: Add AQI markers (this function needs to be defined or adjusted as per existing AQI code)
+    addAQIMarker(aqiLayer, "A503596"); // Salem Chemeketa Community College
+    addAQIMarker(aqiLayer, "@91"); // Silverton, Oregon
+    addAQIMarker(aqiLayer, "@83"); // Lyons, Oregon
+    addAQIMarker(aqiLayer, "@89"); // Salem, Oregon
+    addAQIMarker(aqiLayer, "A503590"); // Dallas, Oregon
+    addAQIMarker(aqiLayer, "@11923"); // Turner Cascade Jr.High, Oregon
+    return aqiLayer;
+}
+
 
 /**
  * Handles geolocation logic, including user location retrieval and error handling.
@@ -168,8 +178,18 @@ function initializeCompass(map) {
 }
 
 
+/**
+ * Test logic for no markers.
+ */
+/*
+const testParam = new URLSearchParams(window.location.search).get("test");
 
-
+if (testParam === "no-data") {
+  console.log("🧪 Test Mode: no-data triggered");
+  // skip loading markers
+} else {
+  fetch("/api/WildfireAPIController/fetchWildfires").then(...)
+}*/
 
 
 

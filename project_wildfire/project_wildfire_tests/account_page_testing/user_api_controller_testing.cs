@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using project_wildfire_web.Controllers;
@@ -134,4 +135,4 @@ public class UserApiControllerTests
             mgr => mgr.UpdateAsync(It.IsAny<IdentityUser>()), 
             Times.Never);
     }
-}
+}*/
