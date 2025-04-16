@@ -42,7 +42,7 @@ public class LocationApiController : ControllerBase
 
     [HttpPost]
     [Route("api/Location/SaveLocation")]
-    public async Task<IActionResult> SaveUserLocation([FromBody] UserLocationDTO userLocationDTO)
+    public async Task<IActionResult> SaveLocation([FromBody] UserLocationDTO userLocationDTO)
     {
         Console.WriteLine("Received request: {userLocationDTO}");
         if (!ModelState.IsValid)
