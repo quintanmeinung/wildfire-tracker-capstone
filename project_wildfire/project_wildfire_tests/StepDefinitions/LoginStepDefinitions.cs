@@ -1,6 +1,5 @@
 using Reqnroll;
 using OpenQA.Selenium;
-using project_wildfire_tests.Pages;
 
 namespace project_wildfire_tests.StepDefinitions;
 
@@ -9,18 +8,16 @@ public sealed class LoginStepDefinitions
 {
     
     private readonly IWebDriver _driver;
-    private readonly LoginPage _loginPage;
  
     public LoginStepDefinitions(IWebDriver driver)
     {
         _driver = driver;
-        _loginPage = new LoginPage(_driver);
+        _driver.Navigate().GoToUrl("http://localhost:5205");
     } 
 
     [Given(@"I navigate to the login form")]
     public void GivenINavigateToTheLoginForm()
     {
-        //_loginPage.NavigateToLoginForm();
         Console.WriteLine("Navigating to login form...");
     }
 
