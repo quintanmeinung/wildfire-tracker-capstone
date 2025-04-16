@@ -178,5 +178,18 @@ function initializeCompass(map) {
 }
 
 
+/**
+ * Test logic for no markers.
+ */
+/*
+const testParam = new URLSearchParams(window.location.search).get("test");
+
+if (testParam === "no-data") {
+  console.log("🧪 Test Mode: no-data triggered");
+  // skip loading markers
+} else {
+  fetch("/api/WildfireAPIController/fetchWildfires").then(...)
+}*/
+
 
 

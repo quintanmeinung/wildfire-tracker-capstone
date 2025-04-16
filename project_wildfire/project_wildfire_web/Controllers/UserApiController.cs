@@ -1,4 +1,4 @@
-using System.Diagnostics;
+/*using System.Diagnostics;
 using System.Globalization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -88,7 +88,7 @@ public class UserApiController : ControllerBase
 
         return Ok("Email updated successfully.");
     }
-}
+}*/
 
 
 
