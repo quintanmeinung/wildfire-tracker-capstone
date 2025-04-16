@@ -1,22 +1,21 @@
-using System;
 using Reqnroll;
-using Selenium.WebDriver;
+using OpenQA.Selenium;
+using project_wildfire_tests.Pages;
 
-namespace project_wildfire_reqnroll.StepDefinitions;
+namespace project_wildfire_tests.StepDefinitions;
 
 [Binding]
 public sealed class LoginStepDefinitions
 {
     
     private readonly IWebDriver _driver;
-    /*
     private readonly LoginPage _loginPage;
  
     public LoginStepDefinitions(IWebDriver driver)
     {
         _driver = driver;
         _loginPage = new LoginPage(_driver);
-    } */
+    } 
 
     [Given(@"I navigate to the login form")]
     public void GivenINavigateToTheLoginForm()
