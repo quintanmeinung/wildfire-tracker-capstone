@@ -16,14 +16,9 @@ public class WildfireAPIControllerTests
 {
     private Mock<IWildfireRepository> _mockWildfireRepository;
     private Mock<ILogger<WildfireAPIController>> _mockLogger;
-    private Mock<IConfiguration> _mockConfiguration;
-    private Mock<HttpClient> _mockHttpClient;
     private Mock<INasaService> _mockNasaService;
 
     private WildfireAPIController _controller;
-
-
-   // private Mock<WildfireDbContext> _context;
 
 [SetUp]
     public void Setup()
@@ -32,12 +27,8 @@ public class WildfireAPIControllerTests
         _mockNasaService = new Mock<INasaService>();
         _mockWildfireRepository = new Mock<IWildfireRepository>();
 
-        _mockConfiguration = new Mock<IConfiguration>();
-       // _mockHttpClient = new Mock<HttpClient>();
-
         _controller = new WildfireAPIController(
          
-            //_mockConfiguration.Object,
             _mockWildfireRepository.Object,
             _mockLogger.Object,
             _mockNasaService.Object
@@ -124,7 +115,6 @@ public class WildfireAPIControllerTests
     public async Task FetchWildfires_Returns_500_If_ApiKey_Missing()
     {
         // Arrange
-       // _mockConfiguration.Setup(config => config["NASA:FirmsApiKey"]).Returns((string)null);
         _mockNasaService.Setup(service => service.GetFiresAsync()).ReturnsAsync((List<FireDTO>)null);
 
         // Act
