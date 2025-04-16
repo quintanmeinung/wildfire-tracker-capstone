@@ -1,13 +1,10 @@
-using NUnit.Framework;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using project_wildfire_web.Controllers;
 using project_wildfire_web.Models;
-using project_wildfire_web.Models.DTO;
 using project_wildfire_web.DAL.Abstract;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
 
 namespace Project.Wildfire.Tests.Controllers;
 
@@ -27,8 +24,11 @@ public class UserApiControllerTests
         
         // UserManager is abstract, so we need a special setup for it
         var userStoreMock = new Mock<IUserStore<IdentityUser>>();
+        
+        #pragma warning disable CS8625 //Suppress warnings for null parameters
         _userManagerMock = new Mock<UserManager<IdentityUser>>(
             userStoreMock.Object, null, null, null, null, null, null, null, null);
+        #pragma warning restore CS8625 //Restore warnings for null parameters
         
         _controller = new UserApiController(
             _loggerMock.Object,
@@ -40,16 +40,8 @@ public class UserApiControllerTests
     public async Task SaveModalEdits_WithValidData_ReturnsOk()
     {
         // Arrange
-        var userId = "user123";
-        var profileViewModel = new ProfileViewModel
-        {
-            Id = userId,
-            FirstName = "John",
-            LastName = "Doe",
-            Email = "john.doe@example.com",
-            PhoneNumber = "555-123-4567",
-            FireSubscriptions = new List<Fire>()
-        };
+        const string userId = "TBD";
+        var profileViewModel = CreateTestProfileViewModel(userId);
         
         var user = new User
         {
@@ -66,7 +58,7 @@ public class UserApiControllerTests
         };
         
         _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(userId))
-            .ReturnsAsync(user as User);
+            .ReturnsAsync(user);
             
         _userManagerMock.Setup(mgr => mgr.FindByIdAsync(userId))
             .ReturnsAsync(authUser);
@@ -99,8 +91,29 @@ public class UserApiControllerTests
     public async Task SaveModalEdits_WithInvalidUserId_ReturnsNotFound()
     {
         // Arrange
-        var userId = "nonexistent";
-        var profileViewModel = new ProfileViewModel
+        const string nonExistentUserId = "nonexistent";
+        var profileViewModel = CreateTestProfileViewModel(nonExistentUserId);
+        
+        _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(nonExistentUserId))
+            .ReturnsAsync(null as User);
+
+        _userManagerMock.Setup(mgr => mgr.FindByIdAsync(nonExistentUserId))
+            .ReturnsAsync(new IdentityUser());
+
+        // Act
+        var result = await _controller.SaveModalEdits(profileViewModel);
+        
+        // Assert
+        Assert.That(result, Is.InstanceOf<NotFoundObjectResult>());
+        var notFoundResult = (NotFoundObjectResult)result;
+        Assert.That(notFoundResult.Value, Is.EqualTo("User record not found."));
+        VerifyNoUpdatesWerePerformed();
+    }
+
+    // Helper methods for better readability and reusability
+    private ProfileViewModel CreateTestProfileViewModel(string userId)
+    {
+        return new ProfileViewModel
         {
             Id = userId,
             FirstName = "John",
@@ -109,25 +122,16 @@ public class UserApiControllerTests
             PhoneNumber = "555-123-4567",
             FireSubscriptions = new List<Fire>()
         };
-        
-        // Set up repository to return null (user not found)
-        _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(userId))
-            .ReturnsAsync(null as User);
+    }
+
+    private void VerifyNoUpdatesWerePerformed()
+    {
+        _userRepositoryMock.Verify(
+            repo => repo.UpdateUser(It.IsAny<User>()), 
+            Times.Never);
             
-        _userManagerMock.Setup(mgr => mgr.FindByIdAsync(userId))
-            .ReturnsAsync(new IdentityUser()); // Auth user exists
-        
-        // Act
-        var result = await _controller.SaveModalEdits(profileViewModel);
-        
-        // Assert
-        Assert.That(result, Is.InstanceOf<NotFoundObjectResult>());
-        
-        var notFoundResult = result as NotFoundObjectResult;
-        Assert.That(notFoundResult.Value, Is.EqualTo("User record not found."));
-        
-        // Verify update methods were never called
-        _userRepositoryMock.Verify(repo => repo.UpdateUser(It.IsAny<User>()), Times.Never);
-        _userManagerMock.Verify(mgr => mgr.UpdateAsync(It.IsAny<IdentityUser>()), Times.Never);
+        _userManagerMock.Verify(
+            mgr => mgr.UpdateAsync(It.IsAny<IdentityUser>()), 
+            Times.Never);
     }
 }
