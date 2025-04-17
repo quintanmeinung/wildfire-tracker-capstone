@@ -4,7 +4,6 @@ using project_wildfire_web.Models;
 
 namespace project_wildfire_web.Controllers
 {
-    // Change to a normal MVC controller with route for Razor Pages
     [Route("Identity/Account/Manage/[controller]")]
     public class UserLocationController : Controller
     {
@@ -21,11 +20,10 @@ namespace project_wildfire_web.Controllers
         {
             // Fetch the saved locations for a specific user
             var locations = await _context.UserLocations.Where(ul => ul.UserId == userId).ToListAsync();
-            return View(locations); // Return a Razor view with the locations
+            return View(locations); 
         }
 
-        // POST: Identity/Account/Manage/UserLocation
-[HttpPost]
+        [HttpPost]
 public async Task<IActionResult> PostUserLocation(UserLocation location)
 {
     // Automatically use the logged-in user's ID
@@ -35,19 +33,21 @@ public async Task<IActionResult> PostUserLocation(UserLocation location)
     {
         return BadRequest("User is not logged in.");
     }
+        location.Latitude = Math.Round(location.Latitude, 6);
+    location.Longitude = Math.Round(location.Longitude, 6);
 
     // Set the UserId and add the location
     location.UserId = userId;
     _context.UserLocations.Add(location);
     await _context.SaveChangesAsync();
 
-    return RedirectToAction("SavedLocations", "UserLocation");
+    return Redirect("/Identity/Account/Manage/SavedLocations");
 }
 
 
 
-        // DELETE: Identity/Account/Manage/UserLocation/{id}
-        [HttpDelete("{id}")]
+
+        [HttpPost("delete/{id}")]
         public async Task<IActionResult> DeleteUserLocation(int id)
         {
             var location = await _context.UserLocations.FindAsync(id);
@@ -59,8 +59,9 @@ public async Task<IActionResult> PostUserLocation(UserLocation location)
             _context.UserLocations.Remove(location);
             await _context.SaveChangesAsync();
 
-            // After deletion, redirect back to the saved locations page
-            return RedirectToAction("GetUserLocations", new { userId = location.UserId });
+            // Redirect back to your Razor page after deletion
+            return Redirect("~/Identity/Account/Manage/SavedLocations");
         }
+
     }
 }
