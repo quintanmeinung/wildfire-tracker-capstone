@@ -36,8 +36,13 @@ namespace project_wildfire_web.DAL.Concrete
         
         public Task AddLocationAsync(UserLocation location)
         {
-            // Save user-saved location with the user's ID
-            throw new NotImplementedException();
+            if (location == null)
+            {
+                throw new ArgumentNullException(nameof(location), "UserLocation cannot be null.");
+            }
+
+            _context.UserLocations.Add(location);
+            return _context.SaveChangesAsync();
         }
 
         public Task DeleteLocationAsync(int locationId, string userId)
