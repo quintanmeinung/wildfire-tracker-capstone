@@ -53,15 +53,5 @@ namespace project_wildfire_web.ExtensionsMethods
             };
 
         }
-
-        public static Fire ToFire (this FireDTO fd)
-        {
-            return new Fire
-            {
-                Latitude = fd.Latitude,
-                Longitude = fd.Longitude,
-                RadiativePower = fd.RadiativePower
-            };
-        }
     }
 }

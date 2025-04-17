@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using project_wildfire_web.Areas.Identity.Data;
 using project_wildfire_web.DAL.Abstract;
-using project_wildfire_web.ExtensionsMethods;
 using project_wildfire_web.Models;
-using project_wildfire_web.Models.DTO;
 
 namespace project_wildfire_web.Controllers;
 
@@ -33,7 +31,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        
         // If the user is authenticated, populate the model with their data
         if (User?.Identity?.IsAuthenticated == true)
         {
@@ -50,9 +47,9 @@ public class HomeController : Controller
                 return NotFound("Unable to retreive primary user by ID.");
             }
 
-            //var savedLocations = _locationRepository.GetUserLocations(primaryUser.UserId);
+            var savedLocations = _locationRepository.GetUserLocations(primaryUser.UserId);
 
-            // Generate view model for the profile partial
+            // Generate view model for the profile page
             var profileViewModel = new ProfileViewModel
             {
                 Id = primaryUser.UserId,
@@ -63,19 +60,11 @@ public class HomeController : Controller
                 // SavedLocations needs to be populated 
                 FireSubscriptions = primaryUser.Fires
             };
-
-            // Create DTOs to pass to the Index
-            ProfileViewModelDTO pvmDTO = profileViewModel.ToProfileViewModelDTO();
-            UserLocationDTO ulDTO = new UserLocationDTO
-            {
-                UserId = primaryUser.UserId,
-            };
-
-            // Generate IndexViewModel which holds profile and location data
-            var indexViewModel = new IndexViewModel(pvmDTO, ulDTO);
+            Console.WriteLine("ProfileViewModel: ");
+            Console.WriteLine(JsonSerializer.Serialize(profileViewModel));
 
             // Pass the model to the view
-            return View(indexViewModel);
+            return View(profileViewModel);
         }
         // If user is not authenticated, no model is sent
         return View();

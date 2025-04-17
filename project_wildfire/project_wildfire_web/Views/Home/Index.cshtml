@@ -1,5 +1,4 @@
-﻿@model project_wildfire_web.Models.DTO.IndexViewModel?
-@{
+﻿﻿@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -26,15 +25,13 @@
     <button id="speechToggle">Enable Text-to-Speech</button>
 </div>
 
-@if (Model != null)
-{
-    <div class="profile-container">
-    <partial name="_ProfilePartial" model="@Model.Profile" /> <!-- Modal partial for Profile summary -->
-    </div>
-    <div class="dialog-container">
-        <partial name="_DialogPartial" model="@Model.Location" /> <!-- Modal partial for Profile summary -->
-    </div>
-}
+<div class="profile-container">
+    <partial name="_ProfilePartial"/> <!-- Modal partial for Profile summary -->
+</div>
+
+<div class="dialog-container">
+    <partial name="_DialogPartial"/> <!-- Modal partial for Profile summary -->
+</div>
 
 <div id="compass-degree"></div>
 <div id="compass-top-right"></div>

@@ -1,5 +1,6 @@
 import { addAQIMarker } from './AQI.js'; //imports AQI.js file
 import { addFireMarkers } from './fireMarkers.js';
+import { getUserId } from './site.js'; // Import userId
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -26,31 +27,23 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize compass
     initializeCompass(map);
 
-    // If the user is logged in, allow them to add dynamic markers
-    if (userId !== null) {
-        var activeMarker = null; // Variable to store user's most recent marker
-
-        // Handle map click event to add dynamic markers
-        map.on('click', function (e) {
-            addMarkerOnClick(e, map, activeMarker)
-        });
+    // Add dynamic markers for logged-in users
+    var userId = getUserId(); // Get the user ID from the site.js file
+    if (userId !== "") {
+        initializeSavedLocations(map);
     }
-
-    // Fetch and add wildfire data as markers
-    fetch('/api/WildfireAPIController/fetchWildfires')
-    .then(response => response.json())
-    .then(data => {
-        // Assuming addFireMarkers is updated to handle dynamic data
-        addFireMarkers(overlayLayers["Fire Reports"], data);
-        layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
-    })
-    .catch(error => {
-        console.error('Error fetching wildfire data:', error);
-        alert('Failed to fetch wildfire data.');
-    });
 });
 
-function addMarkerOnClick(e, map, activeMarker) {
+function initializeSavedLocations(map) {
+    // Handle map click event to add dynamic markers
+    map.on('click', function (e) {
+        addMarkerOnClick(e, map)
+    });
+
+}
+
+let activeMarker = null; // Variable to store user's most recent marker
+function addMarkerOnClick(e, map) {
     if (activeMarker) {
         map.removeLayer(activeMarker); // Remove the previous marker if it exists
     }
@@ -63,7 +56,6 @@ function addMarkerOnClick(e, map, activeMarker) {
     popup.className = 'btn btn-primary';
     popup.innerHTML = 'Save Location';
     popup.addEventListener('click', function (e) {
-        // Removed unused locationDto variable
         var lat = e.latlng.lat.toFixed(5); // Get the latitude from the event
         var lng = e.latlng.lng.toFixed(5); // Get the longitude from the event
         saveLocationDialog(lat, lng); // Call the function to save the location
@@ -71,9 +63,7 @@ function addMarkerOnClick(e, map, activeMarker) {
 
     activeMarker.bindPopup(popup).openPopup();
 }
-/**
- * Initializes the Leaflet map.
- */
+
 function saveLocationDialog(lat, lng) {
     // Create the dialog box element
     var dialogBox = document.createElement('div');
@@ -107,26 +97,24 @@ function saveLocationDialog(lat, lng) {
 
     dialogBoxSubmitButton.addEventListener('click', function (e) {
         e.preventDefault(); // Prevent form submission
-        var name = dialogBoxNameField.value;
-        saveLocation(name, lat, lng); // Call the function to save the location
+        var dto = {
+            userId: userId,
+            title: dialogBoxNameField.value,
+            lat: lat,
+            lng: lng
+        }
+        saveLocation(dto); // Call the function to save the location
     });
 }
 
-function saveLocation(title, lat, lng) {
-    // Create the location object
-    var location = {
-        title: title,
-        latitude: lat,
-        longitude: lng
-    };
-
+function saveLocation(dto) {
     // Fetch POST request to save the location
     fetch('/api/Location/SaveLocation', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(location)
+        body: JSON.stringify(dto)
     })
     .then(response => {
         if (response.ok) {
