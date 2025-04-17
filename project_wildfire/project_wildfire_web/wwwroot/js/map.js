@@ -8,6 +8,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize the map
     var map = initializeMap();
 
+    // Get saved locations from the map element
+    var savedLocations = map.dataset.savedLocations;
+    if (savedLocations) {
+
+        // Parse the JSON string to an object
+        savedLocations = JSON.parse(savedLocations); 
+
+        for (let location of savedLocations) {
+            let marker = L.marker([location.latitude, location.longitude]).addTo(map);
+            marker.bindPopup(location.title); // Bind the name to the marker popup
+        }
+    }
+
     // Initialize base layers
     var baseLayers = createBaseLayers();
     baseLayers["Street Map"].addTo(map); // Default layer
@@ -103,7 +116,8 @@ function createOverlayLayers(map) {
     return {
         "Cities": cities,
         "AQI Stations": aqiLayer,
-        "Fire Reports": fireLayer
+        "Fire Reports": fireLayer,
+        "Saved Locations": savedLocations
     };
 }
 

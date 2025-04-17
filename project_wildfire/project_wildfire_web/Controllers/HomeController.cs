@@ -49,7 +49,7 @@ public class HomeController : Controller
                 return NotFound("Unable to retreive primary user by ID.");
             }
 
-            //var savedLocations = _locationRepository.GetUserLocations(primaryUser.UserId);
+            var savedLocations = _locationRepository.GetUserLocations(primaryUser.UserId);
 
             var profileViewModel = new ProfileViewModel
             {
@@ -58,7 +58,7 @@ public class HomeController : Controller
                 LastName = primaryUser.LastName,
                 Email = authUser.Email,
                 PhoneNumber = authUser.PhoneNumber,
-                //SavedLocations = savedLocations,
+                SavedLocations = savedLocations,
                 FireSubscriptions = primaryUser.Fires
             };
 
@@ -72,7 +72,8 @@ public class HomeController : Controller
             // Generate IndexViewModel for Index
             var indexViewModel = new IndexViewModel(
                 profileViewModel.ToProfileViewModelDTO(),
-                userLocation.ToUserLocationDTO()
+                userLocation.ToUserLocationDTO(),
+                savedLocations.Select(ul => ul.ToUserLocationDTO()).ToList()
             );
 
             // Pass the model to the view
