@@ -1,17 +1,6 @@
-/*using System.Diagnostics;
-using System.Globalization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-using Microsoft.IdentityModel.Tokens;
 using project_wildfire_web.Models;
-using project_wildfire_web.Models.DTO;
 using project_wildfire_web.DAL.Abstract;
-using project_wildfire_web.ExtensionsMethods;
-using CsvHelper;
-using CsvHelper.Configuration;
-using NetTopologySuite.Geometries;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -88,7 +77,7 @@ public class UserApiController : ControllerBase
 
         return Ok("Email updated successfully.");
     }
-}*/
+}
 
 
 

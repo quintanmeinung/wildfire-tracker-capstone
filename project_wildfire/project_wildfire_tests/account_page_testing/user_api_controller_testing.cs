@@ -135,4 +135,4 @@ public class UserApiControllerTests
             mgr => mgr.UpdateAsync(It.IsAny<IdentityUser>()), 
             Times.Never);
     }
-}*/
+}
