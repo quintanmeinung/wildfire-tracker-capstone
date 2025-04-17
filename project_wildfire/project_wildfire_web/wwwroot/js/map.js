@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (savedLocations) {
 
         // Parse the JSON string to an object
-        savedLocations = JSON.parse(savedLocations); 
+        //savedLocations = JSON.parse(savedLocations); 
 
         for (let location of savedLocations) {
             let marker = L.marker([location.latitude, location.longitude]).addTo(map);
