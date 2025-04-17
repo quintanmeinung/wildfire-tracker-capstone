@@ -1,0 +1,25 @@
+@page
+@model PhoneNumberModel
+@{
+    ViewData["Title"] = "Update Phone Number";
+}
+
+<h2>Update Phone Number</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="PhoneNumber">New Phone Number</label>
+        <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Update</button>
+</form>
+
+@if (TempData["StatusMessage"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["StatusMessage"]</div>
+}
+
+
+@section Scripts {
+    <script src='~/js/AccountScripts/phoneUpdateHandler.js'></script>
+}

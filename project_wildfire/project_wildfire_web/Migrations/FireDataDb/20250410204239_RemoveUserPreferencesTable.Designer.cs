@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using project_wildfire_web.Models;
@@ -11,9 +12,11 @@ using project_wildfire_web.Models;
 namespace project_wildfire_web.Migrations.FireDataDb
 {
     [DbContext(typeof(FireDataDbContext))]
-    partial class FireDataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250410204239_RemoveUserPreferencesTable")]
+    partial class RemoveUserPreferencesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,12 +114,6 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<< HEAD
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-=======
->>>>>>> dev
                     b.Property<decimal>("Latitude")
                         .HasColumnType("decimal(8, 6)");
 
@@ -140,30 +137,6 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.ToTable("UserLocations");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("project_wildfire_web.Models.UserPreferences", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("ContrastMode")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("FontSize")
-                        .IsRequired()
-                        .HasColumnType("string");
-
-                    b.Property<bool>("TextToSpeech")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("UserPreferences");
-                });
-
-=======
->>>>>>> dev
             modelBuilder.Entity("UserFireSubscription", b =>
                 {
                     b.HasOne("project_wildfire_web.Models.Fire", null)
