@@ -1,6 +1,7 @@
 @model project_wildfire_web.Models.DTO.ProfileViewModelDTO
 @using project_wildfire_web.Areas.Identity.Pages.Account.Manage
 
+
 <!-- Stores users profile view model -->
 <div id="profile-data" data-profile="@Json.Serialize(Model)"></div>
 
@@ -182,25 +183,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    @if (Model.SavedLocations == null || !Model.SavedLocations.Any())
+                                @if (Model.SavedLocations == null || !Model.SavedLocations.Any())
                                     {
+                                    <tr>
                                         <td>No saved locations</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                    }
-                                    else
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var location in Model.SavedLocations)
                                     {
-                                        @foreach (var location in Model.SavedLocations)
-                                        {
-                                            <td>@location</td>
-                                        }
-                                    } 
-                                </tr>
-                                    
+                                        <tr>
+                                            <td>@location.Title</td>
+                                            <td>@location.Address</td>
+                                            <td>@location.Latitude</td>
+                                            <td>@location.Longitude</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    }
+                                } 
                             </tbody>
                         </table>
                     </div>  

@@ -47,6 +47,10 @@ namespace project_wildfire_web.ExtensionsMethods
     {
         public static ProfileViewModelDTO ToProfileViewModelDTO (this ProfileViewModel pvm)
         {   
+            if (pvm.Email == null)
+            {
+                pvm.Email = string.Empty;
+            }
             return new ProfileViewModelDTO
             {
             UserId = pvm.Id,

@@ -27,7 +27,7 @@
 </div>
 
 @if (Model != null) {
-    <div class="profile-container">
+    <div id="profile" class="profile-container" data-saved-locations='@Json.Serialize(Model.SavedLocations)'>
         <partial name="_ProfilePartial" model="Model.Profile"/> <!-- Modal partial for Profile summary -->
     </div>
 
