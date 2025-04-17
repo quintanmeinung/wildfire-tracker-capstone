@@ -1,0 +1,15 @@
+@page
+@model EmailModel
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/AccountScripts/emailUpdateHandler.js"></script>
+}
+
+<h2>Change Email</h2>
+<form id="update-email-form" method="post">
+    <div class="form-floating mb-3">
+        <input class="form-control" type="email" id="newEmail" name="newEmail" placeholder="Enter new email" required />
+        <label for="newEmail">New Email</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Email</button>
+</form>

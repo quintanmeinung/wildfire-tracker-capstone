@@ -15,8 +15,20 @@
     <PackageReference Include="NUnit" Version="4.2.2" />
     <PackageReference Include="NUnit.Analyzers" Version="4.4.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+    <PackageReference Include="Reqnroll" Version="2.4.0" />
+    <PackageReference Include="Reqnroll.NUnit" Version="2.4.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.31.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="135.0.7049.9500" />
     <PackageReference Include="xunit" Version="2.9.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\project_wildfire_web\project_wildfire_web.csproj" />
+  <None Update="Features\WildfireMarker.feature">
+    <Generator>ReqnrollSingleFileGenerator</Generator>
+    <LastGenOutput>WildfireMarker.feature.cs</LastGenOutput>
+  </None>
+</ItemGroup>
 
   <ItemGroup>
     <Using Include="NUnit.Framework" />
