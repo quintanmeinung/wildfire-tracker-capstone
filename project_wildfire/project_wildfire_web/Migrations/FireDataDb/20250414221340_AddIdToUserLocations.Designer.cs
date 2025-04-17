@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using project_wildfire_web.Models;
@@ -11,9 +12,11 @@ using project_wildfire_web.Models;
 namespace project_wildfire_web.Migrations.FireDataDb
 {
     [DbContext(typeof(FireDataDbContext))]
-    partial class FireDataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250414221340_AddIdToUserLocations")]
+    partial class AddIdToUserLocations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,23 +85,13 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("ContrastMode")
-                        .HasColumnType("bit");
-
                     b.Property<string>("FirstName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("FontSize")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("LastName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("TextToSpeech")
-                        .HasColumnType("bit");
 
                     b.HasKey("UserId")
                         .HasName("PK__Users__1788CC4C60961939");
@@ -111,12 +104,9 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<< HEAD
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-=======
->>>>>>> dev
                     b.Property<decimal>("Latitude")
                         .HasColumnType("decimal(8, 6)");
 
@@ -140,7 +130,6 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.ToTable("UserLocations");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("project_wildfire_web.Models.UserPreferences", b =>
                 {
                     b.Property<string>("UserId")
@@ -162,8 +151,6 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.ToTable("UserPreferences");
                 });
 
-=======
->>>>>>> dev
             modelBuilder.Entity("UserFireSubscription", b =>
                 {
                     b.HasOne("project_wildfire_web.Models.Fire", null)
@@ -186,6 +173,17 @@ namespace project_wildfire_web.Migrations.FireDataDb
                         .HasForeignKey("UserId")
                         .IsRequired()
                         .HasConstraintName("FK_UserLocations_Users");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("project_wildfire_web.Models.UserPreferences", b =>
+                {
+                    b.HasOne("project_wildfire_web.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .IsRequired()
+                        .HasConstraintName("FK_UserPreferences_Users");
 
                     b.Navigation("User");
                 });
