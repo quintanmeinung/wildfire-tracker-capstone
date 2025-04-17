@@ -164,7 +164,7 @@ public partial class FireDataDbContext : DbContext
     // ✅ Fix: Temporarily Define UserId as Primary Key for EF Core In-Memory Testing
     modelBuilder.Entity<UserPreferences>(entity =>
     {
-        // Temporary PK for testing (Does NOT affect real database)
+        
         entity.HasKey(e => e.UserId);
 
         entity.Property(e => e.FontSize).HasColumnType("string");
