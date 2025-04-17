@@ -8,19 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize the map
     var map = initializeMap();
 
-    // Get saved locations from the map element
-    var savedLocations = map.dataset.savedLocations;
-    if (savedLocations) {
-
-        // Parse the JSON string to an object
-        //savedLocations = JSON.parse(savedLocations); 
-
-        for (let location of savedLocations) {
-            let marker = L.marker([location.latitude, location.longitude]).addTo(map);
-            marker.bindPopup(location.title); // Bind the name to the marker popup
-        }
-    }
-
     // Initialize base layers
     var baseLayers = createBaseLayers();
     baseLayers["Street Map"].addTo(map); // Default layer
@@ -44,6 +31,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add dynamic markers for logged-in users
     var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
+        var profileElement = document.getElementById("profile");
+
+        // Get saved locations from the profile element data attribute(Index.cshtml)
+        var savedLocations = profileElement.dataset.savedLocations;
+
+        console.log("Saved locations:", savedLocations);
+        if (savedLocations) {
+            
+            // Parse the JSON string to an object
+             savedLocations = JSON.parse(savedLocations); 
+
+            for (let location of savedLocations) {
+                console.log(location);
+                let marker = L.marker([location.latitude, location.longitude]).addTo(map);
+                marker.bindPopup(location.title); // Bind the name to the marker popup
+            } 
+        }
+
         map.on('click', function (e) {
             addMarkerOnClick(e, map)
         });
@@ -116,8 +121,7 @@ function createOverlayLayers(map) {
     return {
         "Cities": cities,
         "AQI Stations": aqiLayer,
-        "Fire Reports": fireLayer,
-        "Saved Locations": savedLocations
+        "Fire Reports": fireLayer
     };
 }
 

@@ -21,7 +21,7 @@ public partial class UserLocation
     public decimal Longitude { get; set; }
     
     [Range(1, 100, ErrorMessage = "Radius must be 1-100 miles")]
-    public int NotificationRadius { get; set; } = 10;
+    public int NotificationRadius { get; set; } = 25;
 
     public virtual User User { get; set; } = null!;
 

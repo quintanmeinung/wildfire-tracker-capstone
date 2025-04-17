@@ -27,7 +27,7 @@
 </div>
 
 @if (Model != null) {
-    <div class="profile-container">
+    <div id="profile" class="profile-container" data-saved-locations='@Json.Serialize(Model.SavedLocations)'>
         <partial name="_ProfilePartial" model="Model.Profile"/> <!-- Modal partial for Profile summary -->
     </div>
 
@@ -40,7 +40,7 @@
 <div id="compass-top-right"></div>
 
 <!-- Map Container -->
-<div data-saved-locations="@Model.SavedLocations" id="map" style="height: 700px; width: 100%; margin-top: 20px;"></div>
+<div id="map" style="height: 700px; width: 100%; margin-top: 20px;"></div>
 
 <!-- Custom Compass Image - Positioned at Top Right, below Layer Control -->
 <div class="compass-container">
