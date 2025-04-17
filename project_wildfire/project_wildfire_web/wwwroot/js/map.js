@@ -26,6 +26,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize compass
     initializeCompass(map);
 
+    // If the user is logged in, allow them to add dynamic markers
+    if (userId !== null) {
+        var activeMarker = null; // Variable to store user's most recent marker
+
+        // Handle map click event to add dynamic markers
+        map.on('click', function (e) {
+            addMarkerOnClick(e, map, activeMarker)
+        });
+    }
+
     // Fetch and add wildfire data as markers
     fetch('/api/WildfireAPIController/fetchWildfires')
     .then(response => response.json())
@@ -38,8 +48,100 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error('Error fetching wildfire data:', error);
         alert('Failed to fetch wildfire data.');
     });
-
 });
+
+function addMarkerOnClick(e, map, activeMarker) {
+    if (activeMarker) {
+        map.removeLayer(activeMarker); // Remove the previous marker if it exists
+    }
+    // Create a new marker at the clicked location
+    activeMarker = L.marker(e.latlng).addTo(map);
+
+    // Create a popup with a button to save the location
+    var popup = document.createElement('div');
+    popup.id = 'save-location-popup';
+    popup.className = 'btn btn-primary';
+    popup.innerHTML = 'Save Location';
+    popup.addEventListener('click', function (e) {
+        // Removed unused locationDto variable
+        var lat = e.latlng.lat.toFixed(5); // Get the latitude from the event
+        var lng = e.latlng.lng.toFixed(5); // Get the longitude from the event
+        saveLocationDialog(lat, lng); // Call the function to save the location
+    });
+
+    activeMarker.bindPopup(popup).openPopup();
+}
+/**
+ * Initializes the Leaflet map.
+ */
+function saveLocationDialog(lat, lng) {
+    // Create the dialog box element
+    var dialogBox = document.createElement('div');
+    dialogBox.id = 'save-location-dialog';
+    dialogBox.className = 'card';
+
+    var dialogBoxBody = document.createElement('div');
+    dialogBoxBody.className = 'card-body';
+
+    var dialogBoxTitle = document.createElement('h5');
+    dialogBoxTitle.className = 'card-title';
+    dialogBoxTitle.innerHTML = 'Save Location';
+    dialogBoxBody.appendChild(dialogBoxTitle);
+
+    var dialogBoxForm = document.createElement('form');
+    dialogBoxForm.id = 'save-location-form';
+    dialogBoxBody.appendChild(dialogBoxForm);
+
+    var dialogBoxNameField = document.createElement('input');
+    dialogBoxNameField.type = 'text';
+    dialogBoxNameField.className = 'form-control';
+    dialogBoxNameField.placeholder = 'Mom\'s House';
+    dialogBoxNameField.required = true;
+    dialogBoxForm.appendChild(dialogBoxNameField);
+
+    var dialogBoxSubmitButton = document.createElement('button');
+    dialogBoxSubmitButton.type = 'submit';
+    dialogBoxSubmitButton.className = 'btn btn-primary';
+    dialogBoxSubmitButton.innerHTML = 'Save Location';
+    dialogBoxForm.appendChild(dialogBoxSubmitButton);
+
+    dialogBoxSubmitButton.addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent form submission
+        var name = dialogBoxNameField.value;
+        saveLocation(name, lat, lng); // Call the function to save the location
+    });
+}
+
+function saveLocation(title, lat, lng) {
+    // Create the location object
+    var location = {
+        title: title,
+        latitude: lat,
+        longitude: lng
+    };
+
+    // Fetch POST request to save the location
+    fetch('/api/Location/SaveLocation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(location)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Failed to save location');
+        }
+    })
+
+    // Close the dialog box
+    var dialogBox = document.getElementById('save-location-dialog');
+    if (dialogBox) {
+        dialogBox.remove();
+    }
+}
 
 /**
  * Initializes the Leaflet map.
