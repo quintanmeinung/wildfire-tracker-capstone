@@ -40,27 +40,19 @@ public class LocationApiController : ControllerBase
         _locationRepository = locationRepository;
     }
 
-    [HttpPost]
-    [Route("api/Location/SaveLocation")]
+    [HttpPost("SaveLocation")]
     public async Task<IActionResult> SaveLocation([FromBody] UserLocationDTO userLocationDTO)
     {
-        Console.WriteLine("Received request: {userLocationDTO}");
+        _logger.LogDebug("Request received at api/Location/SaveLocation(POST)");
+        _logger.LogDebug("DTO received: {UserLocationDTO}", userLocationDTO);
         if (!ModelState.IsValid)
         {
             _logger.LogWarning("Invalid model state for UserLocationDTO: {ModelState}", ModelState);
             return BadRequest(ModelState);
         }
-        // POSTs from dynamic user markers will not have userId
-        var authUser = await _userManager.GetUserAsync(User);
-
         // Add location to user's saved locations
         UserLocation userLocation = userLocationDTO.ToUserLocation();
-        if (authUser != null)
-        {
-            userLocation.UserId = authUser.Id;
-        }
 
-        // Save changes
         try{
             await _locationRepository.AddLocationAsync(userLocation);
 
@@ -69,6 +61,7 @@ public class LocationApiController : ControllerBase
             return StatusCode(500, "Internal server error while saving location.");
         }
         
+        _logger.LogDebug("User location saved successfully");
         return Ok();
     }
 

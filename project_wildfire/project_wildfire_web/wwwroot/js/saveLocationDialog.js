@@ -2,8 +2,15 @@
 document.getElementById("saveLocationButton").addEventListener("click", async function (e) {
     e.preventDefault(); // Prevent default link behavior
 
+    var title = document.getElementById('titleInput').value; // Get the title input value
+    if (title === "") { // Check if title is empty
+        alert("Please enter a title for the location."); // Alert the user to enter a title
+        return;
+    }
+
     const userLocationDto = { // Create a DTO object to hold the location data
-        Title: document.getElementById('titleInput').value,
+        UserId: document.body.dataset.id, // Get the user ID from the body dataset
+        Title: title,
         Address: document.getElementById('addressInput').value,
         Latitude: document.getElementById('latInput').value,
         Longitude: document.getElementById('lngInput').value,
@@ -40,6 +47,9 @@ async function saveLocation(userLocationDto) {
             },
             body: JSON.stringify(userLocationDto) // Convert the DTO to JSON
         });
+        if (!response.ok) {
+            throw new Error('Save location POST failed: ' + response.statusText); // Throw an error if the response is not ok
+        }
         return response; // Return the response object
     } catch (error) {
         console.error("Error saving location:", error);

@@ -1,6 +1,7 @@
 import { addAQIMarker } from './AQI.js'; //imports AQI.js file
 import { addFireMarkers } from './fireMarkers.js';
 import { getUserId } from './site.js'; // Import userId
+import { initDialogModal } from './saveLocationModalHandler.js'; // Import modal handler
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -30,17 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add dynamic markers for logged-in users
     var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
-        initializeSavedLocations(map);
+        map.on('click', function (e) {
+            addMarkerOnClick(e, map)
+        });
     }
 });
-
-function initializeSavedLocations(map) {
-    // Handle map click event to add dynamic markers
-    map.on('click', function (e) {
-        addMarkerOnClick(e, map)
-    });
-
-}
 
 let activeMarker = null; // Variable to store user's most recent marker
 function addMarkerOnClick(e, map) {
@@ -55,80 +50,11 @@ function addMarkerOnClick(e, map) {
     popup.id = 'save-location-popup';
     popup.className = 'btn btn-primary';
     popup.innerHTML = 'Save Location';
-    popup.addEventListener('click', function (e) {
-        var lat = e.latlng.lat.toFixed(5); // Get the latitude from the event
-        var lng = e.latlng.lng.toFixed(5); // Get the longitude from the event
-        saveLocationDialog(lat, lng); // Call the function to save the location
-    });
-
-    activeMarker.bindPopup(popup).openPopup();
-}
-
-function saveLocationDialog(lat, lng) {
-    // Create the dialog box element
-    var dialogBox = document.createElement('div');
-    dialogBox.id = 'save-location-dialog';
-    dialogBox.className = 'card';
-
-    var dialogBoxBody = document.createElement('div');
-    dialogBoxBody.className = 'card-body';
-
-    var dialogBoxTitle = document.createElement('h5');
-    dialogBoxTitle.className = 'card-title';
-    dialogBoxTitle.innerHTML = 'Save Location';
-    dialogBoxBody.appendChild(dialogBoxTitle);
-
-    var dialogBoxForm = document.createElement('form');
-    dialogBoxForm.id = 'save-location-form';
-    dialogBoxBody.appendChild(dialogBoxForm);
-
-    var dialogBoxNameField = document.createElement('input');
-    dialogBoxNameField.type = 'text';
-    dialogBoxNameField.className = 'form-control';
-    dialogBoxNameField.placeholder = 'Mom\'s House';
-    dialogBoxNameField.required = true;
-    dialogBoxForm.appendChild(dialogBoxNameField);
-
-    var dialogBoxSubmitButton = document.createElement('button');
-    dialogBoxSubmitButton.type = 'submit';
-    dialogBoxSubmitButton.className = 'btn btn-primary';
-    dialogBoxSubmitButton.innerHTML = 'Save Location';
-    dialogBoxForm.appendChild(dialogBoxSubmitButton);
-
-    dialogBoxSubmitButton.addEventListener('click', function (e) {
-        e.preventDefault(); // Prevent form submission
-        var dto = {
-            userId: userId,
-            title: dialogBoxNameField.value,
-            lat: lat,
-            lng: lng
-        }
-        saveLocation(dto); // Call the function to save the location
-    });
-}
-
-function saveLocation(dto) {
-    // Fetch POST request to save the location
-    fetch('/api/Location/SaveLocation', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dto)
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Failed to save location');
-        }
-    })
-
-    // Close the dialog box
-    var dialogBox = document.getElementById('save-location-dialog');
-    if (dialogBox) {
-        dialogBox.remove();
-    }
+    popup.dataset.lat = e.latlng.lat.toFixed(5); // Store latitude in dataset
+    popup.dataset.lng = e.latlng.lng.toFixed(5); // Store longitude in dataset
+    activeMarker.bindPopup(popup);
+    activeMarker.openPopup(); // Open the popup immediately
+    initDialogModal(); // Initialize the modal handler
 }
 
 /**
