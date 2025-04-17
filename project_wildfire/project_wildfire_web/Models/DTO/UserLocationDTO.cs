@@ -13,22 +13,26 @@ public partial class UserLocationDTO
 {
     [Required]
     [Name("userId")]
-    public required string? UserId { get; set; }
+    public string? UserId { get; set; }
 
+    [Required]
     [Name("title")]
     public string? Title { get; set; }
 
     [Name("address")]
     public string? Address { get; set; }
 
+    [Required]
     [Name("latitude")]
     public string? Latitude { get; set; }
 
+    [Required]
     [Name("longitude")]
     public string? Longitude { get; set; }
 
+    [Required]
     [Name("radius")]
-    public string? NotificationRadius { get; set; }
+    public string? Radius { get; set; }
 
 }
 
@@ -47,7 +51,7 @@ namespace project_wildfire_web.ExtensionsMethods
             Longitude = ul.Longitude.ToString(),
             Title = ul.Title,
             Address = ul.Address,
-            NotificationRadius = ul.NotificationRadius.ToString()
+            Radius = ul.NotificationRadius.ToString()
             };
 
         }
@@ -73,7 +77,7 @@ namespace project_wildfire_web.ExtensionsMethods
                 Longitude = decimal.Parse(ul.Longitude),
                 Title = ul.Title,
                 Address = ul.Address,
-                NotificationRadius = int.Parse(ul.NotificationRadius)
+                NotificationRadius = int.Parse(ul.Radius)
             };
         }
     }

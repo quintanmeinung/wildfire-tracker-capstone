@@ -13,6 +13,7 @@ using CsvHelper.Configuration;
 using NetTopologySuite.Geometries;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 namespace project_wildfire_web.Controllers;
@@ -40,21 +41,18 @@ public class LocationApiController : ControllerBase
     }
 
     [HttpPost("SaveLocation")]
-    public async Task<IActionResult> SaveUserLocation([FromBody] UserLocationDTO userLocationDTO)
+    public async Task<IActionResult> SaveLocation([FromBody] UserLocationDTO userLocationDTO)
     {
-        // Find auth and primary user records for the given ID
-        var user = await _userRepository.GetUserByIdAsync(userLocationDTO.UserId);
-        var authUser = await _userManager.FindByIdAsync(userLocationDTO.UserId);
-
-        // Null check
-        if (user == null || authUser == null)
+        _logger.LogDebug("Request received at api/Location/SaveLocation(POST)");
+        _logger.LogDebug("DTO received: {UserLocationDTO}", userLocationDTO);
+        if (!ModelState.IsValid)
         {
-            return NotFound("User record not found.");
+            _logger.LogWarning("Invalid model state for UserLocationDTO: {ModelState}", ModelState);
+            return BadRequest(ModelState);
         }
         // Add location to user's saved locations
-        var userLocation = userLocationDTO.ToUserLocation();
+        UserLocation userLocation = userLocationDTO.ToUserLocation();
 
-        // Save changes
         try{
             await _locationRepository.AddLocationAsync(userLocation);
 
@@ -63,6 +61,7 @@ public class LocationApiController : ControllerBase
             return StatusCode(500, "Internal server error while saving location.");
         }
         
+        _logger.LogDebug("User location saved successfully");
         return Ok();
     }
 
