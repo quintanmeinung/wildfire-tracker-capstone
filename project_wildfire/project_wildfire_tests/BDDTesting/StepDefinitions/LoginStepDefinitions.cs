@@ -10,7 +10,7 @@ public sealed class LoginStepDefinitions
 {
     
     private readonly FirefoxDriver _driver;
- 
+    
     public LoginStepDefinitions()
     {
         new DriverManager().SetUpDriver(new FirefoxConfig());

@@ -8,6 +8,7 @@ export function addFireMarkers(fireLayer, apiData) {
           fillOpacity: 0.5,  // Transparency of the circle
           radius: 500        // Radius of the circle in meters
       }).bindPopup(`🔥 Radiative Power: ${fire.radiativePower}`)
+        .setAttribute('data-type', 'wildfire')
         .addTo(fireLayer);
   });
 }

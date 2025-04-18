@@ -6,6 +6,7 @@ Feature: Wildfire Marker
     Then a marker should be placed at (45.0, -120.5)
 
   Scenario: No wildfire data
+    Given there are no wildfires
     When the map loads the wildfire data
     Then no markers should be placed
 

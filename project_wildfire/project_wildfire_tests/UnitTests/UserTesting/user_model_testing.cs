@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
 using project_wildfire_web.Models;
 
-namespace Project.Wildfire.Tests.Models
+namespace Project.Wildfire.UnitTests
 {
     [TestFixture]
     public class UserTests
