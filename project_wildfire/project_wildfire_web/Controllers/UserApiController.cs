@@ -1,4 +1,4 @@
-/*using System.Diagnostics;
+using System.Diagnostics;
 using System.Globalization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +13,7 @@ using CsvHelper.Configuration;
 using NetTopologySuite.Geometries;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 
 namespace project_wildfire_web.Controllers;
@@ -53,6 +54,11 @@ public class UserApiController : ControllerBase
         user.FirstName = profileViewModel.FirstName;
         user.LastName = profileViewModel.LastName;
 
+        //update custom preferences record
+        user.FontSize = profileViewModel.FontSize ?? "medium"; //Added the .FontSize class Attribute 
+        user.ContrastMode = profileViewModel.ContrastMode;
+        user.TextToSpeech = profileViewModel.TextToSpeech;
+
         // Update auth user record
         authUser.Email = profileViewModel.Email;
         authUser.PhoneNumber = profileViewModel.PhoneNumber;
@@ -88,7 +94,36 @@ public class UserApiController : ControllerBase
 
         return Ok("Email updated successfully.");
     }
-}*/
+
+    //Saves Preferences 
+    [HttpPost("preferences")]
+    public async Task<IActionResult> SavePreferences([FromBody] PreferencesDTO dto)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        _logger.LogInformation($"🔍 Incoming savePreferences call for user: {userId}");
+        if (string.IsNullOrEmpty(userId))
+        {
+            _logger.LogWarning("⚠️ No user ID found in claims.");
+            return Unauthorized("User not authenticated");
+        }
+        var user = await _userRepository.GetUserByIdAsync(userId);
+        if (user == null)
+        {
+            _logger.LogWarning($"⚠️ No matching user found in DB for userId: {userId}");
+            return NotFound("User not found");
+        }
+
+        _logger.LogInformation($"💾 Saving preferences: FontSize={dto.FontSize}, ContrastMode={dto.ContrastMode}, TextToSpeech={dto.TextToSpeech}");
+        user.FontSize = dto.FontSize ?? "medium";
+        user.ContrastMode = dto.ContrastMode;
+        user.TextToSpeech = dto.TextToSpeech;
+
+        _userRepository.UpdateUser(user);
+        _logger.LogInformation("✅ Preferences updated and saved to DB");
+        return Ok();
+    }
+
+}
 
 
 

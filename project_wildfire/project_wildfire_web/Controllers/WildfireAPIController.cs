@@ -39,21 +39,38 @@ namespace project_wildfire_web.Controllers;
         }
 
         [HttpGet("fetchWildfires")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Fire>))]
-
+        [ProducesResponseType(200, Type = typeof(IEnumerable<FireDTO>))]
         public async Task<IActionResult> GetWildfiresAsync()
         {
+            var isTest = HttpContext.Request.Query.ContainsKey("test");
+
+            if (isTest)
+            {
+                _logger.LogInformation("[TEST MODE] Returning static wildfire data.");
+
+                var testFires = new List<FireDTO>
+                {
+                    new FireDTO { Latitude = 45, Longitude = -120, RadiativePower = 123 },
+                    new FireDTO { Latitude = 46, Longitude = -121, RadiativePower = 88 }
+                };
+
+                return Ok(testFires);
+            }
+
             List<FireDTO> wildfires = await _nasaService.GetFiresAsync();
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             if (wildfires == null)
             {
                 _logger.LogError("NASA Service returned null.");
                 return StatusCode(500, "NASA Service is unavailable or returned no data.");
             }
+
             return Ok(wildfires);
         }
+
 
         [HttpPost ("postData")]
         public async Task<IActionResult> SaveDataToDB()
