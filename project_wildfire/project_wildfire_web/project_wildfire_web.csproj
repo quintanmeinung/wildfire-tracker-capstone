@@ -8,6 +8,8 @@
     <UserSecretsId>2384a56c-7930-4644-b761-11363855d8e6</UserSecretsId>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+    <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
+    <UseRazorBuildServer>false</UseRazorBuildServer>
   </PropertyGroup>
 
   <ItemGroup>
