@@ -5,29 +5,26 @@ import { initDialogModal } from './saveLocationModalHandler.js'; // Import modal
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize the map
     var map = initializeMap();
-
-    // Initialize base layers
     var baseLayers = createBaseLayers();
-    baseLayers["Street Map"].addTo(map); // Default layer
+    baseLayers["Street Map"].addTo(map);
 
-    // Initialize overlays
     var overlayLayers = createOverlayLayers(map, false);
-
-    // Add layer control to the map
     var layerControl = L.control.layers(baseLayers, overlayLayers);
     layerControl.addTo(map);
 
-    // Handle geolocation
-    handleGeolocation(map);
+    const testParam = new URLSearchParams(window.location.search).get("test");
 
-    // Add legend
+    if (!testParam) {
+        handleGeolocation(map);
+    } else {
+        console.log("🧪 Test mode → skipping geolocation");
+    }
+
     addLegend(map);
-
-    // Initialize compass
     initializeCompass(map);
 
+<<<<<<< HEAD
     // Add dynamic markers for logged-in users
     var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
@@ -74,6 +71,46 @@ function addMarkerOnClick(e, map) {
     activeMarker.openPopup(); // Open the popup immediately
     initDialogModal(); // Initialize the modal handler
 }
+=======
+    // 🧪 Test data logic
+    if (testParam === "no-data") {
+        console.log("🧪 Test Mode: no-data → Skipping fire markers");
+    }
+    else if (testParam === "single") {
+        console.log("🧪 Test Mode: single → Adding one fire marker");
+        const testFires = [
+            { latitude: 45.0, longitude: -120.5, radiativePower: 40.2 }
+        ];
+        addFireMarkers(overlayLayers["Fire Reports"], testFires);
+        layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
+    }
+    else if (testParam === "multiple") {
+        console.log("🧪 Test Mode: multiple → Adding two fire markers");
+        const testFires = [
+            { latitude: 45.0, longitude: -120.5, radiativePower: 45.7 },
+            { latitude: 46.0, longitude: -121.5, radiativePower: 50.1 }
+        ];
+        addFireMarkers(overlayLayers["Fire Reports"], testFires);
+        layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
+    }
+    else {
+        // 🌍 Normal mode
+        console.log("🌍 Normal mode → Fetching wildfire data from API");
+        fetch('/api/WildfireAPIController/fetchWildfires' + window.location.search)
+            .then(response => response.json())
+            .then(data => {
+                addFireMarkers(overlayLayers["Fire Reports"], data);
+                layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
+            })
+            .catch(error => {
+                console.error('Error fetching wildfire data:', error);
+                alert('Failed to fetch wildfire data.');
+            });
+    }
+});
+
+
+>>>>>>> 3a6c109a04e6f8ef58f0477012d947a4ac4860f4
 
 /**
  * Initializes the Leaflet map.
@@ -211,19 +248,6 @@ function initializeCompass(map) {
     }
 }
 
-
-/**
- * Test logic for no markers.
- */
-/*
-const testParam = new URLSearchParams(window.location.search).get("test");
-
-if (testParam === "no-data") {
-  console.log("🧪 Test Mode: no-data triggered");
-  // skip loading markers
-} else {
-  fetch("/api/WildfireAPIController/fetchWildfires").then(...)
-}*/
 
 
 
