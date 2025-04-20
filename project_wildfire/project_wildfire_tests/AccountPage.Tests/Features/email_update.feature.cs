@@ -19,13 +19,13 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [NUnit.Framework.TestFixtureAttribute()]
+    [NUnit.Framework.DescriptionAttribute("Email Update")]
+    [NUnit.Framework.FixtureLifeCycleAttribute(NUnit.Framework.LifeCycle.InstancePerTestCase)]
     public partial class EmailUpdateFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
-        
-        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
         private static string[] featureTags = ((string[])(null));
         
@@ -34,29 +34,17 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
 #line 1 "email_update.feature"
 #line hidden
         
-        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
-        {
-            get
-            {
-                return this._testContext;
-            }
-            set
-            {
-                this._testContext = value;
-            }
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
-        public static async System.Threading.Tasks.Task FeatureSetupAsync(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
+        [NUnit.Framework.OneTimeSetUpAttribute()]
+        public static async System.Threading.Tasks.Task FeatureSetupAsync()
         {
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute(Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupBehavior.EndOfClass)]
+        [NUnit.Framework.OneTimeTearDownAttribute()]
         public static async System.Threading.Tasks.Task FeatureTearDownAsync()
         {
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
+        [NUnit.Framework.SetUpAttribute()]
         public async System.Threading.Tasks.Task TestInitializeAsync()
         {
             testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(featureHint: featureInfo);
@@ -71,7 +59,7 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
             }
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
+        [NUnit.Framework.TearDownAttribute()]
         public async System.Threading.Tasks.Task TestTearDownAsync()
         {
             await testRunner.OnScenarioEndAsync();
@@ -81,7 +69,7 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<NUnit.Framework.TestContext>(NUnit.Framework.TestContext.CurrentContext);
         }
         
         public async System.Threading.Tasks.Task ScenarioStartAsync()
@@ -94,10 +82,9 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
             await testRunner.CollectScenarioErrorsAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Successfully update email")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Email Update")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("REQ-1234")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Successfully update email")]
+        [NUnit.Framework.CategoryAttribute("REQ-1234")]
         public async System.Threading.Tasks.Task SuccessfullyUpdateEmail()
         {
             string[] tagsOfScenario = new string[] {
@@ -136,10 +123,9 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Fail to update email due to invalid format")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Email Update")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("REQ-1235")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Fail to update email due to invalid format")]
+        [NUnit.Framework.CategoryAttribute("REQ-1235")]
         public async System.Threading.Tasks.Task FailToUpdateEmailDueToInvalidFormat()
         {
             string[] tagsOfScenario = new string[] {
@@ -175,10 +161,9 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Fail to update email when user is not found")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Email Update")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("REQ-1236")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Fail to update email when user is not found")]
+        [NUnit.Framework.CategoryAttribute("REQ-1236")]
         public async System.Threading.Tasks.Task FailToUpdateEmailWhenUserIsNotFound()
         {
             string[] tagsOfScenario = new string[] {
