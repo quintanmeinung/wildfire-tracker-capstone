@@ -16,13 +16,7 @@ public partial class UserLocation
 
     public decimal Longitude { get; set; }
 
-<<<<<<< HEAD
-    public string? Address { get; set; }
-
     public int NotificationRadius { get; set; } 
-=======
-    public int NotificationRadius { get; set; }
->>>>>>> dev
 
     public virtual User User { get; set; } = null!;
 }
