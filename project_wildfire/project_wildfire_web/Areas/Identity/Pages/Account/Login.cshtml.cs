@@ -24,12 +24,12 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly IUserPreferencesRepository _userPreferencesRepository;
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IUserPreferencesRepository userPreferencesRepository)
+        private readonly IUserRepository _userRepository;
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IUserRepository userRepository)
         {
             _signInManager = signInManager;
             _logger = logger;
-            _userPreferencesRepository = userPreferencesRepository;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -122,21 +122,32 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
                     // ✅ Find user by email FIRST
                     var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
                     if (user != null)
-                    _logger.LogInformation("User logged in.");
+                    /*_logger.LogInformation("User logged in.");
                     // ✅ Fetch user preferences from the database
                     _logger.LogInformation($"Fetching preferences for user: {user.Id}");
-                    var preferences = await _userPreferencesRepository.GetUserPreferencesAsync(user.Id);
-                    if (preferences != null)
+                     
+                    
+                        /*This section needs to be updated to work with userRepository (where preferences are held now)*/
+
+                    //var preferences = await _userPreferencesRepository.GetUserPreferencesAsync(user.Id);
+                    _logger.LogInformation("Looking up primary user from DB using ID: " + user.Id);
+
+                    var primaryUser = await _userRepository.GetUserByIdAsync(user.Id);
+                    if (primaryUser != null)
                     {
-                        HttpContext.Session.SetString("FontSize", preferences.FontSize);
-                        HttpContext.Session.SetString("ContrastMode", preferences.ContrastMode.ToString());
-                        HttpContext.Session.SetString("TextToSpeech", preferences.TextToSpeech.ToString());
-                        _logger.LogInformation($"Loaded Preferences - FontSize: {preferences.FontSize}, ContrastMode: {preferences.ContrastMode}, TextToSpeech: {preferences.TextToSpeech}");
+                        HttpContext.Session.SetString("FontSize", primaryUser.FontSize ?? "medium");
+                        HttpContext.Session.SetString("ContrastMode", primaryUser.ContrastMode.ToString());
+                        HttpContext.Session.SetString("TextToSpeech", primaryUser.TextToSpeech.ToString());
+                        _logger.LogInformation($"Loaded Preferences - FontSize: {primaryUser.FontSize}, ContrastMode: {primaryUser.ContrastMode}, TextToSpeech: {primaryUser.TextToSpeech}");
+                        _logger.LogInformation("Session FontSize right after set: " + HttpContext.Session.GetString("FontSize"));
+                        _logger.LogInformation("Session saved values: FontSize=" + primaryUser.FontSize + ", ContrastMode=" + primaryUser.ContrastMode + ", TTS=" + primaryUser.TextToSpeech);
+                        _logger.LogInformation("Session check: " + HttpContext.Session.GetString("FontSize"));
+
                     }
                     else
                     {
                         _logger.LogWarning($"No preferences found for user: {user.Id}");
-                    }
+                    } //End of Commented Code
 
                     return LocalRedirect(returnUrl);
                 }

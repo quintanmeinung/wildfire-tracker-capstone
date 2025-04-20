@@ -3,29 +3,71 @@ import { addFireMarkers } from './fireMarkers.js';
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize the map
     var map = initializeMap();
-
-    // Initialize base layers
     var baseLayers = createBaseLayers();
-    baseLayers["Street Map"].addTo(map); // Default layer
+    baseLayers["Street Map"].addTo(map);
 
+<<<<<<< HEAD
+    var overlayLayers = createOverlayLayers(map, false);
+    var layerControl = L.control.layers(baseLayers, overlayLayers);
+    layerControl.addTo(map);
+
+    const testParam = new URLSearchParams(window.location.search).get("test");
+=======
     // Initialize overlays
     var overlayLayers = createOverlayLayers(map, false);
 
     // Add layer control to the map
     var layerControl = L.control.layers(baseLayers, overlayLayers);
     layerControl.addTo(map);
+>>>>>>> origin
 
-    // Handle geolocation
-    handleGeolocation(map);
+    if (!testParam) {
+        handleGeolocation(map);
+    } else {
+        console.log("🧪 Test mode → skipping geolocation");
+    }
 
-    // Add legend
     addLegend(map);
-
-    // Initialize compass
     initializeCompass(map);
 
+<<<<<<< HEAD
+    // 🧪 Test data logic
+    if (testParam === "no-data") {
+        console.log("🧪 Test Mode: no-data → Skipping fire markers");
+    }
+    else if (testParam === "single") {
+        console.log("🧪 Test Mode: single → Adding one fire marker");
+        const testFires = [
+            { latitude: 45.0, longitude: -120.5, radiativePower: 40.2 }
+        ];
+        addFireMarkers(overlayLayers["Fire Reports"], testFires);
+        layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
+    }
+    else if (testParam === "multiple") {
+        console.log("🧪 Test Mode: multiple → Adding two fire markers");
+        const testFires = [
+            { latitude: 45.0, longitude: -120.5, radiativePower: 45.7 },
+            { latitude: 46.0, longitude: -121.5, radiativePower: 50.1 }
+        ];
+        addFireMarkers(overlayLayers["Fire Reports"], testFires);
+        layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
+    }
+    else {
+        // 🌍 Normal mode
+        console.log("🌍 Normal mode → Fetching wildfire data from API");
+        fetch('/api/WildfireAPIController/fetchWildfires' + window.location.search)
+            .then(response => response.json())
+            .then(data => {
+                addFireMarkers(overlayLayers["Fire Reports"], data);
+                layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
+            })
+            .catch(error => {
+                console.error('Error fetching wildfire data:', error);
+                alert('Failed to fetch wildfire data.');
+            });
+    }
+=======
     // Fetch and add wildfire data as markers
     fetch('/api/WildfireAPIController/fetchWildfires')
     .then(response => response.json())
@@ -39,7 +81,10 @@ document.addEventListener("DOMContentLoaded", function () {
         alert('Failed to fetch wildfire data.');
     });
 
+>>>>>>> origin
 });
+
+
 
 /**
  * Initializes the Leaflet map.
@@ -180,7 +225,10 @@ function initializeCompass(map) {
 
 
 
+<<<<<<< HEAD
+=======
 
 
 
 
+>>>>>>> origin

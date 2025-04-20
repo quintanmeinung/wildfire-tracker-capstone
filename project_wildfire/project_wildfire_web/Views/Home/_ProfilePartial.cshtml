@@ -1,5 +1,6 @@
+@model project_wildfire_web.Models.DTO.ProfileViewModelDTO
 @using project_wildfire_web.Areas.Identity.Pages.Account.Manage
-@model project_wildfire_web.Models.ProfileViewModel
+
 
 <!-- Stores users profile view model -->
 <div id="profile-data" data-profile="@Json.Serialize(Model)"></div>
@@ -35,7 +36,7 @@
         {
             <div class="container">
                 <div class="row justify-content-start pl-0">
-                    <a class="@ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-area="Identity" asp-page="/Account/Manage/Index">Account Settings</a>
+                    <a class="@ManageNavPages.IndexNavClass(ViewContext)" id="profile" href="/Identity/Account/Manage/ManageAccount">Account Settings</a>
                 </div>
                 <div class="row my-3">
                     
@@ -63,8 +64,11 @@
                                 <div class="row mt-2">
                                     <div class="col">
                                         <label for="emailInput">Email</label>
-                                        <input id="emailInput" class="form-control" type="text" value="@Model.Email" readonly>
+                                        <input id="emailInput" class="form-control" type="text" value="@Model.Email">
                                     </div>
+                                   
+                                </div>
+                                <div class="row mt-2">
                                     <div class="col">
                                         <label for="phoneInput">Phone</label>
                                         <input id="phoneInput" class="form-control" type="tel" value="@Model.PhoneNumber" readonly>

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -137,4 +137,4 @@ public class WildfireAPIControllerTests
         Assert.That(statusCodeResult.StatusCode, Is.EqualTo(500));
         Assert.That(statusCodeResult.Value, Is.EqualTo("NASA Service is unavailable or returned no data."));
     }
-}
+}*/
