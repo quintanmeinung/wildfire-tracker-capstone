@@ -1,0 +1,75 @@
+@{
+    ViewData["Title"] = "Resources";
+}
+
+<div class="resources-page">
+    <h2 class="text-center display-4">Welcome to our Resource page</h2>
+    <p class="text-center">Here you will find useful links and information about fire safety, food pantries, and evacuation routes in case of a wildfire emergency.</p>
+
+    <div class="accordion mx-auto" id="resourceAccordion" style="max-width: 800px;">
+        <!-- Food Pantries -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#foodPantries">
+                    Food Pantry
+                </button>
+            </h2>
+            <div id="foodPantries" class="accordion-collapse collapse" data-bs-parent="#resourceAccordion">
+                <div class="accordion-body">
+                    <ul>
+                        <h5 class ="text-center">In the event of wildfire that results in the loss of access to food we aim to provide a way to help you locate
+                            the nearest food pantry. Using the link below you will be directed to Feeding America website, which is the largest charity 
+                            "working to end hunger in the United States. We partner with food banks, food pantries, and local food programs to bring food
+                            to people facing hunger. We advocate for policies that create long-term solutions to hunger."
+                        </h5>
+                        <h5 class="text-center"><a href="https://www.feedingamerica.org/find-your-local-foodbank" target="_blank">Feeding America</a></h5>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fire Safety -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fireSafety">
+                    Fire Safety
+                </button>
+            </h2>
+            <div id="fireSafety" class="accordion-collapse collapse" data-bs-parent="#resourceAccordion">
+                <div class="accordion-body">
+                    <h5 class="text-center">Fire safety is critical in preventing fires at home and learning how wildfires can impact your home even
+                        though you might be at a "safe distance" from the fire itself. Below is a video that shows how wildfires can burn unsuspecting
+                        homes and how one might be able to prevent it. Here you'll find links to the <a href="https://www.redcross.org/get-help/how-to-prepare-for-emergencies/types-of-emergencies/fire.html?srsltid=AfmBOorL2Ekl5KdnF1bg1y4_GmCWyec-7VVWagmdcXcOZTi_j_CfqRCl" 
+                        target="_blank" rel="noopener noreferrer">American Red Cross</a> and the <a href="https://www.nfpa.org/education-and-research/wildfire" 
+                        target="_blank" rel="noopener noreferrer">National Fire Protection Association</a> that will include further information.
+                    </h5>
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://youtube.com/embed/3QthynXympI" title="Fire Safety Video" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Evacuation Routes -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#evacRoutes">
+                    Evacuation Routes
+                </button>
+            </h2>
+            <div id="evacRoutes" class="accordion-collapse collapse" data-bs-parent="#resourceAccordion">
+                <div class="accordion-body">
+                    <h5 class="text-center">Knowing how and where to evacaute is vital in the event of a wildfire
+                        sometimes you may have only minutes to evacuate. Below are links on how to prepare yourself
+                        for an evacuation, how to stay vigilant on local alerts, what to bring, and how to plan out
+                        an escape route.
+                    </h5>
+                    <ul>
+                        <h5 class="text-center"><a href="https://www.ready.gov/evacuation" target="_blank">Ready.gov</a></h5>
+                        <h5 class="text-center"><a href="https://wildfire.oregon.gov/Pages/prepare.aspx" target="_blank">Oregon Widlfire Response & Recovery</a></h5>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
