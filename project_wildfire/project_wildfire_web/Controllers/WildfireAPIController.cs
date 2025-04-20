@@ -85,6 +85,7 @@ namespace project_wildfire_web.Controllers;
 
             return StatusCode(500, "Failed to fetch wildfires from NASA API.");
         }
+        /////Functiont to pull fire fatabase
 
 
         
