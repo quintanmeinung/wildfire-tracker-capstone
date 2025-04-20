@@ -1,0 +1,248 @@
+@using project_wildfire_web.Areas.Identity.Pages.Account.Manage
+@model project_wildfire_web.Models.ProfileViewModel
+
+<!-- Stores users profile view model -->
+<div id="profile-data" data-profile="@Json.Serialize(Model)"></div>
+
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="profileModalLabel">
+            @if (Model == null)
+            {
+                @:Profile
+            }
+            else if (Model.FirstName == null && Model.LastName == null)
+            {
+                @Model.Email
+            }
+            else
+            {
+                @Model.FirstName@: @Model.LastName
+            }
+            
+        </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body pt-0" id="profileModalBody">
+        @if (Model == null)
+        {
+            <p class="lead">Profile information not available. Please log in or create a profile.</p>
+        }
+        else
+        {
+            <div class="container">
+                <div class="row justify-content-start pl-0">
+                    <a class="@ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-area="Identity" asp-page="/Account/Manage/Index">Account Settings</a>
+                </div>
+                <div class="row my-3">
+                    
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-3">
+                                <h4><u>Information</u></h4>
+                            </div>
+                            <div class="col align-text-bottom">
+                                <a href="#" id="editButton">edit</a>
+                            </div>
+                        </div>
+                        <form>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="firstNameInput">First Name</label>
+                                        <input id="firstNameInput" class="form-control" type="text" value="@Model.FirstName" readonly>
+                                    </div>
+                                    <div class="col">
+                                        <label for="lastNameInput">Last Name</label>
+                                        <input id="lastNameInput" class="form-control" type="text" value="@Model.LastName" readonly>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col">
+                                        <label for="emailInput">Email</label>
+                                        <input id="emailInput" class="form-control" type="text" value="@Model.Email" readonly>
+                                    </div>
+                                    <div class="col">
+                                        <label for="phoneInput">Phone</label>
+                                        <input id="phoneInput" class="form-control" type="tel" value="@Model.PhoneNumber" readonly>
+                                    </div>
+                                </div>
+                                         
+                            </div>
+                                
+                        </form>
+                        
+                        
+                        @* <table class="table table-hover mt-3 align-middle">
+                            <tbody>
+                                <tr>
+                                    <td><b>NAME:</b></td>
+                                    <td><input id="firstNameInput" class="form-control" type="text" value="@Model.FirstName" readonly><input id="lastNameInput" class="form-control" type="text" value="@Model.LastName" readonly></td>
+                                    <td>
+                                        <div>
+                                            <button class="btn btn-link" id="nameEditSaveButton" onclick="toggleEdit('name')">
+                                                @if (Model.FirstName == null && Model.LastName == null)
+                                                { 
+                                                    @:add 
+                                                } else { 
+                                                    @:edit
+                                                }
+                                            </button>
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td><b>EMAIL:</b></td>
+                                    <td><input id="emailInput" class="form-control" type="text" placeholder="@Model.Email" readonly></td>
+                                    <td>
+                                        <div>
+                                            <button class="btn btn-link" id="emailEditSaveButton" onclick="toggleEdit('email')">
+                                                <!-- Email should never be empty. It is required for registration -->
+                                            edit
+                                            </button>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td><b>PHONE:</b></td>
+                                    <td id="usersPhone"><input class="form-control" type="text" placeholder="@Model.PhoneNumber" readonly></td>
+                                    <td>
+                                        <button class="btn btn-link" id="phoneEditSaveButton" onclick="toggleEdit('phone')">
+                                            @if (Model.PhoneNumber == null)
+                                            {
+                                                @:add
+                                            }
+                                            else
+                                            {
+                                                @:edit
+                                            }
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>    *@                     
+                    </div>
+                    @* <div class="col-4">
+                        <h5><u>Notifications</u></h5>
+                        <table class="table table-hover mt-3 align-middle">
+                            <tbody>
+                                <tr class="my-5">
+                                    <td id="notificationState"><u>Disabled:</u></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="notificationSwitch" disabled>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    
+                                </tr>
+                                <tr class="my-5">
+                                    <td><u>Email:</u></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="emailEnableSwitch" disabled>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    
+                                </tr>
+                                <tr class="my-5">
+                                    <td><u>SMS:</u></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="smsEnableSwitch" disabled>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>      
+                    </div> *@
+                    
+                </div>
+                <div class="row">
+                    <h4 class="mt-4"><u>Saved Locations</u></h4>
+                    <div class="container ml-1">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td><u>Name</u></td>
+                                    <td><u>Address</u></td>
+                                    <td><u>Latitude</u></td>
+                                    <td><u>Longitude</u></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @if (Model.SavedLocations == null || !Model.SavedLocations.Any())
+                                    {
+                                        <td>No saved locations</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var location in Model.SavedLocations)
+                                        {
+                                            <td>@location</td>
+                                        }
+                                    } 
+                                </tr>
+                                    
+                            </tbody>
+                        </table>
+                    </div>  
+                </div>
+                <div class="row">
+                    <h4 class="mt-4"><u>Subscribed Fires</u></h4>
+                    <div class="container ml-1">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td><u>ID</u></td>
+                                    <td><u>Status</u></td>
+                                    <td><u>Location</u></td>
+                                    <td><u>Intensity</u></td>
+                                    <td><u>Acres</u></td>
+                                    <td><u>Evacuation</u></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @if (Model.FireSubscriptions == null || !Model.FireSubscriptions.Any())
+                                    {
+                                        <td>No fire subscriptions.</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var fire in Model.FireSubscriptions)
+                                        {
+                                            <td>@fire</td>
+                                        }
+                                    } 
+                                </tr>
+                                    
+                            </tbody>
+                        </table>
+                    </div>  
+                </div>
+            </div>  
+        }        
+      </div>
+    </div>
+  </div>
+</div>

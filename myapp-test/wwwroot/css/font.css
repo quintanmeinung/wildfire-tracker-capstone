@@ -1,0 +1,21 @@
+.font-small {
+    font-size: 12px;
+}
+.font-medium {
+    font-size: 16px;
+}
+.font-large {
+    font-size: 20px;
+}
+.font-xlarge {
+    font-size: 24px;
+}
+
+.high-contrast {
+    background-color: black;
+    color: white;
+}
+
+.high-contrast a {
+    color: yellow;  /* Adjust links for high contrast */
+}
