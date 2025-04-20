@@ -64,5 +64,6 @@ jobs:
         with:
           app-name: 'Wildfire-Web'
           slot-name: 'Production'
-          package: .
+          package: ${{ env.DOTNET_ROOT }}/myapp
+
           
