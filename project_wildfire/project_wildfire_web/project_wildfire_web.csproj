@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>2384a56c-7930-4644-b761-11363855d8e6</UserSecretsId>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+    <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
+    <UseRazorBuildServer>false</UseRazorBuildServer>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,5 +37,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.1" />
     <PackageReference Include="xunit" Version="2.9.3" />
   </ItemGroup>
-
-</Project>
+  </Project>

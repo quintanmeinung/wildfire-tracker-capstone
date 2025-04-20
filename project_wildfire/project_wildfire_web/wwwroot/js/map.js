@@ -7,11 +7,20 @@ document.addEventListener("DOMContentLoaded", function () {
     var baseLayers = createBaseLayers();
     baseLayers["Street Map"].addTo(map);
 
+<<<<<<< HEAD
     var overlayLayers = createOverlayLayers(map, false);
     var layerControl = L.control.layers(baseLayers, overlayLayers);
     layerControl.addTo(map);
 
     const testParam = new URLSearchParams(window.location.search).get("test");
+=======
+    // Initialize overlays
+    var overlayLayers = createOverlayLayers(map, false);
+
+    // Add layer control to the map
+    var layerControl = L.control.layers(baseLayers, overlayLayers);
+    layerControl.addTo(map);
+>>>>>>> origin
 
     if (!testParam) {
         handleGeolocation(map);
@@ -22,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     addLegend(map);
     initializeCompass(map);
 
+<<<<<<< HEAD
     // 🧪 Test data logic
     if (testParam === "no-data") {
         console.log("🧪 Test Mode: no-data → Skipping fire markers");
@@ -57,6 +67,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert('Failed to fetch wildfire data.');
             });
     }
+=======
+    // Fetch and add wildfire data as markers
+    fetch('/api/WildfireAPIController/fetchWildfires')
+    .then(response => response.json())
+    .then(data => {
+        // Assuming addFireMarkers is updated to handle dynamic data
+        addFireMarkers(overlayLayers["Fire Reports"], data);
+        layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
+    })
+    .catch(error => {
+        console.error('Error fetching wildfire data:', error);
+        alert('Failed to fetch wildfire data.');
+    });
+
+>>>>>>> origin
 });
 
 
@@ -200,3 +225,10 @@ function initializeCompass(map) {
 
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> origin
