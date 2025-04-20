@@ -18,6 +18,7 @@ public partial class FireDataDbContext : DbContext
 
     public virtual DbSet<UserLocation> UserLocations { get; set; }
 
+
     //Commented out until we have PK for UserPreferences Table
     /*
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -145,7 +146,7 @@ public partial class FireDataDbContext : DbContext
 
     modelBuilder.Entity<UserLocation>(entity =>
     {
-        entity.HasNoKey();
+        entity.HasKey(e => e.Id);
 
         entity.Property(e => e.Latitude).HasColumnType("decimal(8, 6)");
         entity.Property(e => e.Longitude).HasColumnType("decimal(9, 6)");
@@ -161,7 +162,7 @@ public partial class FireDataDbContext : DbContext
     // ✅ Fix: Temporarily Define UserId as Primary Key for EF Core In-Memory Testing
     /* modelBuilder.Entity<UserPreferences>(entity =>
     {
-        // Temporary PK for testing (Does NOT affect real database)
+        
         entity.HasKey(e => e.UserId);
 
         entity.Property(e => e.FontSize).HasColumnType("string");

@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace project_wildfire_tests.Fire_Marking_Testing.FireMarker_Tests.Features
+namespace project_wildfire_tests.Features
 {
     using Reqnroll;
     using System;
@@ -19,44 +19,32 @@ namespace project_wildfire_tests.Fire_Marking_Testing.FireMarker_Tests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [NUnit.Framework.TestFixtureAttribute()]
+    [NUnit.Framework.DescriptionAttribute("Wildfire Marker")]
+    [NUnit.Framework.FixtureLifeCycleAttribute(NUnit.Framework.LifeCycle.InstancePerTestCase)]
     public partial class WildfireMarkerFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
-        private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
-        
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "fire_marking_testing/FireMarker.Tests/Features", "Wildfire Marker", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Wildfire Marker", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "WildfireMarker.feature"
 #line hidden
         
-        public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
-        {
-            get
-            {
-                return this._testContext;
-            }
-            set
-            {
-                this._testContext = value;
-            }
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
-        public static async System.Threading.Tasks.Task FeatureSetupAsync(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
+        [NUnit.Framework.OneTimeSetUpAttribute()]
+        public static async System.Threading.Tasks.Task FeatureSetupAsync()
         {
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute(Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupBehavior.EndOfClass)]
+        [NUnit.Framework.OneTimeTearDownAttribute()]
         public static async System.Threading.Tasks.Task FeatureTearDownAsync()
         {
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
+        [NUnit.Framework.SetUpAttribute()]
         public async System.Threading.Tasks.Task TestInitializeAsync()
         {
             testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(featureHint: featureInfo);
@@ -71,7 +59,7 @@ namespace project_wildfire_tests.Fire_Marking_Testing.FireMarker_Tests.Features
             }
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
+        [NUnit.Framework.TearDownAttribute()]
         public async System.Threading.Tasks.Task TestTearDownAsync()
         {
             await testRunner.OnScenarioEndAsync();
@@ -81,7 +69,7 @@ namespace project_wildfire_tests.Fire_Marking_Testing.FireMarker_Tests.Features
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<NUnit.Framework.TestContext>(NUnit.Framework.TestContext.CurrentContext);
         }
         
         public async System.Threading.Tasks.Task ScenarioStartAsync()
@@ -94,9 +82,8 @@ namespace project_wildfire_tests.Fire_Marking_Testing.FireMarker_Tests.Features
             await testRunner.CollectScenarioErrorsAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add marker to map")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Wildfire Marker")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Add marker to map")]
         public async System.Threading.Tasks.Task AddMarkerToMap()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -125,9 +112,8 @@ namespace project_wildfire_tests.Fire_Marking_Testing.FireMarker_Tests.Features
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("No wildfire data")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Wildfire Marker")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("No wildfire data")]
         public async System.Threading.Tasks.Task NoWildfireData()
         {
             string[] tagsOfScenario = ((string[])(null));
@@ -153,9 +139,8 @@ namespace project_wildfire_tests.Fire_Marking_Testing.FireMarker_Tests.Features
             await this.ScenarioCleanupAsync();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Multiple wildfires are loaded")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Wildfire Marker")]
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Multiple wildfires are loaded")]
         public async System.Threading.Tasks.Task MultipleWildfiresAreLoaded()
         {
             string[] tagsOfScenario = ((string[])(null));

@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 /*
 // Entire file content commented out
 using System;
+=======
+/*using System;
+>>>>>>> 2cb5d4cb90ff20cf63c84fd4e970310a2b3c1f8f
 using System.Collections.Generic;
 using NUnit.Framework;
 using project_wildfire_web.Models;
@@ -43,5 +47,9 @@ namespace Project.Wildfire.Tests.Models
         }
 
     }
+<<<<<<< HEAD
 }
 */
+=======
+}*/
+>>>>>>> 2cb5d4cb90ff20cf63c84fd4e970310a2b3c1f8f
