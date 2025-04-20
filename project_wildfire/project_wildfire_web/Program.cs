@@ -62,7 +62,7 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-
+        builder.Services.AddRazorPages();
         builder.Logging.ClearProviders(); 
         builder.Logging.AddConsole();
         
