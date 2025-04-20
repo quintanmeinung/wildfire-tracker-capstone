@@ -1,6 +1,6 @@
 using project_wildfire_web.Models;
 
-namespace Project.Wildfire.UnitTests
+namespace project_wildfire_tests.UnitTests
 {
     [TestFixture]
     public class UserTests
