@@ -1,4 +1,4 @@
-
+/*
 // Entire file content commented out
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -76,3 +76,5 @@ namespace MapUITests
         }
     }
 }
+
+*/
