@@ -22,6 +22,13 @@ public sealed class LoginStepDefinitions
         _driver.Navigate().GoToUrl("http://localhost:5205");
     } 
 
+    [AfterScenario]
+    public void AfterScenario()
+    {
+        _driver.Quit();
+        _driver.Dispose();
+    }
+
     [Given(@"I navigate to the login form")]
     public void GivenINavigateToTheLoginForm()
     {
@@ -52,9 +59,4 @@ public sealed class LoginStepDefinitions
         Console.WriteLine("Checking for error message...");
     }
 
-    [AfterScenario]
-    public void AfterScenario()
-    {
-        _driver.Quit();
-    }
 }

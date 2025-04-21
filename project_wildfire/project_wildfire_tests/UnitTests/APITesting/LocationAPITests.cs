@@ -7,12 +7,14 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using project_wildfire_web.ExtensionsMethods;
+using FluentAssertions.Specialized;
 
 namespace project_wildfire_tests.UnitTests;
 
 [TestFixture]
 public class LocationApiControllerTests
-{
+{   
+    // All of these mocks are necessary for the UserManager.
     private LocationApiController _controller;
     private Mock<IUserRepository> _userRepositoryMock;
     private Mock<ILocationRepository> _locationRepositoryMock;
@@ -43,14 +45,10 @@ public class LocationApiControllerTests
     }
 
     [Test]
-    public async Task SaveLocation_WithValidPayload_ReturnsOk()
+    public async Task SaveLocation_WithValidModelState_ReturnsOk()
     {
         // Arrange
-        var userLocation = new UserLocation
-        {
-            Latitude = 40.7128M,
-            Longitude = -74.0060M
-        };
+        var userLocation = CreateTestUserLocation();
 
         // Mock UserManager to return a user
         var testUser = new IdentityUser { Id = userLocation.UserId };
@@ -65,7 +63,7 @@ public class LocationApiControllerTests
         var result = await _controller.SaveLocation(userLocation.ToUserLocationDTO());
 
         // Assert
-        Assert.That(result, Is.InstanceOf<OkObjectResult>(), "Expected OkObjectResult");
+        Assert.That(result, Is.InstanceOf<OkResult>(), "Expected OkResult");
         
         var okResult = result as OkObjectResult;
         Assert.That(okResult?.Value, Is.EqualTo("Location saved successfully"), 
@@ -74,8 +72,46 @@ public class LocationApiControllerTests
     }
 
     [Test]
-    public async Task SaveLocation_WithInvalidPayload_ReturnsError()
+    public async Task SaveLocation_WithInvalidModelState_ReturnsBadRequest()
     {
+        // Arrange
+        var userLocation = CreateTestUserLocation();
+        _controller.ModelState.AddModelError("Field", "Error message");
+
+        // Act
+        var result = await _controller.SaveLocation(userLocation.ToUserLocationDTO());
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<BadRequestObjectResult>());
+    }
+
+    [Test]
+    public async Task SaveLocation_WhenRepositoryFails_ReturnsServerError()
+    {
+        // Arrange
+        var userLocation = CreateTestUserLocation();
+        _userManagerMock.Setup(um => um.GetUserAsync(It.IsAny<ClaimsPrincipal>()))
+            .ReturnsAsync(new IdentityUser());
         
+        _locationRepositoryMock.Setup(repo => repo.AddLocationAsync(It.IsAny<UserLocation>()))
+            .ThrowsAsync(new Exception("Database error"));
+
+        // Act
+        var result = await _controller.SaveLocation(userLocation.ToUserLocationDTO());
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<ObjectResult>());
+        var objectResult = result as ObjectResult;
+        Assert.That(objectResult.StatusCode, Is.EqualTo(500));
+    }
+
+    private static UserLocation CreateTestUserLocation()
+    {
+        return new UserLocation
+        {
+            UserId = "test-user-id",
+            Latitude = 40.7128M,
+            Longitude = -74.0060M
+        };
     }
 }
