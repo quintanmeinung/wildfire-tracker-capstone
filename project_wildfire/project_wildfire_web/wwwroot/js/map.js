@@ -1,56 +1,36 @@
-import { addAQIMarker } from './AQI.js'; //imports AQI.js file
+import { addAQIMarker } from './AQI.js';
 import { addFireMarkers } from './fireMarkers.js';
-
 
 document.addEventListener("DOMContentLoaded", function () {
     var map = initializeMap();
+
     var baseLayers = createBaseLayers();
     baseLayers["Street Map"].addTo(map);
 
-    // Initialize overlays
-    var overlayLayers = createOverlayLayers(map, false);
+    var overlayLayers = createOverlayLayers(map);
 
-    // Add layer control to the map
     var layerControl = L.control.layers(baseLayers, overlayLayers);
     layerControl.addTo(map);
 
-    if (!testParam) {
-        handleGeolocation(map);
-    } else {
-        console.log("🧪 Test mode → skipping geolocation");
-    }
-
+    handleGeolocation(map);
     addLegend(map);
     initializeCompass(map);
 
-    // Fetch and add wildfire data as markers
+    // 🔥 Fetch wildfire data and display markers
     fetch('/api/WildfireAPIController/fetchWildfires')
-    .then(response => response.json())
-    .then(data => {
-        // Assuming addFireMarkers is updated to handle dynamic data
-        addFireMarkers(overlayLayers["Fire Reports"], data);
-        layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
-    })
-    .catch(error => {
-        console.error('Error fetching wildfire data:', error);
-        alert('Failed to fetch wildfire data.');
-    });
-
+        .then(response => response.json())
+        .then(data => {
+            addFireMarkers(overlayLayers["Fire Reports"], data);
+        })
+        .catch(error => {
+            console.error('Error fetching wildfire data:', error);
+        });
 });
 
-
-
-/**
- * Initializes the Leaflet map.
- */
 function initializeMap() {
     return L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
-    
 }
 
-/**
- * Creates and returns base layers for the map.
- */
 function createBaseLayers() {
     return {
         "Street Map": L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -65,22 +45,15 @@ function createBaseLayers() {
             maxZoom: 19,
             attribution: '© OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
         })
-        
-        
     };
 }
 
-/**
- * Creates and returns overlay layers.
- */
 function createOverlayLayers(map) {
-    // Create a layer group for cities
-    var cities = L.layerGroup().addLayer(L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View"));
+    const cities = L.layerGroup().addLayer(
+        L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View")
+    );
 
-    // Initialize AQI layer with any predefined markers
     const aqiLayer = initializeAqiLayer();
-
-    // Fire layer initialized but not populated yet
     const fireLayer = L.layerGroup();
 
     return {
@@ -92,24 +65,19 @@ function createOverlayLayers(map) {
 
 function initializeAqiLayer() {
     const aqiLayer = L.layerGroup();
-    // Example: Add AQI markers (this function needs to be defined or adjusted as per existing AQI code)
-    addAQIMarker(aqiLayer, "A503596"); // Salem Chemeketa Community College
-    addAQIMarker(aqiLayer, "@91"); // Silverton, Oregon
-    addAQIMarker(aqiLayer, "@83"); // Lyons, Oregon
-    addAQIMarker(aqiLayer, "@89"); // Salem, Oregon
-    addAQIMarker(aqiLayer, "A503590"); // Dallas, Oregon
-    addAQIMarker(aqiLayer, "@11923"); // Turner Cascade Jr.High, Oregon
+    addAQIMarker(aqiLayer, "A503596"); // Salem Chemeketa
+    addAQIMarker(aqiLayer, "@91");     // Silverton
+    addAQIMarker(aqiLayer, "@83");     // Lyons
+    addAQIMarker(aqiLayer, "@89");     // Salem
+    addAQIMarker(aqiLayer, "A503590"); // Dallas
+    addAQIMarker(aqiLayer, "@11923");  // Turner
     return aqiLayer;
 }
 
-
-/**
- * Handles geolocation logic, including user location retrieval and error handling.
- */
 function handleGeolocation(map) {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
-            (position) => onGeolocationSuccess(position, map),
+            position => onGeolocationSuccess(position, map),
             onGeolocationError
         );
     } else {
@@ -117,14 +85,9 @@ function handleGeolocation(map) {
     }
 }
 
-/**
- * Called on successful retrieval of geolocation data.
- */
 function onGeolocationSuccess(position, map) {
-    var { latitude, longitude } = position.coords;
+    const { latitude, longitude } = position.coords;
     map.panTo([latitude, longitude]);
-
-    // Add a marker for the user's current location
     L.marker([latitude, longitude])
         .bindPopup("Your current location")
         .openPopup()
@@ -133,25 +96,17 @@ function onGeolocationSuccess(position, map) {
     addGeolet(map);
 }
 
-/**
- * Handles errors from the geolocation API.
- */
 function onGeolocationError(error) {
     addGeolet(map);
-
-    var errorMessages = {
+    const errorMessages = {
         1: "Permission Denied",
         2: "Location information unavailable",
         3: "The request timed out",
         0: "An unknown error occurred"
     };
-
     console.log(errorMessages[error.code] || "An error occurred");
 }
 
-/**
- * Adds the Geolet geolocation plugin if available.
- */
 function addGeolet(map) {
     if (typeof L.geolet !== "undefined") {
         L.geolet({ position: 'bottomleft', title: 'Find Current Location' }).addTo(map);
@@ -161,9 +116,6 @@ function addGeolet(map) {
     }
 }
 
-/**
- * Initializes the Leaflet compass control if available.
- */
 function initializeCompass(map) {
     if (typeof L.control.compass !== "undefined") {
         L.control.compass({
@@ -175,6 +127,7 @@ function initializeCompass(map) {
         console.error("Leaflet Compass plugin failed to load.");
     }
 }
+
 
 
 
