@@ -1,15 +1,13 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
-using NUnit.Framework;
 using project_wildfire_web.Controllers;
 using project_wildfire_web.DAL.Abstract;
 using project_wildfire_web.Models;
 using project_wildfire_web.Models.DTO;
 using project_wildfire_web.Services;
+
+namespace project_wildfire_tests.UnitTests;
 
 [TestFixture] 
 public class WildfireAPIControllerTests
