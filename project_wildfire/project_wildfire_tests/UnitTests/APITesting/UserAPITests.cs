@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using project_wildfire_web.Controllers;
@@ -7,7 +6,7 @@ using project_wildfire_web.DAL.Abstract;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 
-namespace Project.Wildfire.Tests.Controllers;
+namespace project_wildfire_tests.UnitTests;
 
 [TestFixture]
 public class UserApiControllerTests

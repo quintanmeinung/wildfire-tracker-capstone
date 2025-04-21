@@ -1,7 +1,7 @@
 import { addAQIMarker } from './AQI.js';
-import { addFireMarkers } from './fireMarkers.js';
 import { getUserId } from './site.js'; // Import userId
 import { initDialogModal } from './saveLocationModalHandler.js'; // Import modal handler
+
 
 document.addEventListener("DOMContentLoaded", function () {
     var map = initializeMap();
@@ -18,8 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
     addLegend(map);
     initializeCompass(map);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     // Add dynamic markers for logged-in users
     var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
@@ -66,63 +64,12 @@ function addMarkerOnClick(e, map) {
     activeMarker.openPopup(); // Open the popup immediately
     initDialogModal(); // Initialize the modal handler
 }
-=======
-    // 🧪 Test data logic
-    if (testParam === "no-data") {
-        console.log("🧪 Test Mode: no-data → Skipping fire markers");
-    }
-    else if (testParam === "single") {
-        console.log("🧪 Test Mode: single → Adding one fire marker");
-        const testFires = [
-            { latitude: 45.0, longitude: -120.5, radiativePower: 40.2 }
-        ];
-        addFireMarkers(overlayLayers["Fire Reports"], testFires);
-        layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
-    }
-    else if (testParam === "multiple") {
-        console.log("🧪 Test Mode: multiple → Adding two fire markers");
-        const testFires = [
-            { latitude: 45.0, longitude: -120.5, radiativePower: 45.7 },
-            { latitude: 46.0, longitude: -121.5, radiativePower: 50.1 }
-        ];
-        addFireMarkers(overlayLayers["Fire Reports"], testFires);
-        layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
-    }
-    else {
-        // 🌍 Normal mode
-        console.log("🌍 Normal mode → Fetching wildfire data from API");
-        fetch('/api/WildfireAPIController/fetchWildfires' + window.location.search)
-            .then(response => response.json())
-            .then(data => {
-                addFireMarkers(overlayLayers["Fire Reports"], data);
-                layerControl.addOverlay(overlayLayers["Fire Reports"], "Fire Reports");
-            })
-            .catch(error => {
-                console.error('Error fetching wildfire data:', error);
-                alert('Failed to fetch wildfire data.');
-            });
-    }
-});
 
 
->>>>>>> 3a6c109a04e6f8ef58f0477012d947a4ac4860f4
 
 /**
  * Initializes the Leaflet map.
  */
-=======
-    // 🔥 Fetch wildfire data and display markers
-    fetch('/api/WildfireAPIController/fetchWildfires')
-        .then(response => response.json())
-        .then(data => {
-            addFireMarkers(overlayLayers["Fire Reports"], data);
-        })
-        .catch(error => {
-            console.error('Error fetching wildfire data:', error);
-        });
-});
-
->>>>>>> 3afb40f921ec8395edc4e878172b77cc49c532ac
 function initializeMap() {
     return L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
 }
@@ -223,12 +170,3 @@ function initializeCompass(map) {
         console.error("Leaflet Compass plugin failed to load.");
     }
 }
-
-
-
-
-
-
-
-
-

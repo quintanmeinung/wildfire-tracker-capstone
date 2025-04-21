@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 
 namespace project_wildfire_web.Models;
 public class ProfileViewModel

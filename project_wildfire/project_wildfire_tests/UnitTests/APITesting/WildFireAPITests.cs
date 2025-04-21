@@ -1,15 +1,15 @@
 /*using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
-using NUnit.Framework;
 using project_wildfire_web.Controllers;
 using project_wildfire_web.DAL.Abstract;
 using project_wildfire_web.Models;
 using project_wildfire_web.Models.DTO;
 using project_wildfire_web.Services;
+
+namespace project_wildfire_tests.UnitTests;
 
 [TestFixture] 
 public class WildfireAPIControllerTests
@@ -80,36 +80,36 @@ public class WildfireAPIControllerTests
         Assert.That(((List<FireDTO>)okResult.Value).Count, Is.EqualTo(2));
     }
 
-     [Test]
-        public async Task ClearWildfiresAsync_RemovesAllWildfires()
-        {
-            // Arrange
-            _mockWildfireRepository.Setup(repo => repo.ClearWildfiresAsync()).Returns(Task.CompletedTask);
-            _mockWildfireRepository.Setup(repo => repo.GetWildfireCountAsync()).ReturnsAsync(0);
+    [Test]
+    public async Task ClearWildfiresAsync_RemovesAllWildfires()
+    {
+        // Arrange
+        _mockWildfireRepository.Setup(repo => repo.ClearWildfiresAsync()).Returns(Task.CompletedTask);
+        _mockWildfireRepository.Setup(repo => repo.GetWildfireCountAsync()).ReturnsAsync(0);
 
-            // Act
-            await _mockWildfireRepository.Object.ClearWildfiresAsync();
-            var wildfireCount = await _mockWildfireRepository.Object.GetWildfireCountAsync();
+        // Act
+        await _mockWildfireRepository.Object.ClearWildfiresAsync();
+        var wildfireCount = await _mockWildfireRepository.Object.GetWildfireCountAsync();
 
-            // Assert
-            Assert.That(wildfireCount, Is.EqualTo(0));
-        }
+        // Assert
+        Assert.That(wildfireCount, Is.EqualTo(0));
+    }
 
-        [Test]
-        public async Task GetWildfires_Returns_EmptyList_When_NoData()
-        {
-            // Arrange
-            _mockNasaService.Setup(service => service.GetFiresAsync()).ReturnsAsync(new List<FireDTO>());
+    [Test]
+    public async Task GetWildfires_Returns_EmptyList_When_NoData()
+    {
+        // Arrange
+        _mockNasaService.Setup(service => service.GetFiresAsync()).ReturnsAsync(new List<FireDTO>());
 
-            // Act
-            var result = await _controller.GetWildfiresAsync();
+        // Act
+        var result = await _controller.GetWildfiresAsync();
 
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.That(okResult, Is.Not.Null);
-            Assert.That(okResult.Value, Is.TypeOf<List<FireDTO>>());
-            Assert.That(((List<FireDTO>)okResult.Value).Count, Is.EqualTo(0)); // Should return an empty list
-        }
+        // Assert
+        var okResult = result as OkObjectResult;
+        Assert.That(okResult, Is.Not.Null);
+        Assert.That(okResult.Value, Is.TypeOf<List<FireDTO>>());
+        Assert.That(((List<FireDTO>)okResult.Value).Count, Is.EqualTo(0)); // Should return an empty list
+    }
 
     [Test]  
     public async Task FetchWildfires_Returns_500_If_ApiKey_Missing()
