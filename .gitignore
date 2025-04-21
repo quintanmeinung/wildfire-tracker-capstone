@@ -13,8 +13,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-appsettings.Development.json
-
+./project_wildfire/project_wildfire_web/appsettings.Development.json
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
