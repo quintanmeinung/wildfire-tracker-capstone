@@ -4,7 +4,7 @@ using Reqnroll;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
 
-namespace project_wildfire_tests.StepDefinitions;
+namespace project_wildfire_tests.BDDTesting.StepDefinitions;
 
 [Binding]
 public sealed class WildfireMarkerStepDefinitions

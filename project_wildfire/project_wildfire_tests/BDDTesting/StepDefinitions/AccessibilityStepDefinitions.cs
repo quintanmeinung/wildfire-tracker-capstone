@@ -7,7 +7,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Threading;
 
-namespace MapUITests
+namespace project_wildfire_tests.BDDTesting.StepDefinitions
 {
     public class AccessibilityLogicTests
     {

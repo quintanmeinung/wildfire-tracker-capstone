@@ -4,7 +4,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
 
-namespace project_wildfire_tests.AccountPage_Tests.StepDefinitions
+namespace project_wildfire_tests.BDDTesting.StepDefinitions
 {
     [TestFixture]
     public class EmailUpdateStepDefinitions
