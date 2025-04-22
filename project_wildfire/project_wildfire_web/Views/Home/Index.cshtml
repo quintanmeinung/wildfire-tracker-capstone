@@ -45,13 +45,13 @@
     <button id="speechToggle">Enable Text-to-Speech</button>
 </div>
 
-@if (Model != null)
-{
-    <div class="profile-container">
-    <partial name="_ProfilePartial" model="@Model.Profile" /> <!-- Modal partial for Profile summary -->
+@if (Model != null) {
+    <div id="profile" class="profile-container" data-saved-locations='@Json.Serialize(Model.SavedLocations)'>
+        <partial name="_ProfilePartial" model="Model.Profile"/> <!-- Modal partial for Profile summary -->
     </div>
+
     <div class="dialog-container">
-        <partial name="_DialogPartial" model="@Model.Location" /> <!-- Modal partial for Profile summary -->
+        <partial name="_DialogPartial" model="Model.Location"/> <!-- Modal partial for Profile summary -->
     </div>
 }
 
@@ -109,12 +109,13 @@
     <!-- Include External JS -->
     @* <script src="~/js/map.js"></script> *@
     <script type="module" src="~/js/map.js"></script> <!-- changed this so i could import AQI.js into map.js -->
-    <script src="~/js/locationHandler.js"></script>
+    <script src="~/js/saveLocationModalHandler.js"></script>
     <script src="~/js/accessibility.js" defer></script>
     <script src="~/js/geolet.js"></script>
     <script src="~/js/addLegend.js"></script>
     <script src="~/js/AccountScripts/profilePartial.js"></script>
-    
+    <script src="~/js/saveLocationDialog.js"></script>
+
     <!-- FontAwesome (for icons) -->
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2.4.0/src/easy-button.js"></script>
 

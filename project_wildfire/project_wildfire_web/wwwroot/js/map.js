@@ -1,5 +1,7 @@
 import { addAQIMarker } from './AQI.js';
-import { addFireMarkers } from './fireMarkers.js';
+import { getUserId } from './site.js'; // Import userId
+import { initDialogModal } from './saveLocationModalHandler.js'; // Import modal handler
+
 
 document.addEventListener("DOMContentLoaded", function () {
     var map = initializeMap();
@@ -16,17 +18,58 @@ document.addEventListener("DOMContentLoaded", function () {
     addLegend(map);
     initializeCompass(map);
 
-    // 🔥 Fetch wildfire data and display markers
-    fetch('/api/WildfireAPIController/fetchWildfires')
-        .then(response => response.json())
-        .then(data => {
-            addFireMarkers(overlayLayers["Fire Reports"], data);
-        })
-        .catch(error => {
-            console.error('Error fetching wildfire data:', error);
+    // Add dynamic markers for logged-in users
+    var userId = getUserId(); // Get the user ID from the site.js file
+    if (userId !== "") {
+        var profileElement = document.getElementById("profile");
+
+        // Get saved locations from the profile element data attribute(Index.cshtml)
+        var savedLocations = profileElement.dataset.savedLocations;
+
+        console.log("Saved locations:", savedLocations);
+        if (savedLocations) {
+            
+            // Parse the JSON string to an object
+             savedLocations = JSON.parse(savedLocations); 
+
+            for (let location of savedLocations) {
+                console.log(location);
+                let marker = L.marker([location.latitude, location.longitude]).addTo(map);
+                marker.bindPopup(location.title); // Bind the name to the marker popup
+            } 
+        }
+
+        map.on('click', function (e) {
+            addMarkerOnClick(e, map)
         });
+    }
 });
 
+let activeMarker = null; // Variable to store user's most recent marker
+function addMarkerOnClick(e, map) {
+    if (activeMarker) {
+        map.removeLayer(activeMarker); // Remove the previous marker if it exists
+    }
+    // Create a new marker at the clicked location
+    activeMarker = L.marker(e.latlng).addTo(map);
+
+    // Create a popup with a button to save the location
+    var popup = document.createElement('div');
+    popup.id = 'save-location-popup';
+    popup.className = 'btn btn-primary';
+    popup.innerHTML = 'Save Location';
+    popup.dataset.lat = e.latlng.lat.toFixed(5); // Store latitude in dataset
+    popup.dataset.lng = e.latlng.lng.toFixed(5); // Store longitude in dataset
+    activeMarker.bindPopup(popup);
+    activeMarker.openPopup(); // Open the popup immediately
+    initDialogModal(); // Initialize the modal handler
+}
+
+
+
+/**
+ * Initializes the Leaflet map.
+ */
 function initializeMap() {
     return L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
 }
@@ -127,12 +170,3 @@ function initializeCompass(map) {
         console.error("Leaflet Compass plugin failed to load.");
     }
 }
-
-
-
-
-
-
-
-
-
