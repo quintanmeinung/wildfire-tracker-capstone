@@ -59,7 +59,7 @@ namespace project_wildfire_web.Controllers
             _context.UserLocations.Remove(location);
             await _context.SaveChangesAsync();
 
-            // Redirect back to your Razor page after deletion
+            // Redirect back to Razor page after deletion
             return Redirect("~/Identity/Account/Manage/SavedLocations");
         }
 
