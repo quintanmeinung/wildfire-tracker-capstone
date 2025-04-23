@@ -1,16 +1,7 @@
-using System.Diagnostics;
-using System.Globalization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-using Microsoft.IdentityModel.Tokens;
 using project_wildfire_web.Models;
 using project_wildfire_web.Models.DTO;
 using project_wildfire_web.DAL.Abstract;
-using project_wildfire_web.ExtensionsMethods;
-using CsvHelper;
-using CsvHelper.Configuration;
-using NetTopologySuite.Geometries;
 using project_wildfire_web.Services;
 
 
@@ -85,6 +76,7 @@ namespace project_wildfire_web.Controllers;
 
             return StatusCode(500, "Failed to fetch wildfires from NASA API.");
         }
+        /////Functiont to pull fire fatabase
 
 
         
