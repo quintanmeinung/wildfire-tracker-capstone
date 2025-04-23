@@ -84,14 +84,12 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Successfully update email")]
-        [NUnit.Framework.CategoryAttribute("REQ-1234")]
         public async System.Threading.Tasks.Task SuccessfullyUpdateEmail()
         {
-            string[] tagsOfScenario = new string[] {
-                    "REQ-1234"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successfully update email", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 7
+#line 6
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -101,22 +99,22 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 8
+#line 7
     await testRunner.GivenAsync("a user is logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 9
+#line 8
     await testRunner.AndAsync("the user is on the email update page", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 10
-    await testRunner.WhenAsync("the user enters a valid new email \"newemail@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 9
+    await testRunner.WhenAsync("the user enters a valid new email \"test@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 11
+#line 10
     await testRunner.AndAsync("submits the form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 12
+#line 11
     await testRunner.ThenAsync("the email should be updated successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 13
+#line 12
     await testRunner.AndAsync("a success message should be displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -125,14 +123,12 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Fail to update email due to invalid format")]
-        [NUnit.Framework.CategoryAttribute("REQ-1235")]
         public async System.Threading.Tasks.Task FailToUpdateEmailDueToInvalidFormat()
         {
-            string[] tagsOfScenario = new string[] {
-                    "REQ-1235"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Fail to update email due to invalid format", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 16
+#line 15
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -142,51 +138,19 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 17
+#line 16
     await testRunner.GivenAsync("a user is logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 18
+#line 17
     await testRunner.AndAsync("the user is on the email update page", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 19
-    await testRunner.WhenAsync("the user enters an invalid email \"invalid-email\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 18
+    await testRunner.WhenAsync("the user enters an invalid email \"invalid-email@\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 20
+#line 19
     await testRunner.AndAsync("submits the form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 21
-    await testRunner.ThenAsync("an error message should be displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Fail to update email when user is not found")]
-        [NUnit.Framework.CategoryAttribute("REQ-1236")]
-        public async System.Threading.Tasks.Task FailToUpdateEmailWhenUserIsNotFound()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "REQ-1236"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Fail to update email when user is not found", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 24
-  this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 25
-    await testRunner.GivenAsync("a user is not logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 26
-    await testRunner.WhenAsync("the user tries to access the email update page", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 27
+#line 20
     await testRunner.ThenAsync("an error message should be displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
