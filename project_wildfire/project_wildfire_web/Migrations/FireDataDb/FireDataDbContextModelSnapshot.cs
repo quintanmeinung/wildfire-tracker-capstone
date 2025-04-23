@@ -112,6 +112,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<decimal>("Latitude")
@@ -135,6 +136,27 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.HasIndex("UserId");
 
                     b.ToTable("UserLocations");
+                });
+
+            modelBuilder.Entity("project_wildfire_web.Models.UserPreferences", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("ContrastMode")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("FontSize")
+                        .IsRequired()
+                        .HasColumnType("string");
+
+                    b.Property<bool>("TextToSpeech")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserPreferences");
                 });
 
             modelBuilder.Entity("UserFireSubscription", b =>
