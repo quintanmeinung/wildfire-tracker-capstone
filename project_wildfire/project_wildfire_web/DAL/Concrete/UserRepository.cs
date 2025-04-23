@@ -53,6 +53,7 @@ namespace project_wildfire_web.DAL.Concrete
         public void UpdateUser(User user)
         {
             context.Entry(user).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Save()

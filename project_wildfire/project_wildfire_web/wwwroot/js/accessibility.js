@@ -1,5 +1,50 @@
-console.log("🚀 accessibility.js has started executing.");
 console.log("Accessibility.js has been loaded and is running!");
+
+//Functionality to automatically save user preferences when they log out/in
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("✅ Applying preferences from window.userPreferences");
+
+    const prefs = window.userPreferences || {};
+
+    console.log("🧪 Loaded prefs:", prefs);
+
+    if (!prefs.fontSize && !prefs.contrastMode && !prefs.textToSpeech) {
+        console.warn("⚠️ No preferences detected, skipping style updates");
+    }
+
+    // Font Size
+    const fontSizeDropdown = document.getElementById("fontSize");
+    switch (prefs.fontSize) {
+        case "small":
+            document.body.style.fontSize = "14px";
+            if (fontSizeDropdown) fontSizeDropdown.value = "small";
+            break;
+        case "large":
+            document.body.style.fontSize = "18px";
+            if (fontSizeDropdown) fontSizeDropdown.value = "large";
+            break;
+        case "xlarge":
+            document.body.style.fontSize = "22px";
+            if (fontSizeDropdown) fontSizeDropdown.value = "xlarge";
+            break;
+        default:
+            document.body.style.fontSize = "16px";
+            if (fontSizeDropdown) fontSizeDropdown.value = "medium";
+            break;
+    }
+
+    // Contrast
+    if (prefs.contrastMode === true) {
+        document.body.classList.add("high-contrast");
+    }
+
+    // Optional: Text-to-Speech setup if needed
+    if (prefs.textToSpeech === true) {
+        console.log("🗣️ Text-to-Speech is marked as enabled");
+        // You could pre-check a box, toggle a UI element, etc.
+    }
+});
+
 document.addEventListener("DOMContentLoaded", function() {
     // Font Size Adjustment
     const fontSizeDropdown = document.getElementById("fontSize");
@@ -110,6 +155,3 @@ window.savePreferences = async function () {
 };
 
 console.log("✅ accessibility.js has fully executed.");
-window.savePreferences = function () {
-console.log("✅ savePreferences() is now globally available!");
-};
