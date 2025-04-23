@@ -39,6 +39,6 @@ public class NotificationController : Controller
 
         await _notificationService.CheckFiresNearUserLocationsAsync(userId, phoneNumber);
 
-        return Content("✅ Fire proximity check completed. Check the console logs.");
+        return Content("Fire proximity check completed. Check the console logs.");
     }
 }

@@ -22,14 +22,13 @@ public class NotificationService
     {
         _context = context;
         _logger = logger;
-        _textbeltApiKey = configuration["Textbelt:ApiKey"]; // Access from user secrets
+        _textbeltApiKey = configuration["Textbelt:ApiKey"];
     }
 
    public async Task CheckFiresNearUserLocationsAsync(string userId, string PhoneNumber)
 {
     var fires = await _context.Fires.ToListAsync();
 
-    // Filter only the current user's locations
     var userLocations = await _context.UserLocations
         .Where(loc => loc.UserId == userId)
         .ToListAsync();
@@ -50,7 +49,6 @@ public class NotificationService
 
                 _logger.LogInformation(alertMessage);
 
-                // Send SMS using test number for now
                 await SendSmsNotificationAsync(PhoneNumber, alertMessage);
             }
         }
