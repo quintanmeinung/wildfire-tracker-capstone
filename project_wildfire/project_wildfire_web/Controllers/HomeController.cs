@@ -33,7 +33,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        
         // If the user is authenticated, populate the model with their data
         if (User?.Identity?.IsAuthenticated == true)
         {
@@ -50,9 +49,8 @@ public class HomeController : Controller
                 return NotFound("Unable to retreive primary user by ID.");
             }
 
-            //var savedLocations = _locationRepository.GetUserLocations(primaryUser.UserId);
+            var savedLocations = _locationRepository.GetUserLocations(primaryUser.UserId);
 
-            // Generate view model for the profile partial
             var profileViewModel = new ProfileViewModel
             {
                 Id = primaryUser.UserId,
@@ -60,24 +58,30 @@ public class HomeController : Controller
                 LastName = primaryUser.LastName,
                 Email = authUser.Email,
                 PhoneNumber = authUser.PhoneNumber,
-                // SavedLocations needs to be populated 
+                SavedLocations = savedLocations,
                 FireSubscriptions = primaryUser.Fires
             };
 
-            // Create DTOs to pass to the Index
-            ProfileViewModelDTO pvmDTO = profileViewModel.ToProfileViewModelDTO();
-            UserLocationDTO ulDTO = new UserLocationDTO
+            // Setup location model for dynamic markers
+            var userLocation = new UserLocation
             {
-                UserId = primaryUser.UserId,
+                UserId = primaryUser.UserId
+                // Only the UserId is specified
             };
 
-            // Generate IndexViewModel which holds profile and location data
-            var indexViewModel = new IndexViewModel(pvmDTO, ulDTO);
+            // Generate IndexViewModel for Index
+            var indexViewModel = new IndexViewModel(
+                profileViewModel.ToProfileViewModelDTO(),
+                userLocation.ToUserLocationDTO(),
+                savedLocations.Select(ul => ul.ToUserLocationDTO()).ToList()
+            );
 
             // Pass the model to the view
+            _logger.LogDebug("User is authenticated, model sent to view: {IndexViewModel}", JsonSerializer.Serialize(indexViewModel));
             return View(indexViewModel);
         }
         // If user is not authenticated, no model is sent
+        _logger.LogDebug("User is not authenticated, no model sent to view.");
         return View();
         
     }
