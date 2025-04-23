@@ -1,8 +1,6 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using CsvHelper.Configuration.Attributes;
 using project_wildfire_web.Models;
-using NetTopologySuite.Geometries;
 using project_wildfire_web.Models.DTO;
 
 
@@ -52,6 +50,16 @@ namespace project_wildfire_web.ExtensionsMethods
             RadiativePower = (decimal)radPower
             };
 
+        }
+
+        public static Fire ToFire (this FireDTO fireDTO)
+        {
+            return new Fire
+            {
+                Latitude = fireDTO.Latitude,
+                Longitude = fireDTO.Longitude,
+                RadiativePower = fireDTO.RadiativePower
+            };
         }
     }
 }

@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using project_wildfire_web.Areas.Identity.Data;
 using project_wildfire_web.DAL.Abstract;
+using project_wildfire_web.ExtensionsMethods;
 using project_wildfire_web.Models;
+using project_wildfire_web.Models.DTO;
 
 namespace project_wildfire_web.Controllers;
 
@@ -49,7 +51,6 @@ public class HomeController : Controller
 
             var savedLocations = _locationRepository.GetUserLocations(primaryUser.UserId);
 
-            // Generate view model for the profile page
             var profileViewModel = new ProfileViewModel
             {
                 Id = primaryUser.UserId,
@@ -57,16 +58,30 @@ public class HomeController : Controller
                 LastName = primaryUser.LastName,
                 Email = authUser.Email,
                 PhoneNumber = authUser.PhoneNumber,
-                // SavedLocations needs to be populated 
+                SavedLocations = savedLocations,
                 FireSubscriptions = primaryUser.Fires
             };
-            Console.WriteLine("ProfileViewModel: ");
-            Console.WriteLine(JsonSerializer.Serialize(profileViewModel));
+
+            // Setup location model for dynamic markers
+            var userLocation = new UserLocation
+            {
+                UserId = primaryUser.UserId
+                // Only the UserId is specified
+            };
+
+            // Generate IndexViewModel for Index
+            var indexViewModel = new IndexViewModel(
+                profileViewModel.ToProfileViewModelDTO(),
+                userLocation.ToUserLocationDTO(),
+                savedLocations.Select(ul => ul.ToUserLocationDTO()).ToList()
+            );
 
             // Pass the model to the view
-            return View(profileViewModel);
+            _logger.LogDebug("User is authenticated, model sent to view: {IndexViewModel}", JsonSerializer.Serialize(indexViewModel));
+            return View(indexViewModel);
         }
         // If user is not authenticated, no model is sent
+        _logger.LogDebug("User is not authenticated, no model sent to view.");
         return View();
         
     }

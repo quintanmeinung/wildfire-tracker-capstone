@@ -1,5 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
+@using System.Security.Claims
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +11,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/project_wildfire_web.styles.css" asp-append-version="true" />
 </head>
-<body>
+<!-- data-user-id lets us communicate authentication to javascript -->
+<body data-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">

@@ -82,13 +82,23 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("ContrastMode")
+                        .HasColumnType("bit");
+
                     b.Property<string>("FirstName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("FontSize")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LastName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("TextToSpeech")
+                        .HasColumnType("bit");
 
                     b.HasKey("UserId")
                         .HasName("PK__Users__1788CC4C60961939");
@@ -98,11 +108,21 @@ namespace project_wildfire_web.Migrations.FireDataDb
 
             modelBuilder.Entity("project_wildfire_web.Models.UserLocation", b =>
                 {
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Latitude")
                         .HasColumnType("decimal(8, 6)");
 
                     b.Property<decimal>("Longitude")
                         .HasColumnType("decimal(9, 6)");
+
+                    b.Property<int>("NotificationRadius")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasMaxLength(100)
@@ -120,6 +140,10 @@ namespace project_wildfire_web.Migrations.FireDataDb
 
             modelBuilder.Entity("project_wildfire_web.Models.UserPreferences", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("ContrastMode")
                         .HasColumnType("boolean");
 
@@ -130,12 +154,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.Property<bool>("TextToSpeech")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId");
 
                     b.ToTable("UserPreferences");
                 });
@@ -162,17 +181,6 @@ namespace project_wildfire_web.Migrations.FireDataDb
                         .HasForeignKey("UserId")
                         .IsRequired()
                         .HasConstraintName("FK_UserLocations_Users");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("project_wildfire_web.Models.UserPreferences", b =>
-                {
-                    b.HasOne("project_wildfire_web.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK_UserPreferences_Users");
 
                     b.Navigation("User");
                 });

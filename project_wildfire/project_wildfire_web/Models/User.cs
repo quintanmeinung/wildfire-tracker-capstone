@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace project_wildfire_web.Models;
 
 public partial class User
@@ -11,5 +9,11 @@ public partial class User
 
     public string? LastName { get; set; }
 
+    // User preference properties
+    public string FontSize { get; set; } = "medium";
+    public bool ContrastMode { get; set; } = false;
+    public bool TextToSpeech { get; set; } = false;
+
     public virtual ICollection<Fire> Fires { get; set; } = new List<Fire>();
+    
 }

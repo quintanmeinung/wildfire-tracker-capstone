@@ -3,6 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+*.feature.cs
+
 #AQI Key
 .env
 
@@ -11,7 +13,8 @@
 *.user
 *.userosscache
 *.sln.docstates
-appsettings.Development.json
+./project_wildfire/project_wildfire_web/appsettings.Development.json
+**/node_modules/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -206,3 +209,5 @@ ClientBin/
 *.pfx
 *.publishsettings
 orleans.codegen.cs
+appsettings.json
+appsettings.Development.json
