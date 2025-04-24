@@ -17,7 +17,7 @@ namespace project_wildfire_tests.BDDTesting.StepDefinitions
         public void SetUp()
         {
             var options = new ChromeOptions();
-            options.AddArgument("--headless");
+            //options.AddArgument("--headless");
             options.AddArgument("--no-sandbox");
             options.AddArgument("--disable-cache");
             options.AddArgument("--disable-application-cache");
@@ -70,7 +70,7 @@ namespace project_wildfire_tests.BDDTesting.StepDefinitions
             //emailInput.Clear();
             //emailInput.SendKeys("testuser@test.com");
 
-            _driver.FindElement(By.Id("Input_Email")).SendKeys("tester@test.com");
+            _driver.FindElement(By.Id("Input_Email")).SendKeys("new@test.com");
             _driver.FindElement(By.Id("Input_Password")).SendKeys("Password123$");
             _driver.FindElement(By.Id("login-submit")).Click();
             System.Threading.Thread.Sleep(2000);
@@ -209,8 +209,3 @@ namespace project_wildfire_tests.BDDTesting.StepDefinitions
 
     }
 }
-
-
-
-
-        
