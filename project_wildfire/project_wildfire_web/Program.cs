@@ -62,6 +62,9 @@ public class Program
             return new NasaService(httpClient, services.GetRequiredService<ILogger<NasaService>>(), configuration);
         });
 
+        //Adding Notification Service
+        builder.Services.AddScoped<NotificationService>();
+
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
