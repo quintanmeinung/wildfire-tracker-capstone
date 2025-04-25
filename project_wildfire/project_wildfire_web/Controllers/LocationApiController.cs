@@ -52,7 +52,7 @@ public class LocationApiController : ControllerBase
         }
         
         _logger.LogDebug("User location saved successfully");
-        return Ok();
+        return Ok("Location saved successfully");
     }
 
 }
