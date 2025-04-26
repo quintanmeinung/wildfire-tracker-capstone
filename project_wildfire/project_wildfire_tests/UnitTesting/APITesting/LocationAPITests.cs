@@ -63,7 +63,7 @@ public class LocationApiControllerTests
         var result = await _controller.SaveLocation(userLocation.ToUserLocationDTO());
 
         // Assert
-        Assert.That(result, Is.InstanceOf<OkResult>(), "Expected OkResult");
+        Assert.That(result, Is.InstanceOf<OkObjectResult>(), "Expected OkResult");
         
         var okResult = result as OkObjectResult;
         Assert.That(okResult?.Value, Is.EqualTo("Location saved successfully"), 
