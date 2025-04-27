@@ -112,6 +112,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<decimal>("Latitude")

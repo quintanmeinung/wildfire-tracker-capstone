@@ -1,8 +1,6 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using CsvHelper.Configuration.Attributes;
 using project_wildfire_web.Models;
-using NetTopologySuite.Geometries;
 using project_wildfire_web.Models.DTO;
 
 
@@ -47,6 +45,10 @@ namespace project_wildfire_web.ExtensionsMethods
     {
         public static ProfileViewModelDTO ToProfileViewModelDTO (this ProfileViewModel pvm)
         {   
+            if (pvm.Email == null)
+            {
+                pvm.Email = string.Empty;
+            }
             return new ProfileViewModelDTO
             {
             UserId = pvm.Id,

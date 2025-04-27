@@ -42,9 +42,9 @@ public class NasaService : INasaService
         //Code for modifying the year/month/day of wildfire occurences
         //Needs to be updated for filtering
         //string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{apiKey}/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
-        //string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{apiKey}/VIIRS_SNPP_NRT/USA/1/2025-03-15";
-        string currentDate = DateTime.UtcNow.ToString("2025-04-21");
-        string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{apiKey}/VIIRS_SNPP_NRT/USA/1/{currentDate}";
+        string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{apiKey}/VIIRS_SNPP_NRT/USA/1/2025-04-20";
+        //string endpoint = "https://firms.modaps.eosdis.nasa.gov/api/country/csv/ApiKeyHere/VIIRS_SNPP_NRT/PER/1/2025-04-20";
+
 
 
         HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
