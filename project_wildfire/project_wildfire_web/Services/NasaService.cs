@@ -25,6 +25,8 @@ public class NasaService : INasaService
     }
 
     //fetches fires from built-in coordinates
+    //Orignal Code
+    
     public async Task<List<FireDTO>> GetFiresAsync()
     {
        
@@ -37,8 +39,12 @@ public class NasaService : INasaService
             return new List<FireDTO>(); // Return empty list instead of null
         }
 
+        //Code for modifying the year/month/day of wildfire occurences
+        //Needs to be updated for filtering
         //string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{apiKey}/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
-        string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{apiKey}/VIIRS_SNPP_NRT/USA/1/2025-03-15";
+        //string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{apiKey}/VIIRS_SNPP_NRT/USA/1/2025-03-15";
+        string currentDate = DateTime.UtcNow.ToString("2025-04-21");
+        string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{apiKey}/VIIRS_SNPP_NRT/USA/1/{currentDate}";
 
 
         HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
@@ -70,7 +76,42 @@ public class NasaService : INasaService
        return wildFires;
     }
 
+    //Modified Code to accept Fires by date for Controller
+    public async Task<List<FireDTO>> GetFiresByDateAsync(DateTime date)
+    {
+        _logger.LogInformation($"Calling NASA FIRMS API for date: {date:yyyy-MM-dd}");
 
+        string apiKey = _configuration["NASA:FirmsApiKey"];
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            _logger.LogError("NASA FIRMS API key missing");
+            return new List<FireDTO>();
+        }
 
+        string formattedDate = date.ToString("yyyy-MM-dd");
+        string endpoint = $"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{apiKey}/VIIRS_SNPP_NRT/USA/1/{formattedDate}";
 
+        HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
+        if (!response.IsSuccessStatusCode)
+        {
+            _logger.LogError($"Failed to fetch NASA data - {response.StatusCode}");
+            return new List<FireDTO>();
+        }
+
+        string responseBody = await response.Content.ReadAsStringAsync();
+
+        using var reader = new StringReader(responseBody);
+        var csvConfig = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture) { HeaderValidated = null };
+
+        try
+        {
+            var csv = new CsvReader(reader, csvConfig);
+            return csv.GetRecords<FireDTO>().ToList();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error parsing CSV: {ex.Message}");
+            return new List<FireDTO>();
+        }
+    }
 }

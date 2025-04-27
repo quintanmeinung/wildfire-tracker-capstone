@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace project_wildfire_tests.AccountPage_Tests.Features
+namespace project_wildfire_tests.Features
 {
     using Reqnroll;
     using System;
@@ -20,18 +20,18 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Email Update")]
+    [NUnit.Framework.DescriptionAttribute("Wildfire Map Marker Display")]
     [NUnit.Framework.FixtureLifeCycleAttribute(NUnit.Framework.LifeCycle.InstancePerTestCase)]
-    public partial class EmailUpdateFeature
+    public partial class WildfireMapMarkerDisplayFeature
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AccountPage.Tests/Features", "Email Update", "  As a user\r\n  I want to update my email address", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Wildfire Map Marker Display", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
-#line 1 "email_update.feature"
+#line 1 "WildfireMap.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
@@ -83,15 +83,13 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Successfully update email")]
-        [NUnit.Framework.CategoryAttribute("REQ-1234")]
-        public async System.Threading.Tasks.Task SuccessfullyUpdateEmail()
+        [NUnit.Framework.DescriptionAttribute("Fire markers appear for today\'s date")]
+        public async System.Threading.Tasks.Task FireMarkersAppearForTodaysDate()
         {
-            string[] tagsOfScenario = new string[] {
-                    "REQ-1234"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successfully update email", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 7
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Fire markers appear for today\'s date", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 3
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -101,38 +99,60 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 8
-    await testRunner.GivenAsync("a user is logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 4
+    await testRunner.GivenAsync("I am on the wildfire map page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
+#line 5
+    await testRunner.WhenAsync("the page loads", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 6
+    await testRunner.ThenAsync("I should see wildfire markers on the map", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Fire markers update when I select a different date")]
+        public async System.Threading.Tasks.Task FireMarkersUpdateWhenISelectADifferentDate()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Fire markers update when I select a different date", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 8
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
 #line 9
-    await testRunner.AndAsync("the user is on the email update page", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.GivenAsync("I am on the wildfire map page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 10
-    await testRunner.WhenAsync("the user enters a valid new email \"newemail@example.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I select a different valid date", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 11
-    await testRunner.AndAsync("submits the form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("I click the filter date button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 12
-    await testRunner.ThenAsync("the email should be updated successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 13
-    await testRunner.AndAsync("a success message should be displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.ThenAsync("I should see wildfire markers updated on the map", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Fail to update email due to invalid format")]
-        [NUnit.Framework.CategoryAttribute("REQ-1235")]
-        public async System.Threading.Tasks.Task FailToUpdateEmailDueToInvalidFormat()
+        [NUnit.Framework.DescriptionAttribute("User is warned when selecting a date outside the valid range")]
+        public async System.Threading.Tasks.Task UserIsWarnedWhenSelectingADateOutsideTheValidRange()
         {
-            string[] tagsOfScenario = new string[] {
-                    "REQ-1235"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Fail to update email due to invalid format", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 16
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("User is warned when selecting a date outside the valid range", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 14
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -142,35 +162,30 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
             else
             {
                 await this.ScenarioStartAsync();
+#line 15
+    await testRunner.GivenAsync("I am on the wildfire map page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 16
+    await testRunner.WhenAsync("I select a date with no wildfires", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
 #line 17
-    await testRunner.GivenAsync("a user is logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.AndAsync("I click the filter date button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 18
-    await testRunner.AndAsync("the user is on the email update page", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 19
-    await testRunner.WhenAsync("the user enters an invalid email \"invalid-email\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 20
-    await testRunner.AndAsync("submits the form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 21
-    await testRunner.ThenAsync("an error message should be displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("I should see a \"Please select a date within the valid range.\" alert", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Fail to update email when user is not found")]
-        [NUnit.Framework.CategoryAttribute("REQ-1236")]
-        public async System.Threading.Tasks.Task FailToUpdateEmailWhenUserIsNotFound()
+        [NUnit.Framework.DescriptionAttribute("Verify wildfire marker popup displays detailed info")]
+        public async System.Threading.Tasks.Task VerifyWildfireMarkerPopupDisplaysDetailedInfo()
         {
-            string[] tagsOfScenario = new string[] {
-                    "REQ-1236"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Fail to update email when user is not found", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 24
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Verify wildfire marker popup displays detailed info", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 20
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -180,14 +195,17 @@ namespace project_wildfire_tests.AccountPage_Tests.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 25
-    await testRunner.GivenAsync("a user is not logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 21
+    await testRunner.GivenAsync("I am on the wildfire map page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 26
-    await testRunner.WhenAsync("the user tries to access the email update page", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 22
+    await testRunner.WhenAsync("the page loads", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 27
-    await testRunner.ThenAsync("an error message should be displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 23
+    await testRunner.AndAsync("I click on a wildfire marker", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 24
+    await testRunner.ThenAsync("I should see radiative power, latitude, and longitude in the popup", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

@@ -27,10 +27,6 @@ namespace project_wildfire_web.Controllers;
         //private readonly HttpClient _httpClient;
         private readonly IWildfireRepository _wildfireRepository;
 
-
-
-
-
         public WildfireAPIController(IWildfireRepository wildfirefireRepository, ILogger<WildfireAPIController> logger, INasaService nasaService)
         {
             _logger = logger;
@@ -54,6 +50,19 @@ namespace project_wildfire_web.Controllers;
             }
             return Ok(wildfires);
         }
+
+        //Code to fetch Wildfire Markers by given date from user
+        //Updated by Quintan
+        [HttpGet("fetchWildfiresByDate")]
+        public async Task<IActionResult> GetWildfiresByDate([FromQuery] string date)
+        {
+            if (!DateTime.TryParse(date, out var parsedDate))
+                return BadRequest("Invalid date format");
+
+            var fires = await _nasaService.GetFiresByDateAsync(parsedDate);
+            return Ok(fires);
+        }
+
 
         [HttpPost ("postData")]
         public async Task<IActionResult> SaveDataToDB()
