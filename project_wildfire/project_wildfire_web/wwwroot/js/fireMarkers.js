@@ -24,7 +24,3 @@ export function addFireMarkers(fireLayer, apiData) {
       }
     };
 
-    tryAttachAttributes();*/
-  });
-}
-
