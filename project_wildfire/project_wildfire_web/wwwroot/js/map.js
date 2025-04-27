@@ -88,20 +88,15 @@ function addMarkerOnClick(e, map) {
 
 
 
-/**
- * Initializes the Leaflet map.
- */
-function initializeMap() {
-    return L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
-}
+    /**
+     * Initializes the Leaflet map.
+     */
+    function initializeMap() {
+        return L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
+    }
 
     function hideSpinner() {
         document.getElementById("loading-spinner").style.display = "none";
-    }
-
-    //Function to load up the leaflet map for application
-    function initializeMap() {
-        return L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
     }
 
     //Set up different terrain layers for the viewer to choose from
