@@ -38,58 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
     addLegend(map);
     initializeCompass(map);
 
-<<<<<<< HEAD
-    // 🔥 Fetch wildfire data and display markers
-    //This code is in test production
-    const fireLayer = overlayLayers["Fire Reports"];
-
-    // 🔁 Fetch markers for the default date (initial load)
-    showSpinner();
-    fetch(`/api/WildfireAPIController/fetchWildfiresByDate?date=${dateInput.value}`)
-        .then(response => response.json())
-        .then(data => {
-            fireLayer.clearLayers();
-            addFireMarkers(fireLayer, data);
-        })
-        .catch(error => {
-            console.error('Error loading default fire markers:', error);
-        })  
-        .finally(() => {
-            hideSpinner();
-        });
-
-document.getElementById("filter-date-btn").addEventListener("click", () => {
-    const selectedDateStr = dateInput.value;
-    const minDateStr = dateInput.min;
-    const maxDateStr = dateInput.max;
-
-    if (selectedDateStr < minDateStr || selectedDateStr > maxDateStr) {
-        alert("Please select a date within the valid range.");
-        return;
-    }
-
-
-    showSpinner();
-
-    // ✅ Use the string version of the input, NOT `selectedDate` (which is a Date object)
-    const dateStr = dateInput.value;
-
-    fetch(`/api/WildfireAPIController/fetchWildfiresByDate?date=${dateStr}`)
-        .then(response => response.json())
-        .then(data => {
-            fireLayer.clearLayers();
-            addFireMarkers(fireLayer, data);
-
-            if (data.length === 0) {
-                alert("No wildfires were reported for this date.");
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching wildfire data for selected date:', error);
-        })
-        .finally(() => {
-            hideSpinner();
-=======
     // Add dynamic markers for logged-in users
     var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
@@ -113,18 +61,11 @@ document.getElementById("filter-date-btn").addEventListener("click", () => {
 
         map.on('click', function (e) {
             addMarkerOnClick(e, map)
->>>>>>> 7984d3d3933909d5ad960eb678894bebd4a0ab02
         });
     }
 });
         
 
-<<<<<<< HEAD
-    //Spinner Control Functions
-    function showSpinner() {
-        document.getElementById("loading-spinner").style.display = "block";
-    }
-=======
 let activeMarker = null; // Variable to store user's most recent marker
 function addMarkerOnClick(e, map) {
     if (activeMarker) {
@@ -153,7 +94,6 @@ function addMarkerOnClick(e, map) {
 function initializeMap() {
     return L.map('map').setView([44.84, -123.23], 10); // Monmouth, Oregon
 }
->>>>>>> 7984d3d3933909d5ad960eb678894bebd4a0ab02
 
     function hideSpinner() {
         document.getElementById("loading-spinner").style.display = "none";
@@ -219,7 +159,6 @@ function initializeMap() {
             console.log("Geolocation not supported by this browser");
         }
     }
-<<<<<<< HEAD
 
     function onGeolocationSuccess(position, map) {
         const { latitude, longitude } = position.coords;
@@ -271,13 +210,10 @@ function initializeMap() {
         const day = String(date.getDate()).padStart(2, "0");
         return `${year}-${month}-${day}`;
     }
-});
 
 
 
 
 
 
-=======
-}
->>>>>>> 7984d3d3933909d5ad960eb678894bebd4a0ab02
+
