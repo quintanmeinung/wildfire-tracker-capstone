@@ -81,3 +81,45 @@ body {
 }
 =======
 >>>>>>> 29e4d6cdd93f37af24338882acdfa07eed2cfa79
+
+.pulsing-wrapper {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.pulsing-glow {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 16px;
+  height: 16px;
+  background: rgba(255, 0, 0, 0.5);
+  border: 2px solid red;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.fire-icon-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  pointer-events: none; /* allows clicking the marker easily */
+}
+
+@keyframes pulse {
+  0% {
+      transform: scale(0.8);
+      opacity: 1;
+  }
+  50% {
+      transform: scale(2.5);
+      opacity: 0;
+  }
+  100% {
+      transform: scale(0.8);
+      opacity: 1;
+  }
+}
