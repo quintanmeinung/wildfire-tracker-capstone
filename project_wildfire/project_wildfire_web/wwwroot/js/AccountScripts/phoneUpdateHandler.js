@@ -1,7 +1,7 @@
 document.getElementById('update-phone-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const phoneInput = document.getElementById('newPhoneNumber');
+    const phoneInput = document.getElementById('PhoneNumber');
     const newPhoneNumber = phoneInput.value.trim();
 
     if (!validatePhoneNumber(newPhoneNumber)) {

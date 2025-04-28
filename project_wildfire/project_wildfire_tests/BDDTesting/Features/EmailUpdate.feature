@@ -2,11 +2,10 @@ Feature: Email Update
   As a user
   I want to update my email address
 
-
   Scenario: Successfully update email
     Given a user is logged in
     And the user is on the email update page
-    When the user enters a valid new email "test@example.com"
+    When the user enters a valid new email "testuser@mail.com"
     And submits the form
     Then the email should be updated successfully
     And a success message should be displayed
