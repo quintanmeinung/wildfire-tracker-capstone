@@ -6,10 +6,10 @@
 
 <h2>Update Phone Number</h2>
 
-<form method="post">
+<form id="update-phone-form" method="post">
     <div class="form-group">
         <label for="PhoneNumber">New Phone Number</label>
-        <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" required />
+        <input type="tel" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" required pattern="\d{10}" title="Please enter a 10-digit phone number">
     </div>
     <button type="submit" class="btn btn-primary mt-3">Update</button>
 </form>
@@ -19,7 +19,7 @@
     <div class="alert alert-success mt-3">@TempData["StatusMessage"]</div>
 }
 
-
+@* 
 @section Scripts {
     <script src='~/js/AccountScripts/phoneUpdateHandler.js'></script>
-}
+} *@
