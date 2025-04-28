@@ -44,7 +44,7 @@ public class EmailUpdateStepDefinitions
         // Enter email
         var emailInput = _driver.FindElement(By.Id("login-email-field"));
         emailInput.Clear();
-        emailInput.SendKeys("testuser@email.com");
+        emailInput.SendKeys("testuser@mail.com");
 
         // Enter password
         var passwordInput = _driver.FindElement(By.Id("login-password-field"));
