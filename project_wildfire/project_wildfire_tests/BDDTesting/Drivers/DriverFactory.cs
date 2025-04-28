@@ -22,7 +22,7 @@ public static class WebDriverFactory
         }
     }
 
-    public static void CreateDriver(bool headless = false)
+    public static void CreateDriver(bool headless = true)
     {
         // Check if the driver is already initialized
         if (_driver == null)
