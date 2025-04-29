@@ -22,7 +22,7 @@ public static class WebDriverFactory
         }
     }
 
-    public static void CreateDriver(bool headless = true)
+    public static void CreateDriver(bool headless = false)
     {
         // Check if the driver is already initialized
         if (_driver == null)
@@ -43,6 +43,7 @@ public static class WebDriverFactory
             // Additional options for Chrome
             options.AddArguments("--no-sandbox");
             options.AddArguments("--disable-dev-shm-usage");
+            options.AddArgument("--incognito");
             
             _driver = new ChromeDriver(options);
 
