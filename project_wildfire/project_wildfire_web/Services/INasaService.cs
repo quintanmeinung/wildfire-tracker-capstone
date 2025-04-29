@@ -8,6 +8,8 @@ namespace project_wildfire_web.Services;
 public interface INasaService
 { 
     Task<List<FireDTO>> GetFiresAsync ();
+    Task<List<FireDTO>> GetFiresByDateAsync(DateTime date);
+
 
 
 }
