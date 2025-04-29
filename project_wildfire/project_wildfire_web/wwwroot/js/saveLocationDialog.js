@@ -25,6 +25,7 @@ document.getElementById("saveLocationButton").addEventListener("click", async fu
             // Optionally, you can close the modal here
             var dialogModal = bootstrap.Modal.getInstance(document.getElementById('dialogModal'));
             dialogModal.hide();
+            alert("Location saved successfully!"); // Alert the user of success
         } else {
             // Handle error in saving location
             console.error("Error saving location:", response.statusText);
