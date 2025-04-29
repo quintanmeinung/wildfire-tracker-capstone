@@ -58,6 +58,12 @@
 <div id="compass-degree"></div>
 <div id="compass-top-right"></div>
 
+<!-- Loading spinner HTML -->
+<div id="loading-spinner" style="display: none; text-align: center; margin: 10px;">
+    <span>🔄 Loading wildfire data...</span>
+</div>
+
+
 <!-- Map Container -->
 <div id="map" style="height: 700px; width: 100%; margin-top: 20px;"></div>
 
@@ -84,6 +90,12 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="fire-date-filter">
+    <label for="fire-date">🗓️ Select Wildfire Date:</label>
+    <input type="date" id="fire-date" name="fire-date" />
+    <button id="filter-date-btn">Filter Fires</button>
 </div>
 
 @section Scripts {
