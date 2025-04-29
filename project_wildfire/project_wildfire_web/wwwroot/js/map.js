@@ -112,8 +112,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .finally(() => {
                 hideSpinner();
             });
-    });
-}
+    })
+
 
 // Spinner functions
 function showSpinner() {
