@@ -44,7 +44,7 @@ namespace project_wildfire_tests.BDDTesting.StepDefinitions
             wait.Until(d => d.FindElement(By.Id("Input_Email")));
 
             // Wait for a short duration to ensure the page does not disappear
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(20);
 
             // Enter email
             var emailInput = _driver.FindElement(By.Id("Input_Email"));
