@@ -11,7 +11,7 @@
         <label for="PhoneNumber">New Phone Number</label>
         <input type="tel" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" required pattern="\d{10}" title="Please enter a 10-digit phone number">
     </div>
-    <button type="submit" class="btn btn-primary mt-3">Update</button>
+    <button id="phone-number-submit" type="submit" class="btn btn-primary mt-3">Update</button>
 </form>
 
 @if (TempData["StatusMessage"] != null)
@@ -22,4 +22,5 @@
 @* 
 @section Scripts {
     <script src='~/js/AccountScripts/phoneUpdateHandler.js'></script>
-} *@
+} 
+*@

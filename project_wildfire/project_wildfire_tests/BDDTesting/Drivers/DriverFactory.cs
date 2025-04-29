@@ -43,6 +43,7 @@ public static class WebDriverFactory
             // Additional options for Chrome
             options.AddArguments("--no-sandbox");
             options.AddArguments("--disable-dev-shm-usage");
+            options.AddArgument("--incognito");
             
             _driver = new ChromeDriver(options);
 
