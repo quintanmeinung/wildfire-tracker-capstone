@@ -1,16 +1,7 @@
-using System.Diagnostics;
-using System.Globalization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-using Microsoft.IdentityModel.Tokens;
 using project_wildfire_web.Models;
 using project_wildfire_web.Models.DTO;
 using project_wildfire_web.DAL.Abstract;
-using project_wildfire_web.ExtensionsMethods;
-using CsvHelper;
-using CsvHelper.Configuration;
-using NetTopologySuite.Geometries;
 using project_wildfire_web.Services;
 
 
@@ -26,10 +17,6 @@ namespace project_wildfire_web.Controllers;
         private readonly IConfiguration _configuration;
         //private readonly HttpClient _httpClient;
         private readonly IWildfireRepository _wildfireRepository;
-
-
-
-
 
         public WildfireAPIController(IWildfireRepository wildfirefireRepository, ILogger<WildfireAPIController> logger, INasaService nasaService)
         {
@@ -54,6 +41,19 @@ namespace project_wildfire_web.Controllers;
             }
             return Ok(wildfires);
         }
+
+        //Code to fetch Wildfire Markers by given date from user
+        //Updated by Quintan
+        [HttpGet("fetchWildfiresByDate")]
+        public async Task<IActionResult> GetWildfiresByDate([FromQuery] string date)
+        {
+            if (!DateTime.TryParse(date, out var parsedDate))
+                return BadRequest("Invalid date format");
+
+            var fires = await _nasaService.GetFiresByDateAsync(parsedDate);
+            return Ok(fires);
+        }
+
 
         [HttpPost ("postData")]
         public async Task<IActionResult> SaveDataToDB()
