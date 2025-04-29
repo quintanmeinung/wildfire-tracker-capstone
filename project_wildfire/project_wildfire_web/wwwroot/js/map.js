@@ -1,5 +1,7 @@
 import { addAQIMarker } from './AQI.js';
 import { addFireMarkers } from './fireMarkers.js';
+import { getUserId } from './site.js'; // Import userId
+import { initDialogModal } from './saveLocationModalHandler.js'; // Import modal handler
 
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
@@ -37,7 +39,33 @@ document.addEventListener("DOMContentLoaded", function () {
     addLegend(map);
     initializeCompass(map);
 
-    // 🔥 Fetch wildfire data for today's date automatically
+    var userId = getUserId(); // Get the user ID from the site.js file
+    if (userId !== "") {
+
+        var profileElement = document.getElementById("profile");
+
+        // Get saved locations from the profile element data attribute(Index.cshtml)
+        var savedLocations = profileElement.dataset.savedLocations;
+
+        console.log("Saved locations:", savedLocations);
+
+        if (savedLocations) {
+            // Parse the JSON string to an object
+            savedLocations = JSON.parse(savedLocations); 
+ 
+            for (let location of savedLocations) {
+                console.log(location);
+                
+                let marker = L.marker([location.latitude, location.longitude]).addTo(map);
+                marker.bindPopup(location.title); // Bind the name to the marker popup
+            }
+            map.on('click', function (e) {
+                addMarkerOnClick(e, map)
+            });
+        }
+    }
+
+    // Fetch wildfire data for today's date automatically
     showSpinner();
     fetch(`/api/WildfireAPIController/fetchWildfiresByDate?date=${dateInput.value}`)
         .then(response => response.json())
@@ -56,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
             hideSpinner();
         });
 
-    // 🔥 Filter button click
+    // Filter button click
     document.getElementById("filter-date-btn").addEventListener("click", () => {
         const selectedDateStr = dateInput.value;
         const minDateStr = dateInput.min;
@@ -85,117 +113,118 @@ document.addEventListener("DOMContentLoaded", function () {
                 hideSpinner();
             });
     });
+}
 
-    // Spinner functions
-    function showSpinner() {
-        document.getElementById("loading-spinner").style.display = "block";
-    }
+// Spinner functions
+function showSpinner() {
+    document.getElementById("loading-spinner").style.display = "block";
+}
 
-    function hideSpinner() {
-        document.getElementById("loading-spinner").style.display = "none";
-    }
+function hideSpinner() {
+    document.getElementById("loading-spinner").style.display = "none";
+}
 
-    // Map Setup
-    function initializeMap() {
-        return L.map('map').setView([44.84, -123.23], 10); // Monmouth, OR
-    }
+// Map Setup
+function initializeMap() {
+    return L.map('map').setView([44.84, -123.23], 10); // Monmouth, OR
+}
 
-    function createBaseLayers() {
-        return {
-            "Street Map": L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap'
-            }),
-            "Satellite": L.tileLayer('https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                maxZoom: 19,
-                attribution: '© Esri'
-            }),
-            "Topographic Map": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
-            })
-        };
-    }
+function createBaseLayers() {
+    return {
+        "Street Map": L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }),
+        "Satellite": L.tileLayer('https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19,
+            attribution: '© Esri'
+        }),
+        "Topographic Map": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
+        })
+    };
+}
 
-    function createOverlayLayers(map) {
-        const cities = L.layerGroup().addLayer(
-            L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View")
+function createOverlayLayers(map) {
+    const cities = L.layerGroup().addLayer(
+        L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View")
+    );
+
+    const aqiLayer = initializeAqiLayer();
+    const fireLayer = L.layerGroup();
+
+    return {
+        "Cities": cities,
+        "AQI Stations": aqiLayer,
+        "Fire Reports": fireLayer
+    };
+}
+
+function initializeAqiLayer() {
+    const aqiLayer = L.layerGroup();
+    addAQIMarker(aqiLayer, "A503596"); // Salem Chemeketa
+    addAQIMarker(aqiLayer, "@91");     // Silverton
+    addAQIMarker(aqiLayer, "@83");     // Lyons
+    addAQIMarker(aqiLayer, "@89");     // Salem
+    addAQIMarker(aqiLayer, "A503590"); // Dallas
+    addAQIMarker(aqiLayer, "@11923");  // Turner
+    return aqiLayer;
+}
+
+function handleGeolocation(map) {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            position => onGeolocationSuccess(position, map),
+            onGeolocationError
         );
-
-        const aqiLayer = initializeAqiLayer();
-        const fireLayer = L.layerGroup();
-
-        return {
-            "Cities": cities,
-            "AQI Stations": aqiLayer,
-            "Fire Reports": fireLayer
-        };
+    } else {
+        console.log("Geolocation not supported by this browser");
     }
+}
 
-    function initializeAqiLayer() {
-        const aqiLayer = L.layerGroup();
-        addAQIMarker(aqiLayer, "A503596"); // Salem Chemeketa
-        addAQIMarker(aqiLayer, "@91");     // Silverton
-        addAQIMarker(aqiLayer, "@83");     // Lyons
-        addAQIMarker(aqiLayer, "@89");     // Salem
-        addAQIMarker(aqiLayer, "A503590"); // Dallas
-        addAQIMarker(aqiLayer, "@11923");  // Turner
-        return aqiLayer;
+function onGeolocationSuccess(position, map) {
+    const { latitude, longitude } = position.coords;
+    map.panTo([latitude, longitude]);
+    L.marker([latitude, longitude])
+        .bindPopup("Your current location")
+        .openPopup()
+        .addTo(map);
+
+    addGeolet(map);
+}
+
+function onGeolocationError(error) {
+    addGeolet(map);
+    const errorMessages = {
+        1: "Permission Denied",
+        2: "Location information unavailable",
+        3: "The request timed out",
+        0: "An unknown error occurred"
+    };
+    console.log(errorMessages[error.code] || "An error occurred");
+}
+
+function addGeolet(map) {
+    if (typeof L.geolet !== "undefined") {
+        L.geolet({ position: 'bottomleft', title: 'Find Current Location' }).addTo(map);
+        console.log("Geolet added to map");
+    } else {
+        console.error("Geolet plugin failed to load.");
     }
+}
 
-    function handleGeolocation(map) {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                position => onGeolocationSuccess(position, map),
-                onGeolocationError
-            );
-        } else {
-            console.log("Geolocation not supported by this browser");
-        }
+function initializeCompass(map) {
+    if (typeof L.control.compass !== "undefined") {
+        L.control.compass({
+            position: 'topright',
+            autoActive: true,
+            showDigit: true
+        }).addTo(map);
+    } else {
+        console.error("Leaflet Compass plugin failed to load.");
     }
-
-    function onGeolocationSuccess(position, map) {
-        const { latitude, longitude } = position.coords;
-        map.panTo([latitude, longitude]);
-        L.marker([latitude, longitude])
-            .bindPopup("Your current location")
-            .openPopup()
-            .addTo(map);
-
-        addGeolet(map);
-    }
-
-    function onGeolocationError(error) {
-        addGeolet(map);
-        const errorMessages = {
-            1: "Permission Denied",
-            2: "Location information unavailable",
-            3: "The request timed out",
-            0: "An unknown error occurred"
-        };
-        console.log(errorMessages[error.code] || "An error occurred");
-    }
-
-    function addGeolet(map) {
-        if (typeof L.geolet !== "undefined") {
-            L.geolet({ position: 'bottomleft', title: 'Find Current Location' }).addTo(map);
-            console.log("Geolet added to map");
-        } else {
-            console.error("Geolet plugin failed to load.");
-        }
-    }
-
-    function initializeCompass(map) {
-        if (typeof L.control.compass !== "undefined") {
-            L.control.compass({
-                position: 'topright',
-                autoActive: true,
-                showDigit: true
-            }).addTo(map);
-        } else {
-            console.error("Leaflet Compass plugin failed to load.");
-        }
-    }
+}
 /*
     function addLegend(map) {
         const legend = L.control({ position: 'bottomright' });
