@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
  
             for (let location of savedLocations) {
                 console.log(location);
-                
+
                 let marker = L.marker([location.latitude, location.longitude]).addTo(map);
                 marker.bindPopup(location.title); // Bind the name to the marker popup
             }
@@ -112,8 +112,34 @@ document.addEventListener("DOMContentLoaded", function () {
             .finally(() => {
                 hideSpinner();
             });
-    })
+    });
+});
 
+
+let activeMarker = null; // Variable to store user's most recent marker
+function addMarkerOnClick(e, map) {
+
+    if (activeMarker) {
+        map.removeLayer(activeMarker); // Remove the previous marker if it exists
+    }
+
+    // Create a new marker at the clicked location
+    activeMarker = L.marker(e.latlng).addTo(map);
+
+    // Create a popup with a button to save the location
+    var popup = document.createElement('div');
+    popup.id = 'save-location-popup';
+    popup.className = 'btn btn-primary';
+    popup.innerHTML = 'Save Location';
+ 
+    popup.dataset.lat = e.latlng.lat.toFixed(5); // Store latitude in dataset
+    popup.dataset.lng = e.latlng.lng.toFixed(5); // Store longitude in dataset
+
+    activeMarker.bindPopup(popup);
+    activeMarker.openPopup(); // Open the popup immediately
+
+    initDialogModal(); // Initialize the modal handler
+}
 
 // Spinner functions
 function showSpinner() {
@@ -242,13 +268,12 @@ function initializeCompass(map) {
     }
 */
     // Format Date to YYYY-MM-DD
-    function formatLocalDate(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
-    }
-});
+function formatLocalDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
 
 
 

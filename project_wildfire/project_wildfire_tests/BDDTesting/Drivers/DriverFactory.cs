@@ -1,5 +1,6 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
 
@@ -28,8 +29,8 @@ public static class WebDriverFactory
         if (_driver == null)
         {
             // Initialize a driver manager and set up the Chrome driver
-            new DriverManager().SetUpDriver(new ChromeConfig());
-            var options = new ChromeOptions();
+            new DriverManager().SetUpDriver(new FirefoxConfig());
+            var options = new FirefoxOptions();
             
             // Default behavior is to run in headless mode
             if (headless)
@@ -40,12 +41,7 @@ public static class WebDriverFactory
                 options.AddArguments("--window-size=1920,1080");
             }
             
-            // Additional options for Chrome
-            options.AddArguments("--no-sandbox");
-            options.AddArguments("--disable-dev-shm-usage");
-            options.AddArgument("--incognito");
-            
-            _driver = new ChromeDriver(options);
+            _driver = new FirefoxDriver(options);
 
             // Set the default timeout for implicit waits
             // i.e. if an element is not found, it will wait for 5 seconds before throwing an exception
