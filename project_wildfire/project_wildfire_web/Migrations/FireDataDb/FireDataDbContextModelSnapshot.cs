@@ -48,7 +48,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.ToTable("AqiStations");
+                    b.ToTable("AqiStations", (string)null);
                 });
 
             modelBuilder.Entity("project_wildfire_web.Models.Fire", b =>
@@ -74,7 +74,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.HasKey("FireId")
                         .HasName("PK__Fires__E1DECA144C64F9FF");
 
-                    b.ToTable("Fires");
+                    b.ToTable("Fires", (string)null);
                 });
 
             modelBuilder.Entity("project_wildfire_web.Models.User", b =>
@@ -103,7 +103,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.HasKey("UserId")
                         .HasName("PK__Users__1788CC4C60961939");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("project_wildfire_web.Models.UserLocation", b =>
@@ -114,6 +114,8 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Latitude")
                         .HasColumnType("decimal(8, 6)");
@@ -135,28 +137,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLocations");
-                });
-
-            modelBuilder.Entity("project_wildfire_web.Models.UserPreferences", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("ContrastMode")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("FontSize")
-                        .IsRequired()
-                        .HasColumnType("string");
-
-                    b.Property<bool>("TextToSpeech")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("UserPreferences");
+                    b.ToTable("UserLocations", (string)null);
                 });
 
             modelBuilder.Entity("UserFireSubscription", b =>
