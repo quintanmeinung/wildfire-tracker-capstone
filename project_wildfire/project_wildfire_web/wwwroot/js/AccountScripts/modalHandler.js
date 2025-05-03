@@ -1,15 +1,32 @@
+import { initSavedLocationEditing } from "./updateLocation";
+
 document.addEventListener("DOMContentLoaded", function () {
-    // Get the profile link
-    var profileLink = document.getElementById("manage");
+    const profileLink = document.getElementById("manage");
+    const modalElement = document.getElementById('profileModal');
+    
+    if (!modalElement) {
+        console.error('Profile modal element not found');
+        return;
+    }
 
-    // Get the profile modal
-    var profileModal = new bootstrap.Modal(document.getElementById('profileModal'));
+    const profileModal = new bootstrap.Modal(modalElement);
 
-    // Add click event listener to the profile link
     if (profileLink) {
         profileLink.addEventListener("click", function (e) {
-            e.preventDefault(); // Prevent default link behavior
-            profileModal.show(); // Show the modal
+            e.preventDefault();
+            profileModal.show();
+            
+            // Cleaner event handling with named function
+            const handleModalShown = () => {
+                try {
+                    initSavedLocationEditing();
+                    modalElement.removeEventListener('shown.bs.modal', handleModalShown);
+                } catch (error) {
+                    console.error('Error initializing location editing:', error);
+                }
+            };
+            
+            modalElement.addEventListener('shown.bs.modal', handleModalShown);
         });
     }
 });

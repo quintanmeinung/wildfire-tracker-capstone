@@ -1,7 +1,7 @@
 /**
  * Adds a collapsible and interactive legend to the map.
  */
-function addLegend(map) {
+export function addLegend(map) {
     var legend = L.control({ position: 'bottomright' });
 
     legend.onAdd = function () {
@@ -82,7 +82,7 @@ function attachLegendEvents() {
 /**
  * Function to find the modal content and update it when needed for testing
  */
-function updateLegendInfo(content) {
+export function updateLegendInfo(content) {
     const legendInfoContent = document.getElementById("legendInfoContent");
   
     if (!legendInfoContent) {
@@ -91,7 +91,4 @@ function updateLegendInfo(content) {
     }
   
     legendInfoContent.innerHTML = content;
-  }
-  
-  module.exports = { updateLegendInfo };
-  
+}
