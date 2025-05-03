@@ -64,6 +64,8 @@ public class Program
 
         //Adding Notification Service
         builder.Services.AddScoped<NotificationService>();
+        builder.Services.AddHostedService<NotificationBackgroundService>();
+
 
 
         // Add services to the container.

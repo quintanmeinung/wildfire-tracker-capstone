@@ -59,7 +59,7 @@ public class NotificationService
     // Haversine formula for calculating distance between two coordinates in miles
     private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
-        double R = 3958.8; // Earth radius in miles
+        double R = 3958.8; 
         double dLat = DegreesToRadians(lat2 - lat1);
         double dLon = DegreesToRadians(lon2 - lon1);
         double a = Math.Pow(Math.Sin(dLat / 2), 2) +
