@@ -55,6 +55,31 @@ public class LocationApiController : ControllerBase
         return Ok("Location saved successfully");
     }
 
+    [HttpPost("UpdateLocation")]
+    public async Task<IActionResult> UpdateLocation([FromBody] UserLocationDTO userLocationDTO)
+    {
+        _logger.LogDebug("Request received at api/Location/UpdateLocation(POST)");
+        _logger.LogDebug("DTO received: {UserLocationDTO}", userLocationDTO);
+        if (!ModelState.IsValid)
+        {
+            _logger.LogWarning("Invalid model state for UserLocationDTO: {ModelState}", ModelState);
+            return BadRequest(ModelState);
+        }
+        // Update location in user's saved locations
+        UserLocation userLocation = userLocationDTO.ToUserLocation();
+
+        try{
+            await _locationRepository.UpdateLocationAsync(userLocation);
+
+        } catch (Exception ex) {
+            _logger.LogError(ex, "Error updating user location: {Message}", ex.Message);
+            return StatusCode(500, "Internal server error while updating location.");
+        }
+        
+        _logger.LogDebug("User location updated successfully");
+        return Ok("Location updated successfully");
+    }
+
 }
 
     
