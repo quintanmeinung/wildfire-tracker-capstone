@@ -198,13 +198,43 @@
                                 {
                                     @foreach (var location in Model.SavedLocations)
                                     {
-                                        <tr>
-                                            <td>@location.Title</td>
-                                            <td>@location.Address</td>
-                                            <td>@location.Latitude</td>
-                                            <td>@location.Longitude</td>
-                                            <td></td>
-                                            <td></td>
+                                        <tr data-id="@location">
+                                            <!-- Each input has an ID: 'sl-<field>-input' -->
+                                            <td class="sl-input">
+                                                <input id="sl-title-input"
+                                                    type="text"
+                                                    value="@location.Title"
+                                                    class="form-control-plaintext"
+                                                    readonly>
+                                            </td>
+                                            <td class="sl-input">
+                                                <input id="sl-address-input" 
+                                                    type="text" 
+                                                    value="@location.Address" 
+                                                    class="form-control-plaintext"
+                                                    readonly>
+                                            </td>
+                                            <td class="sl-input">
+                                                <input id="sl-latitude-input"
+                                                    type="text" 
+                                                    value="@location.Latitude" 
+                                                    class="form-control-plaintext"
+                                                    readonly>
+                                            </td>
+                                            <td class="sl-input">
+                                                <input id="sl-longitude-input" 
+                                                    type="text" 
+                                                    value="@location.Longitude" 
+                                                    class="form-control-plaintext"
+                                                    readonly>
+                                            </td>
+                                            <td class="sl-actions">
+                                                <button class="btn btn-sm btn-outline-primary edit-btn">Edit</button>
+                                                <button class="btn btn-sm btn-success save-btn d-none">Save</button>
+                                            </td>
+                                            <td class="sl-delete">
+                                                <button class="btn btn-sm btn-danger delete-btn d-none">Delete</button>
+                                            </td>
                                         </tr>
                                     }
                                 } 
