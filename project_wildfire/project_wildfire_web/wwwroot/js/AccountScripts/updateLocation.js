@@ -38,10 +38,10 @@ function handleSaveButton() {
             // Collect updated data
             const updatedData = {
                 Id: locationId,
-                Title: document.getElementById(`sl-title-input-${locationId}`).value,
-                Address: document.getElementById(`sl-address-input-${locationId}`).value,
-                Latitude: document.getElementById(`sl-latitude-input-${locationId}`).value,
-                Longitude: document.getElementById(`sl-longitude-input-${locationId}`).value
+                Title: document.getElementById(`sl-title-input`).value,
+                Address: document.getElementById(`sl-address-input`).value,
+                Latitude: document.getElementById(`sl-latitude-input`).value,
+                Longitude: document.getElementById(`sl-longitude-input`).value
             };
             
             try {
