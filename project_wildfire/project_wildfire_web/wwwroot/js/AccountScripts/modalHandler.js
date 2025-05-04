@@ -1,32 +1,26 @@
-import { initSavedLocationEditing } from "./updateLocation";
+import { initSavedLocationEditing } from './updateLocation.js';
 
-document.addEventListener("DOMContentLoaded", function () {
-    const profileLink = document.getElementById("manage");
-    const modalElement = document.getElementById('profileModal');
-    
-    if (!modalElement) {
-        console.error('Profile modal element not found');
-        return;
-    }
-
+const modalElement = document.getElementById('profileModal');
+if (!modalElement) {
+    console.error('Profile modal element not found');
+} else {
     const profileModal = new bootstrap.Modal(modalElement);
-
-    if (profileLink) {
-        profileLink.addEventListener("click", function (e) {
-            e.preventDefault();
-            profileModal.show();
-            
-            // Cleaner event handling with named function
-            const handleModalShown = () => {
-                try {
-                    initSavedLocationEditing();
-                    modalElement.removeEventListener('shown.bs.modal', handleModalShown);
-                } catch (error) {
-                    console.error('Error initializing location editing:', error);
-                }
-            };
-            
-            modalElement.addEventListener('shown.bs.modal', handleModalShown);
-        });
-    }
-});
+    
+    // Handle modal shown event
+    const handleModalShown = () => {
+        try {
+            initSavedLocationEditing();
+        } catch (error) {
+            console.error('Error initializing location editing:', error);
+        }
+    };
+    
+    modalElement.addEventListener('shown.bs.modal', handleModalShown);
+    
+    // Handle click event
+    document.querySelector('#manage')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        profileModal.show();
+        console.log('Profile link clicked');
+    });
+}
