@@ -2,6 +2,7 @@ import { addAQIMarker } from './AQI.js';
 import { addFireMarkers } from './fireMarkers.js';
 import { getUserId } from '../site.js'; // Import userId
 import { initDialogModal } from '../SaveLocationScripts/saveLocationModalHandler.js'; // Import modal handler
+import {addLegend } from './addLegend.js';
 
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
