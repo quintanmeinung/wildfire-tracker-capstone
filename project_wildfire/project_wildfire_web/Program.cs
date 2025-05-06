@@ -66,6 +66,8 @@ public class Program
         builder.Services.AddScoped<NotificationService>();
         builder.Services.AddHostedService<NotificationBackgroundService>();
 
+        builder.Services.AddScoped<OpenAIService>();
+
 
 
         // Add services to the container.
