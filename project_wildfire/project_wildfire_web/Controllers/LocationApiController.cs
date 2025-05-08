@@ -44,6 +44,10 @@ public class LocationApiController : ControllerBase
         // Add location to user's saved locations
         UserLocation userLocation = userLocationDTO.ToUserLocation();
 
+        // Truncate lng & lat to 5 decimal places
+        userLocation.Latitude = Math.Round(userLocation.Latitude, 5);
+        userLocation.Longitude = Math.Round(userLocation.Longitude, 5);
+
         try{
             await _locationRepository.AddLocationAsync(userLocation);
 
