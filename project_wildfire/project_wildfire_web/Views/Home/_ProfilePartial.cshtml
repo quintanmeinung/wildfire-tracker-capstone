@@ -198,31 +198,30 @@
                                 {
                                     @foreach (var location in Model.SavedLocations)
                                     {
-                                        <tr data-id="@location">
-                                            <!-- Each input has an ID: 'sl-<field>-input' -->
+                                        <tr data-location="@System.Text.Json.JsonSerializer.Serialize(location)">
                                             <td class="sl-input">
-                                                <input id="sl-title-input"
+                                                <input name="title"
                                                     type="text"
                                                     value="@location.Title"
                                                     class="form-control-plaintext"
                                                     readonly>
                                             </td>
                                             <td class="sl-input">
-                                                <input id="sl-address-input" 
+                                                <input name="address" 
                                                     type="text" 
                                                     value="@location.Address" 
                                                     class="form-control-plaintext"
                                                     readonly>
                                             </td>
                                             <td class="sl-input">
-                                                <input id="sl-latitude-input"
+                                                <input name="latitude"
                                                     type="text" 
                                                     value="@location.Latitude" 
                                                     class="form-control-plaintext"
                                                     readonly>
                                             </td>
                                             <td class="sl-input">
-                                                <input id="sl-longitude-input" 
+                                                <input name="longitude" 
                                                     type="text" 
                                                     value="@location.Longitude" 
                                                     class="form-control-plaintext"

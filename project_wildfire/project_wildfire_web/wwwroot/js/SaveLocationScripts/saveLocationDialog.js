@@ -33,11 +33,6 @@ document.getElementById("saveLocationButton").addEventListener("click", async fu
     });
 });
 
-// Update displayed value while sliding
-function updateRadiusValue(val) {
-    document.getElementById('radiusValue').textContent = val;
-}
-
 // Async function to save the location
 async function saveLocation(userLocationDto) {
     try {
