@@ -7,6 +7,8 @@ using project_wildfire_web.DAL.Abstract;
 using Microsoft.EntityFrameworkCore;
 using project_wildfire_web.DAL.Concrete;
 using Microsoft.AspNetCore.Identity;
+using project_wildfire_web.Models.DTO;
+using project_wildfire_web.ExtensionsMethods;
 
 namespace project_wildfire_web.DAL.Concrete
 {
@@ -45,14 +47,16 @@ namespace project_wildfire_web.DAL.Concrete
             return _context.SaveChangesAsync();
         }
 
-        public Task DeleteLocationAsync(int locationId, string userId)
+        public Task DeleteLocationAsync(UserLocationDTO dto)
         {
-            var location = _context.UserLocations
-                .FirstOrDefault(x => x.Id == locationId && x.UserId == userId);
+            UserLocation location = dto.ToUserLocation();
+
+            var locationRecord = _context.UserLocations
+                .FirstOrDefault(x => x.Id == location.Id && x.UserId == location.UserId);
 
             if (location == null)
             {
-                throw new InvalidOperationException($"UserLocation with ID {locationId} not found for user {userId}");
+                throw new InvalidOperationException($"UserLocation with ID {location.Id} not found for user {location.UserId}");
             }
 
             _context.UserLocations.Remove(location);
