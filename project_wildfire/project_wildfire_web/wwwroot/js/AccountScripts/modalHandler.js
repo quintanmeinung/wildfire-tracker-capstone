@@ -1,4 +1,4 @@
-import { initSavedLocationEditing } from './updateLocation.js';
+import { initSavedLocations } from '../ProfilePartial/savedLocations.js';
 
 const modalElement = document.getElementById('profileModal');
 if (!modalElement) {
@@ -9,7 +9,7 @@ if (!modalElement) {
     // Handle modal shown event
     const handleModalShown = () => {
         try {
-            initSavedLocationEditing();
+            initSavedLocations();
         } catch (error) {
             console.error('Error initializing location editing:', error);
         }

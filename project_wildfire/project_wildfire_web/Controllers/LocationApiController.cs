@@ -110,6 +110,54 @@ public class LocationApiController : ControllerBase
         }
     }
 
+    [HttpPost("DeleteLocation")]
+    public async Task<IActionResult> DeleteLocation([FromBody] UserLocationDTO userLocationDTO)
+    {
+        if (userLocationDTO == null)
+        {
+            _logger.LogWarning("Request body is null");
+            return BadRequest(new { Error = "Request body cannot be null" });
+        }
+
+        _logger.LogDebug("Request received at api/Location/DeleteLocation(POST)");
+        _logger.LogDebug("DTO received: {@UserLocationDTO}", userLocationDTO);
+
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+            _logger.LogWarning("Validation errors: {@Errors}", errors);
+            return BadRequest(new { Errors = errors });
+        }
+
+        // Validate user exists
+        var user = await _userManager.FindByIdAsync(userLocationDTO.UserId);
+        if (user == null)
+        {
+            _logger.LogWarning("User not found: {UserId}", userLocationDTO.UserId);
+            return NotFound(new { Error = "User not found" });
+        }
+
+        try
+        {
+            await _locationRepository.DeleteLocationAsync(userLocationDTO);
+            _logger.LogInformation("Location deleted for user {UserId}", userLocationDTO.UserId);
+            return Ok(new { Success = true, Message = "Location deleted" });
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error deleting location");
+            return StatusCode(500, new { Error = "Database error deleting location" });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error deleting location");
+            return StatusCode(500, new { Error = "Internal server error" });
+        }
+    }
+
 }
 
     
