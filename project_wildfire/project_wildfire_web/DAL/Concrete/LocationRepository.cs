@@ -47,7 +47,16 @@ namespace project_wildfire_web.DAL.Concrete
 
         public Task DeleteLocationAsync(int locationId, string userId)
         {
-            throw new NotImplementedException();
+            var location = _context.UserLocations
+                .FirstOrDefault(x => x.Id == locationId && x.UserId == userId);
+
+            if (location == null)
+            {
+                throw new InvalidOperationException($"UserLocation with ID {locationId} not found for user {userId}");
+            }
+
+            _context.UserLocations.Remove(location);
+            return _context.SaveChangesAsync();
         }
 
         public async Task UpdateLocationAsync(UserLocation location)
