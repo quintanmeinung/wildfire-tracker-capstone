@@ -43,6 +43,13 @@ public class LocationApiController : ControllerBase
         }
         // Add location to user's saved locations
         UserLocation userLocation = userLocationDTO.ToUserLocation();
+        string userId = _userManager.GetUserId(User);
+        if (string.IsNullOrEmpty(userId))
+        {
+            _logger.LogWarning("User ID is null or empty");
+            return BadRequest(new { Error = "User ID cannot be null or empty" });
+        }
+        userLocation.UserId = userId;
 
         // Truncate lng & lat to 5 decimal places
         userLocation.Latitude = Math.Round(userLocation.Latitude, 5);
@@ -110,54 +117,33 @@ public class LocationApiController : ControllerBase
         }
     }
 
-    [HttpPost("DeleteLocation")]
-    public async Task<IActionResult> DeleteLocation([FromBody] UserLocationDTO userLocationDTO)
+   [HttpDelete("DeleteLocation")]
+    public async Task<IActionResult> DeleteLocation([FromBody] string locationId)
     {
-        if (userLocationDTO == null)
+        _logger.LogDebug("DeleteLocation request received for Location ID: {LocationId}", locationId);
+        
+        if (string.IsNullOrEmpty(locationId))
         {
-            _logger.LogWarning("Request body is null");
-            return BadRequest(new { Error = "Request body cannot be null" });
-        }
-
-        _logger.LogDebug("Request received at api/Location/DeleteLocation(POST)");
-        _logger.LogDebug("DTO received: {@UserLocationDTO}", userLocationDTO);
-
-        if (!ModelState.IsValid)
-        {
-            var errors = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage)
-                .ToList();
-            _logger.LogWarning("Validation errors: {@Errors}", errors);
-            return BadRequest(new { Errors = errors });
-        }
-
-        // Validate user exists
-        var user = await _userManager.FindByIdAsync(userLocationDTO.UserId);
-        if (user == null)
-        {
-            _logger.LogWarning("User not found: {UserId}", userLocationDTO.UserId);
-            return NotFound(new { Error = "User not found" });
+            _logger.LogWarning("Invalid request - null or empty LocationId");
+            return BadRequest(new { Error = "LocationId is required" });
         }
 
         try
         {
-            await _locationRepository.DeleteLocationAsync(userLocationDTO);
-            _logger.LogInformation("Location deleted for user {UserId}", userLocationDTO.UserId);
+            await _locationRepository.DeleteLocationAsync(locationId);
             return Ok(new { Success = true, Message = "Location deleted" });
         }
         catch (DbUpdateException ex)
         {
-            _logger.LogError(ex, "Database error deleting location");
+            _logger.LogError(ex, "Database error deleting location {LocationId}", locationId);
             return StatusCode(500, new { Error = "Database error deleting location" });
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unexpected error deleting location");
+            _logger.LogError(ex, "Unexpected error deleting location {LocationId}", locationId);
             return StatusCode(500, new { Error = "Internal server error" });
         }
     }
-
 }
 
     
