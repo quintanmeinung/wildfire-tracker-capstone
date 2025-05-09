@@ -125,7 +125,7 @@ public class LocationApiController : ControllerBase
         if (string.IsNullOrEmpty(locationId))
         {
             _logger.LogWarning("Invalid request - null or empty LocationId");
-            return BadRequest(new { Error = "LocationId is required" });
+            return BadRequest("LocationId is required");
         }
 
         try
