@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using project_wildfire_web.ExtensionsMethods;
 using FluentAssertions.Specialized;
+using System.Text.Json.Nodes;
 
 namespace project_wildfire_tests.UnitTests;
 
@@ -18,7 +19,7 @@ public class LocationApiControllerTests
     private LocationApiController _controller;
     private Mock<IUserRepository> _userRepositoryMock;
     private Mock<ILocationRepository> _locationRepositoryMock;
-    private Mock<ILogger<WildfireAPIController>> _loggerMock;
+    private Mock<ILogger<LocationApiController>> _loggerMock;
     private Mock<UserManager<IdentityUser>> _userManagerMock;
 
     [SetUp]
@@ -27,7 +28,7 @@ public class LocationApiControllerTests
         _userRepositoryMock = new Mock<IUserRepository>();
         _locationRepositoryMock = new Mock<ILocationRepository>();
 
-        _loggerMock = new Mock<ILogger<WildfireAPIController>>();
+        _loggerMock = new Mock<ILogger<LocationApiController>>();
         
         // UserManager is abstract, so we need a special setup for it
         var userStoreMock = new Mock<IUserStore<IdentityUser>>();
@@ -103,6 +104,26 @@ public class LocationApiControllerTests
         Assert.That(result, Is.InstanceOf<ObjectResult>());
         var objectResult = result as ObjectResult;
         Assert.That(objectResult.StatusCode, Is.EqualTo(500));
+    }
+
+    [Test]
+    public async Task DeleteLocation_WithValidId_ReturnsOk()
+    {
+        // Arrange
+        var locationId = "test-location-id";
+        _locationRepositoryMock.Setup(repo => repo.DeleteLocationAsync(locationId))
+            .Returns(Task.CompletedTask)
+            .Verifiable();
+
+        // Act
+        var result = await _controller.DeleteLocation(locationId);
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<OkObjectResult>(), "Expected OkResult");
+        
+        var okResult = result as OkObjectResult;
+        Assert.That(okResult?.Value, Is.EqualTo("Location deleted" ), "Expected success message");
+        _locationRepositoryMock.Verify();
     }
 
     private static UserLocation CreateTestUserLocation()
