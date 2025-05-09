@@ -1,9 +1,10 @@
+import { deleteLocation } from './profileFetch.js';
 // For javascript associated with the profile page
 // specifically the saved locations section
 
 export function initSavedLocations() {
     document.addEventListener('click', function(e) {
-        if (e.target.matches('.edit-btn, .save-btn, .cancel-btn')) {
+        if (e.target.matches('.edit-btn, .save-btn, .cancel-btn, .delete-btn')) {
             const row = e.target.closest('.row.my-1');
             if (e.target.matches('.edit-btn')) {
                 toggleButtons(e);
@@ -12,6 +13,8 @@ export function initSavedLocations() {
                 saveLocation(row);
             } else if (e.target.matches('.cancel-btn')) {
                 cancelEdit(row);
+            } else if (e.target.matches('.delete-btn')) {
+                deleteButton(e);
             }
         }
     });
@@ -80,7 +83,14 @@ function cancelEdit(row) {
 
 function deleteButton(e) {
     console.log('Deleting location...');
+    const row = e.target.closest('.row.my-1');
+    const location = JSON.parse(row.dataset.location);
 
+    deleteLocation(location.Id).then(() => {
+        row.remove();
+    }).catch(error => {
+        console.error('Error deleting location:', error);
+    });
 }
 
 function toggleButtons(e) {
@@ -110,4 +120,11 @@ function toggleButtons(e) {
     
     // Toggle delete button state
     deleteBtn.classList.toggle('disabled', !isEditMode);
+
+    // Toggle button styles
+    cancelBtn.classList.toggle('btn-outline-secondary', !isEditMode);
+    cancelBtn.classList.toggle('btn-secondary', isEditMode);
+    
+    deleteBtn.classList.toggle('btn-outline-danger', !isEditMode);
+    deleteBtn.classList.toggle('btn-danger', isEditMode);
 }
