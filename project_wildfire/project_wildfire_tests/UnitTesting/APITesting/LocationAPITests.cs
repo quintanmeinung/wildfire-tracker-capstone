@@ -126,6 +126,23 @@ public class LocationApiControllerTests
         _locationRepositoryMock.Verify();
     }
 
+    [Test]
+    public async Task DeleteLocation_WithInvalidId_ReturnsBadRequest()
+    {
+        // Arrange
+        string locationId = ""; // Invalid ID
+
+        // Act
+        var result = await _controller.DeleteLocation(locationId);
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<BadRequestObjectResult>(), "Expected BadRequestResult");
+        
+        var badRequestResult = result as BadRequestObjectResult;
+        Assert.That(badRequestResult?.Value, Is.EqualTo("LocationId is required"), 
+            "Expected error message for null ID");
+    }
+
     private static UserLocation CreateTestUserLocation()
     {
         return new UserLocation
