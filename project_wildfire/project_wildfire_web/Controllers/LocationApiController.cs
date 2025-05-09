@@ -131,7 +131,7 @@ public class LocationApiController : ControllerBase
         try
         {
             await _locationRepository.DeleteLocationAsync(locationId);
-            return Ok(new { Success = true, Message = "Location deleted" });
+            return Ok("Location deleted");
         }
         catch (DbUpdateException ex)
         {
