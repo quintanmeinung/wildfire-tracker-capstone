@@ -15,6 +15,8 @@ public partial class FireDataDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserLocation> UserLocations { get; set; }
+    
+    public virtual DbSet<UserFireSubscription> UserFireSubscriptions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
