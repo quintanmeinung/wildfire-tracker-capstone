@@ -4,6 +4,7 @@ import { getUserId } from '../site.js'; // Import userId
 import { initDialogModal } from '../SaveLocationScripts/saveLocationModalHandler.js'; // Import modal handler
 import {addLegend } from './addLegend.js';
 
+const savedLocationMarkers = {}; // Tracks saved location markers
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
     const map = initializeMap();
@@ -57,7 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
             for (let location of savedLocations) {
                 console.log(location);
 
-                let marker = L.marker([location.latitude, location.longitude]).addTo(map);
+                let marker = L.marker([location.latitude, location.longitude], { locationId: location.id}).addTo(map);
+                savedLocationMarkers[location.id] = marker; // Store the marker in the savedLocations object
                 marker.bindPopup(location.title); // Bind the name to the marker popup
             }
             map.on('click', function (e) {
@@ -140,6 +142,18 @@ function addMarkerOnClick(e, map) {
     activeMarker.openPopup(); // Open the popup immediately
 
     initDialogModal(); // Initialize the modal handler
+}
+
+export function removeMarker(id) {
+    // Given the location ID it will remove the marker from the map.
+    const marker = savedLocationMarkers[id];
+    console.log("Removing marker:", marker);
+    if (marker) {
+        marker.remove(); // Remove the marker from the map
+        delete savedLocationMarkers[id]; // Remove from the savedLocations object
+    } else {
+        console.error(`Marker with title "${id}" not found.`);
+    }
 }
 
 // Spinner functions
