@@ -37,3 +37,23 @@
     border: 1px solid #999;
 }
 
+.legend-grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.legend-column {
+    flex: 1;
+    min-width: 120px;
+}
+
+.legend-column h4 {
+    margin-top: 0;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+
