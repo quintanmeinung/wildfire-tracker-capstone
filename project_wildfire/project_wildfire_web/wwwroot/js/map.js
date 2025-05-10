@@ -19,6 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const fireLayer = overlayLayers["Fire Reports"];
     fireLayer.addTo(map);
 
+    //Fire Marker Layer
+    //const wildfireMarkersLayer = overlayLayers["Wildfire Markers"];
+    //wildfireMarkersLayer.addTo(map);
+        
     // Date control setup
     const dateInput = document.getElementById("fire-date");
     const today = new Date();
@@ -55,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
  
             for (let location of savedLocations) {
                 console.log(location);
-                
+
                 let marker = L.marker([location.latitude, location.longitude]).addTo(map);
                 marker.bindPopup(location.title); // Bind the name to the marker popup
             }
@@ -112,8 +116,34 @@ document.addEventListener("DOMContentLoaded", function () {
             .finally(() => {
                 hideSpinner();
             });
-    })
+    });
+});
 
+
+let activeMarker = null; // Variable to store user's most recent marker
+function addMarkerOnClick(e, map) {
+
+    if (activeMarker) {
+        map.removeLayer(activeMarker); // Remove the previous marker if it exists
+    }
+
+    // Create a new marker at the clicked location
+    activeMarker = L.marker(e.latlng).addTo(map);
+
+    // Create a popup with a button to save the location
+    var popup = document.createElement('div');
+    popup.id = 'save-location-popup';
+    popup.className = 'btn btn-primary';
+    popup.innerHTML = 'Save Location';
+ 
+    popup.dataset.lat = e.latlng.lat.toFixed(5); // Store latitude in dataset
+    popup.dataset.lng = e.latlng.lng.toFixed(5); // Store longitude in dataset
+
+    activeMarker.bindPopup(popup);
+    activeMarker.openPopup(); // Open the popup immediately
+
+    initDialogModal(); // Initialize the modal handler
+}
 
 // Spinner functions
 function showSpinner() {
@@ -150,14 +180,123 @@ function createOverlayLayers(map) {
     const cities = L.layerGroup().addLayer(
         L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View")
     );
+    
 
     const aqiLayer = initializeAqiLayer();
     const fireLayer = L.layerGroup();
 
+    //Emergency Shelters Layer 1
+    const shelterClusterGroup = L.markerClusterGroup();
+
+    //Wildfire Risk Layer
+    const wildfireRiskLayer = L.esri.imageMapLayer({
+        url: 'https://apps.fs.usda.gov/fsgisx01/rest/services/RDW_Wildfire/RMRS_WRC_WildfireHazardPotential/ImageServer',
+        opacity: 0.6
+    });
+    /*
+    const femaShelters = L.esri.featureLayer({
+        url: 'https://gis.fema.gov/arcgis/rest/services/NSS/FEMA_NSS/FeatureServer/5',
+        pointToLayer: function (geojson, latlng) {
+            return L.circleMarker(latlng, {
+                radius: 2,
+                color: '#007bff',
+                fillColor: '#007bff',
+                fillOpacity: 0.8,
+                weight: 1
+            });
+        },
+        onEachFeature: function (feature, layer) {
+            const props = feature.properties;
+            const popup = `<strong>${props.SHELTER_NAME || "Unnamed Shelter"}</strong><br>
+                Capacity: ${props.CAPACITY || "Unknown"}<br>
+                Status: ${props.STATUS || "N/A"}`;
+            layer.bindPopup(popup);
+            shelterClusterGroup.addLayer(layer);
+        }
+    });*/
+
+    //Back up Shelter Marker data
+    
+    // Use Esri Leaflet to get shelter features
+    const femaShelters = L.esri.featureLayer({
+        url: 'https://gis.fema.gov/arcgis/rest/services/NSS/FEMA_NSS/FeatureServer/5',
+        pointToLayer: function (geojson, latlng) {
+            const status = geojson.properties.shelter_status_code;
+            let markerOptions;
+    
+            if (status === "OPEN") {
+                markerOptions = {
+                    radius: 6,
+                    color: 'green',
+                    fillColor: 'lime',
+                    fillOpacity: 0.9,
+                    weight: 2
+                };
+            } else {
+                markerOptions = {
+                    radius: 2,
+                    color: '#007bff',
+                    fillColor: '#007bff',
+                    fillOpacity: 0.6,
+                    weight: 1
+                };
+            }
+    
+            return L.circleMarker(latlng, markerOptions);
+        },
+        onEachFeature: function (feature, layer) {
+            const props = feature.properties;
+            let petAccommodations = "Not listed – call ahead"; // Default message for missing data
+            if (props.pet_accommodations_desc === " ") {
+                petAccommodations = "Pet Accommodations: Unknown"; // Specific message for "Unknown"
+            } else if (props.pet_accommodations_desc) {
+                petAccommodations = props.pet_accommodations_desc; // Show the actual description if available
+            }
+            const popup = `
+                <strong>${props.shelter_name || "Unnamed Shelter"}</strong><br>
+                Address: ${props.address_1 || "Unknown"}<br>
+                City: ${props.city || "N/A"}<br>
+                Evacuation Capacity: ${props.evacuation_capacity || "N/A"}<br>
+                Post-Impact Capacity: ${props.post_impact_capacity || "N/A"}<br>
+                ADA Compliant: ${props.ada_compliant === 'Y' ? "Yes" : "No"}<br>
+                Wheelchair Accessible: ${props.wheelchair_accessible === 'Y' ? "Yes" : "No"}<br>
+                Pet Accommodations: ${petAccommodations}<br>
+                Generator Onsite: ${props.generator_onsite === 'Y' ? "Yes" : "No"}<br>
+                Status: ${props.shelter_status_code || "N/A"}
+            `;
+            layer.bindPopup(popup);
+            shelterClusterGroup.addLayer(layer);
+        }
+    });
+
+    femaShelters.on('load', function (e) {
+        const features = e.featureCollection.features;
+        const hasOpenShelters = features.some(f => f.properties.shelter_status_code === "OPEN");
+    
+        if (!hasOpenShelters) {
+            console.warn("No open shelters found at this time.");
+            // Optional: Display an info control or popup
+            L.popup()
+                .setLatLng([44.9429, -123.0351]) // Default location or center
+                .setContent("No open shelters currently reported. All listed locations are closed.")
+                .openOn(map);
+        }
+    });
+
+        //})//.addTo(map);
+            
+    // Add the layer to the map on startup
+    //wildfireRiskLayer.addTo(map);
+    //shelterClusterGroup.addTo(map);
+    //femaShelters.addTo(map);
+    
     return {
+        "Emergency Shelters": femaShelters,
+        "Evacuation Zone": shelterClusterGroup,
         "Cities": cities,
         "AQI Stations": aqiLayer,
-        "Fire Reports": fireLayer
+        "Fire Reports": fireLayer,
+        "Wildfire Hazard Potential": wildfireRiskLayer
     };
 }
 
@@ -225,30 +364,14 @@ function initializeCompass(map) {
         console.error("Leaflet Compass plugin failed to load.");
     }
 }
-/*
-    function addLegend(map) {
-        const legend = L.control({ position: 'bottomright' });
 
-        legend.onAdd = function () {
-            const div = L.DomUtil.create('div', 'info legend');
-            div.innerHTML += `<h4>Radiative Power</h4>
-            <i style="background: green;"></i> Low<br>
-            <i style="background: yellow;"></i> Medium<br>
-            <i style="background: red;"></i> High<br>`;
-            return div;
-        };
-
-        legend.addTo(map);
-    }
-*/
     // Format Date to YYYY-MM-DD
-    function formatLocalDate(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
-    }
-});
+function formatLocalDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
 
 
 
