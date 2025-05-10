@@ -109,10 +109,6 @@ namespace project_wildfire_tests.BDDTesting.Features
     await testRunner.WhenAsync("the user enters a valid new email \"testuser@mail.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 9
-<<<<<<< HEAD
-    await testRunner.ThenAsync("the email should be updated successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-=======
     await testRunner.AndAsync("submits the form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 10
@@ -121,7 +117,6 @@ namespace project_wildfire_tests.BDDTesting.Features
 #line 11
     await testRunner.AndAsync("a success message should be displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
->>>>>>> 22cb89b50eab472891cb467655ea3f6d5e1b7ddc
             }
             await this.ScenarioCleanupAsync();
         }
@@ -147,18 +142,6 @@ namespace project_wildfire_tests.BDDTesting.Features
             else
             {
                 await this.ScenarioStartAsync();
-<<<<<<< HEAD
-#line 13
-    await testRunner.GivenAsync("a user is logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 14
-    await testRunner.AndAsync("the user is on the email update page", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 15
-    await testRunner.WhenAsync("the user enters an invalid email \"invalid-email@\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 16
-=======
 #line 15
     await testRunner.GivenAsync("a user is logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
@@ -172,7 +155,6 @@ namespace project_wildfire_tests.BDDTesting.Features
     await testRunner.AndAsync("submits the form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 19
->>>>>>> 22cb89b50eab472891cb467655ea3f6d5e1b7ddc
     await testRunner.ThenAsync("an error message should be displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
