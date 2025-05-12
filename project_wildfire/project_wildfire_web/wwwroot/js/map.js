@@ -6,6 +6,7 @@ import { initDialogModal } from './saveLocationModalHandler.js'; // Import modal
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
     const map = initializeMap();
+    window._leaflet_map = map;
 
     // Base Layers
     const baseLayers = createBaseLayers();
@@ -193,34 +194,11 @@ function createOverlayLayers(map) {
     const shelterClusterGroup = L.markerClusterGroup();
 
     //Wildfire Risk Layer
-    const wildfireRiskLayer = L.esri.imageMapLayer({
+    window.fireHazardLayer = L.esri.imageMapLayer({
         url: 'https://apps.fs.usda.gov/fsgisx01/rest/services/RDW_Wildfire/RMRS_WRC_WildfireHazardPotential/ImageServer',
         opacity: 0.6
     });
-    /*
-    const femaShelters = L.esri.featureLayer({
-        url: 'https://gis.fema.gov/arcgis/rest/services/NSS/FEMA_NSS/FeatureServer/5',
-        pointToLayer: function (geojson, latlng) {
-            return L.circleMarker(latlng, {
-                radius: 2,
-                color: '#007bff',
-                fillColor: '#007bff',
-                fillOpacity: 0.8,
-                weight: 1
-            });
-        },
-        onEachFeature: function (feature, layer) {
-            const props = feature.properties;
-            const popup = `<strong>${props.SHELTER_NAME || "Unnamed Shelter"}</strong><br>
-                Capacity: ${props.CAPACITY || "Unknown"}<br>
-                Status: ${props.STATUS || "N/A"}`;
-            layer.bindPopup(popup);
-            shelterClusterGroup.addLayer(layer);
-        }
-    });*/
-
-    //Back up Shelter Marker data
-    
+        
     // Use Esri Leaflet to get shelter features
     const femaShelters = L.esri.featureLayer({
         url: 'https://gis.fema.gov/arcgis/rest/services/NSS/FEMA_NSS/FeatureServer/5',
@@ -250,12 +228,26 @@ function createOverlayLayers(map) {
         },
         onEachFeature: function (feature, layer) {
             const props = feature.properties;
-            let petAccommodations = "Not listed – call ahead"; // Default message for missing data
+
+            // Attach a test attribute to the SVG element for automation
+            layer.on('add', function () {
+                const el = layer.getElement();
+                if (el) {
+                    // ✅ Add 'shelter-marker' class while preserving existing classes
+                    const existingClass = el.getAttribute('class') || '';
+                    el.setAttribute('class', `${existingClass} shelter-marker`.trim());
+                    el.setAttribute('data-type', 'shelter'); // Optional: keep if useful elsewhere
+                    el.classList.add('shelter-marker');
+                }
+            });
+
+            let petAccommodations = "Not listed – call ahead";
             if (props.pet_accommodations_desc === " ") {
-                petAccommodations = "Pet Accommodations: Unknown"; // Specific message for "Unknown"
+                petAccommodations = "Pet Accommodations: Unknown";
             } else if (props.pet_accommodations_desc) {
-                petAccommodations = props.pet_accommodations_desc; // Show the actual description if available
+                petAccommodations = props.pet_accommodations_desc;
             }
+
             const popup = `
                 <strong>${props.shelter_name || "Unnamed Shelter"}</strong><br>
                 Address: ${props.address_1 || "Unknown"}<br>
@@ -268,9 +260,11 @@ function createOverlayLayers(map) {
                 Generator Onsite: ${props.generator_onsite === 'Y' ? "Yes" : "No"}<br>
                 Status: ${props.shelter_status_code || "N/A"}
             `;
+
             layer.bindPopup(popup);
             shelterClusterGroup.addLayer(layer);
         }
+
     });
 
     femaShelters.on('load', function (e) {
@@ -286,8 +280,6 @@ function createOverlayLayers(map) {
                 .openOn(map);
         }
     });
-
-        //})//.addTo(map);
             
     // Add the layer to the map on startup
     //wildfireRiskLayer.addTo(map);
@@ -300,7 +292,7 @@ function createOverlayLayers(map) {
         "Cities": cities,
         "AQI Stations": aqiLayer,
         "Fire Reports": fireLayer,
-        "Wildfire Hazard Potential": wildfireRiskLayer
+        "Wildfire Hazard Potential": window.fireHazardLayer
     };
 }
 

@@ -29,7 +29,7 @@ namespace project_wildfire_tests.BDDTesting.Features
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BDDTesting/Features", "Email Update", "  As a user\r\n  I want to update my email address", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BDDTesting/Features", "Email Update", "  As a user\n  I want to update my email address", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "EmailUpdate.feature"
 #line hidden
@@ -109,13 +109,7 @@ namespace project_wildfire_tests.BDDTesting.Features
     await testRunner.WhenAsync("the user enters a valid new email \"testuser@mail.com\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 9
-    await testRunner.AndAsync("submits the form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 10
     await testRunner.ThenAsync("the email should be updated successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 11
-    await testRunner.AndAsync("a success message should be displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -128,7 +122,7 @@ namespace project_wildfire_tests.BDDTesting.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Fail to update email due to invalid format", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 14
+#line 12
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -138,19 +132,16 @@ namespace project_wildfire_tests.BDDTesting.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 15
+#line 13
     await testRunner.GivenAsync("a user is logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 16
+#line 14
     await testRunner.AndAsync("the user is on the email update page", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 17
+#line 15
     await testRunner.WhenAsync("the user enters an invalid email \"invalid-email@\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 18
-    await testRunner.AndAsync("submits the form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 19
+#line 16
     await testRunner.ThenAsync("an error message should be displayed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
