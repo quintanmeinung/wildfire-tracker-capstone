@@ -147,6 +147,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+document.addEventListener('click', function(e){
+
+        // Unsubscribe logic
+        const unsubBtn = e.target.closest('.unsubscribe-btn');
+        if (unsubBtn) {
+            e.preventDefault();
+            const fireId = unsubBtn.getAttribute('data-fire-id');
+            fetch(`/api/fireSub/${fireId}`, {
+                method: 'DELETE'
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Unsubscribe failed');
+                // Remove the row from the table
+                const row = unsubBtn.closest('tr');
+                if (row) row.remove();
+            })
+            .catch(err => alert(err.message));
+        }
+    });
 });
     
 
