@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
     const map = initializeMap();
 
+    // Exposes the map to be accessible from BDD tests
+    window.webfireMap = map; 
+
     // Base Layers
     const baseLayers = createBaseLayers();
     baseLayers["Street Map"].addTo(map);
@@ -61,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 let marker = L.marker([location.latitude, location.longitude], { locationId: location.id}).addTo(map);
                 savedLocationMarkers[location.id] = marker; // Store the marker in the savedLocations object
                 marker.bindPopup(location.title); // Bind the name to the marker popup
-                marker.getElement().id = 'location-' + location.id; // Set the marker ID to the location ID
+                marker.getElement().id = location.title; // Set the marker ID to the location ID
             }
             map.on('click', function (e) {
                 addMarkerOnClick(e, map)
