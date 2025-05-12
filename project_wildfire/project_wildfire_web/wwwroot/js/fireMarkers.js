@@ -36,9 +36,7 @@ export function addFireMarkers(fireLayer, apiData) {
       <strong>Longitude:</strong> ${fire.longitude.toFixed(5)}
       <button class="subscribe-btn" data-fire-id="${fire.fireId}">Subscribe to fire</button>
     `);
-        marker.on('click', () => {
-      marker.openPopup();
-    });
+       
     
     window.fireMarkerMap = window.fireMarkerMap || new Map();
     window.fireMarkerMap.set(fire.fireId, marker);
@@ -50,7 +48,9 @@ export function addFireMarkers(fireLayer, apiData) {
 
 export function bindSubscribeButtonOnPopup(marker, fireId) {
   marker.on('popupopen', () => {
-    const btn = document.querySelector('.subscribe-btn');
+     const popupEl = marker.getPopup().getElement(); // Get the actual DOM element of the popup
+      const btn = popupEl?.querySelector('.subscribe-btn'); // Look inside *that popup only*
+  //  const btn = document.querySelector('.subscribe-btn');
     if (btn) {
       btn.addEventListener('click', async () => {
         try {
