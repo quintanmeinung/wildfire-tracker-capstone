@@ -1,14 +1,43 @@
-// Function to add fire markers to a given Leaflet layer
 export function addFireMarkers(fireLayer, apiData) {
   apiData.forEach(fire => {
-      // Create a red circle marker at the latitude and longitude from the API data
-      L.circle([fire.latitude, fire.longitude], {
-          color: 'red',      // Color of the circle
-          fillColor: '#f03', // Fill color of the circle
-          fillOpacity: 0.5,  // Transparency of the circle
-          radius: 500        // Radius of the circle in meters
-      }).bindPopup(`🔥 Radiative Power: ${fire.radiativePower}`)
-        .setAttribute('data-type', 'wildfire')
-        .addTo(fireLayer);
+    const power = fire.radiativePower;
+
+    // Determine color based on radiative power
+    let color = '';
+    if (power < 10) {
+      color = 'yellow'; // small fires
+    } else if (power < 30) {
+      color = 'orange'; // moderate fires
+    } else {
+      color = 'red'; // strong fires
+    }
+
+    // Determine radius based on radiative power
+    let radius = 5; // default small
+    if (power >= 10 && power < 30) {
+      radius = 7; // medium
+    } else if (power >= 30) {
+      radius = 9; // large
+    }
+
+    const marker = L.circleMarker([fire.latitude, fire.longitude], {
+      radius: radius,
+      fillColor: color,
+      color: color,
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8,
+      className: "wildfire-marker"
+    }).bindPopup(`
+      <strong>🔥 Wildfire Detected!</strong><br>
+      <strong>Radiative Power:</strong> ${power}<br>
+      <strong>Latitude:</strong> ${fire.latitude.toFixed(5)}<br>
+      <strong>Longitude:</strong> ${fire.longitude.toFixed(5)}
+    `);
+
+    marker.addTo(fireLayer);
   });
 }
+
+
+

@@ -48,7 +48,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.ToTable("AqiStations");
+                    b.ToTable("AqiStations", (string)null);
                 });
 
             modelBuilder.Entity("project_wildfire_web.Models.Fire", b =>
@@ -74,7 +74,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.HasKey("FireId")
                         .HasName("PK__Fires__E1DECA144C64F9FF");
 
-                    b.ToTable("Fires");
+                    b.ToTable("Fires", (string)null);
                 });
 
             modelBuilder.Entity("project_wildfire_web.Models.User", b =>
@@ -103,7 +103,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
                     b.HasKey("UserId")
                         .HasName("PK__Users__1788CC4C60961939");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("project_wildfire_web.Models.UserLocation", b =>
@@ -137,7 +137,7 @@ namespace project_wildfire_web.Migrations.FireDataDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLocations");
+                    b.ToTable("UserLocations", (string)null);
                 });
 
             modelBuilder.Entity("UserFireSubscription", b =>

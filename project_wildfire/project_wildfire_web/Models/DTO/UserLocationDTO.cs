@@ -1,8 +1,6 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using CsvHelper.Configuration.Attributes;
 using project_wildfire_web.Models;
-using NetTopologySuite.Geometries;
 using project_wildfire_web.Models.DTO;
 
 

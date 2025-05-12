@@ -41,28 +41,64 @@ function addLegend(map) {
  * Generates the HTML content for the legend dynamically using an array.
  */
 function generateLegendHTML() {
-    const legendItems = [
-        { color: "rgb(19, 188, 72)", label: "Evacuation Zone", info: "Designated Zone for Evacuation." },
-        { color: "#ffffb2", label: "Stay Alert", info: "Stay on constant alert for fire updates." },
-        { color: "#fecc5c", label: "Prepare to Evacuate", info: "Prepare to bring all essentials and other items of interest." },
-        { color: "#fd8d3c", label: "Evacuate Now", info: "Only bring essential items." },
-        { color: "#f03b20", label: "Evacuate Immediately", info: "Leave all materials behind." },
-        { color: "#bd0026", label: "Fire Perimeter", info: "Perimeter of the nearby fire." }
-    ];
+    const legendSections = {
+        "Evacuation Zones & Wildfire Risk": [
+            { color: "#9ACD32", label: "Safe Zone", info: "Area considered safe.", shape: "square" },
+            { color: "#6DAE4F", label: "Low Risk", info: "Currently low risk; stay aware.", shape: "square" },
+            { color: "#FFFF33", label: "Stay Alert", info: "Be ready for updates.", shape: "square" },
+            { color: "#FFD700", label: "Prepare to Evacuate", info: "Pack essentials.", shape: "square" },
+            { color: "#FFA500", label: "Evacuate Now", info: "Leave with key items.", shape: "square" },
+            { color: "#FF3333", label: "Evacuate Immediately", info: "Immediate danger.", shape: "square" },
+            { color: "#3399FF", label: "Evacuation Zone", info: "Official zone.", shape: "square" }
+        ],
+        "Fire Activity": [
+            { color: "#FFD700", label: "Lesser Fire", info: "Minor fire.", shape: "circle" },
+            { color: "#FF8C00", label: "Moderate Fire", info: "Moderate severity.", shape: "circle" },
+            { color: "#DC143C", label: "Extreme Fire", info: "Severe wildfire.", shape: "circle" }
+        ],
+        "Shelter Status": [
+            { color: "#32CD32", label: "Open Shelter", info: "Available for evacuees.", shape: "circle" },
+            { color: "#3399FF", label: "Closed Shelter", info: "Not accepting evacuees.", shape: "circle" }
+        ]
+    };
 
     let legendHTML = `
         <div class="info legend collapsible-legend">
             <button class="legend-toggle">Legend ▼</button>
-            <div class="legend-content" style="display: none;">`;
+            <div class="legend-content" style="display: none;">
+                <div class="legend-grid">`;
 
-    legendItems.forEach(item => {
+    // Left Column
+    legendHTML += `<div class="legend-column"><h4>Evacuation Zones & Wildfire Risk</h4>`;
+    legendSections["Evacuation Zones & Wildfire Risk"].forEach(item => {
+        const shapeStyle = item.shape === "circle" ? "border-radius: 50%;" : "border-radius: 0;";
         legendHTML += `
             <div class="legend-item" data-info="${item.info}">
-                <i style="background: ${item.color}"></i> ${item.label}
+                <i style="background: ${item.color}; ${shapeStyle} border: 1px solid #555;"></i> ${item.label}
+            </div>`;
+    });
+    legendHTML += `</div>`;
+
+    // Right Column: Fire Activity + Shelter Status
+    legendHTML += `<div class="legend-column"><h4>Fire Activity</h4>`;
+    legendSections["Fire Activity"].forEach(item => {
+        legendHTML += `
+            <div class="legend-item" data-info="${item.info}">
+                <i style="background: ${item.color}; border-radius: 50%; border: 1px solid #555;"></i> ${item.label}
             </div>`;
     });
 
-    legendHTML += `</div></div>`;
+    legendHTML += `<h4 style="margin-top: 15px;">Shelter Status</h4>`;
+    legendSections["Shelter Status"].forEach(item => {
+        legendHTML += `
+            <div class="legend-item" data-info="${item.info}">
+                <i style="background: ${item.color}; border-radius: 50%; border: 1px solid #555;"></i> ${item.label}
+            </div>`;
+    });
+
+    legendHTML += `</div>`; // Close right column
+    legendHTML += `</div></div></div>`; // Close grid, content, container
+
     return legendHTML;
 }
 

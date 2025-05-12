@@ -46,7 +46,10 @@ public class Program
         {
             throw new Exception("NASA:FirmsApiKey is missing from configuration");
         }
-        string apiBaseUrl = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/ApiKeyHere/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-03-02";
+        //string apiBaseUrl = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/ApiKeyHere/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-04-20";
+        string apiBaseUrl = "https://firms.modaps.eosdis.nasa.gov/api/country/csv/ApiKeyHere/VIIRS_SNPP_NRT/PER/1/2025-04-20";
+
+        //https://firms.modaps.eosdis.nasa.gov/api/country/csv/a554c72bc30ce6d5448d9b0848265b94/VIIRS_SNPP_NRT/USA/1/2025-04-20
         string fullUri = apiBaseUrl.Replace("ApiKeyHere", firmsApiKey);
 
         builder.Services.AddHttpClient<INasaService, NasaService>((httpClient, services) =>
@@ -59,10 +62,15 @@ public class Program
             return new NasaService(httpClient, services.GetRequiredService<ILogger<NasaService>>(), configuration);
         });
 
+        //Adding Notification Service
+        builder.Services.AddScoped<NotificationService>();
+        builder.Services.AddHostedService<NotificationBackgroundService>();
+
+
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-
+        builder.Services.AddRazorPages();
         builder.Logging.ClearProviders(); 
         builder.Logging.AddConsole();
         
