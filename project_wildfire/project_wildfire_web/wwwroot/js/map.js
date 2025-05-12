@@ -221,13 +221,17 @@ function createOverlayLayers(map) {
     //Wildfire Risk Layer
     window.fireHazardLayer = L.esri.imageMapLayer({
         url: 'https://apps.fs.usda.gov/fsgisx01/rest/services/RDW_Wildfire/RMRS_WRC_WildfireHazardPotential/ImageServer',
-        opacity: 0.6
+        opacity: 0.4 //org 0.6
     });
         
     // Use Esri Leaflet to get shelter features
     const femaShelters = L.esri.featureLayer({
         url: 'https://gis.fema.gov/arcgis/rest/services/NSS/FEMA_NSS/FeatureServer/5',
         pointToLayer: function (geojson, latlng) {
+            if (map.getZoom() < 7) {
+                return null; // don't draw marker at low zoom
+            }
+
             const status = geojson.properties.shelter_status_code;
             let markerOptions;
     
