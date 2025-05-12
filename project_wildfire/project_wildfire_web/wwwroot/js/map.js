@@ -6,6 +6,7 @@ import { initDialogModal } from './saveLocationModalHandler.js'; // Import modal
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
     const map = initializeMap();
+    window._leaflet_map = map;
 
     // Base Layers
     const baseLayers = createBaseLayers();
@@ -19,6 +20,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const fireLayer = overlayLayers["Fire Reports"];
     fireLayer.addTo(map);
 
+    //Fire Marker Layer
+    //const wildfireMarkersLayer = overlayLayers["Wildfire Markers"];
+    //wildfireMarkersLayer.addTo(map);
+        
     // Date control setup
     const dateInput = document.getElementById("fire-date");
     const today = new Date();
@@ -176,14 +181,114 @@ function createOverlayLayers(map) {
     const cities = L.layerGroup().addLayer(
         L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View")
     );
+    
 
     const aqiLayer = initializeAqiLayer();
     const fireLayer = L.layerGroup();
 
+    //Emergency Shelters Layer 1
+    const shelterClusterGroup = L.markerClusterGroup();
+
+    //Wildfire Risk Layer
+    window.fireHazardLayer = L.esri.imageMapLayer({
+        url: 'https://apps.fs.usda.gov/fsgisx01/rest/services/RDW_Wildfire/RMRS_WRC_WildfireHazardPotential/ImageServer',
+        opacity: 0.6
+    });
+        
+    // Use Esri Leaflet to get shelter features
+    const femaShelters = L.esri.featureLayer({
+        url: 'https://gis.fema.gov/arcgis/rest/services/NSS/FEMA_NSS/FeatureServer/5',
+        pointToLayer: function (geojson, latlng) {
+            const status = geojson.properties.shelter_status_code;
+            let markerOptions;
+    
+            if (status === "OPEN") {
+                markerOptions = {
+                    radius: 6,
+                    color: 'green',
+                    fillColor: 'lime',
+                    fillOpacity: 0.9,
+                    weight: 2
+                };
+            } else {
+                markerOptions = {
+                    radius: 2,
+                    color: '#007bff',
+                    fillColor: '#007bff',
+                    fillOpacity: 0.6,
+                    weight: 1
+                };
+            }
+    
+            return L.circleMarker(latlng, markerOptions);
+        },
+        onEachFeature: function (feature, layer) {
+            const props = feature.properties;
+
+            // Attach a test attribute to the SVG element for automation
+            layer.on('add', function () {
+                const el = layer.getElement();
+                if (el) {
+                    // ✅ Add 'shelter-marker' class while preserving existing classes
+                    const existingClass = el.getAttribute('class') || '';
+                    el.setAttribute('class', `${existingClass} shelter-marker`.trim());
+                    el.setAttribute('data-type', 'shelter'); // Optional: keep if useful elsewhere
+                    el.classList.add('shelter-marker');
+                }
+            });
+
+            let petAccommodations = "Not listed – call ahead";
+            if (props.pet_accommodations_desc === " ") {
+                petAccommodations = "Pet Accommodations: Unknown";
+            } else if (props.pet_accommodations_desc) {
+                petAccommodations = props.pet_accommodations_desc;
+            }
+
+            const popup = `
+                <strong>${props.shelter_name || "Unnamed Shelter"}</strong><br>
+                Address: ${props.address_1 || "Unknown"}<br>
+                City: ${props.city || "N/A"}<br>
+                Evacuation Capacity: ${props.evacuation_capacity || "N/A"}<br>
+                Post-Impact Capacity: ${props.post_impact_capacity || "N/A"}<br>
+                ADA Compliant: ${props.ada_compliant === 'Y' ? "Yes" : "No"}<br>
+                Wheelchair Accessible: ${props.wheelchair_accessible === 'Y' ? "Yes" : "No"}<br>
+                Pet Accommodations: ${petAccommodations}<br>
+                Generator Onsite: ${props.generator_onsite === 'Y' ? "Yes" : "No"}<br>
+                Status: ${props.shelter_status_code || "N/A"}
+            `;
+
+            layer.bindPopup(popup);
+            shelterClusterGroup.addLayer(layer);
+        }
+
+    });
+
+    femaShelters.on('load', function (e) {
+        const features = e.featureCollection.features;
+        const hasOpenShelters = features.some(f => f.properties.shelter_status_code === "OPEN");
+    
+        if (!hasOpenShelters) {
+            console.warn("No open shelters found at this time.");
+            // Optional: Display an info control or popup
+            L.popup()
+                .setLatLng([44.9429, -123.0351]) // Default location or center
+                .setContent("No open shelters currently reported. All listed locations are closed.")
+                .openOn(map);
+        }
+    });
+            
+    // Add the layer to the map on startup
+    //wildfireRiskLayer.addTo(map);
+    //shelterClusterGroup.addTo(map);
+    //femaShelters.addTo(map);
+    
     return {
+        "Emergency Shelters": femaShelters,
+        "Evacuation Zone": shelterClusterGroup,
         "Cities": cities,
         "AQI Stations": aqiLayer,
-        "Fire Reports": fireLayer
+        "Fire Reports": fireLayer,
+        "Wildfire Hazard Potential": window.fireHazardLayer
     };
 }
 
@@ -251,22 +356,7 @@ function initializeCompass(map) {
         console.error("Leaflet Compass plugin failed to load.");
     }
 }
-/*
-    function addLegend(map) {
-        const legend = L.control({ position: 'bottomright' });
 
-        legend.onAdd = function () {
-            const div = L.DomUtil.create('div', 'info legend');
-            div.innerHTML += `<h4>Radiative Power</h4>
-            <i style="background: green;"></i> Low<br>
-            <i style="background: yellow;"></i> Medium<br>
-            <i style="background: red;"></i> High<br>`;
-            return div;
-        };
-
-        legend.addTo(map);
-    }
-*/
     // Format Date to YYYY-MM-DD
 function formatLocalDate(date) {
     const year = date.getFullYear();
