@@ -4,6 +4,7 @@ using project_wildfire_web.Models.DTO;
 using project_wildfire_web.DAL.Abstract;
 using project_wildfire_web.ExtensionsMethods;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace project_wildfire_web.Controllers;
@@ -12,13 +13,13 @@ namespace project_wildfire_web.Controllers;
 [Route("api/Location")]
 public class LocationApiController : ControllerBase
 {
-    private readonly ILogger<WildfireAPIController> _logger;
+    private readonly ILogger<LocationApiController> _logger;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IUserRepository _userRepository;
     private readonly ILocationRepository _locationRepository;
 
     public LocationApiController(
-        ILogger<WildfireAPIController> logger, 
+        ILogger<LocationApiController> logger, 
         UserManager<IdentityUser> userManager,
         IUserRepository userRepository,
         ILocationRepository locationRepository
@@ -43,6 +44,10 @@ public class LocationApiController : ControllerBase
         // Add location to user's saved locations
         UserLocation userLocation = userLocationDTO.ToUserLocation();
 
+        // Truncate lng & lat to 5 decimal places
+        userLocation.Latitude = Math.Round(userLocation.Latitude, 5);
+        userLocation.Longitude = Math.Round(userLocation.Longitude, 5);
+
         try{
             await _locationRepository.AddLocationAsync(userLocation);
 
@@ -58,26 +63,99 @@ public class LocationApiController : ControllerBase
     [HttpPost("UpdateLocation")]
     public async Task<IActionResult> UpdateLocation([FromBody] UserLocationDTO userLocationDTO)
     {
+        if (userLocationDTO == null)
+        {
+            _logger.LogWarning("Request body is null");
+            return BadRequest(new { Error = "Request body cannot be null" });
+        }
+
         _logger.LogDebug("Request received at api/Location/UpdateLocation(POST)");
-        _logger.LogDebug("DTO received: {UserLocationDTO}", userLocationDTO);
+        _logger.LogDebug("DTO received: {@UserLocationDTO}", userLocationDTO);
+
         if (!ModelState.IsValid)
         {
-            _logger.LogWarning("Invalid model state for UserLocationDTO: {ModelState}", ModelState);
-            return BadRequest(ModelState);
+            var errors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+            _logger.LogWarning("Validation errors: {@Errors}", errors);
+            return BadRequest(new { Errors = errors });
         }
-        // Update location in user's saved locations
+
+        // Validate user exists
+        var user = await _userManager.FindByIdAsync(userLocationDTO.UserId);
+        if (user == null)
+        {
+            _logger.LogWarning("User not found: {UserId}", userLocationDTO.UserId);
+            return NotFound(new { Error = "User not found" });
+        }
+
         UserLocation userLocation = userLocationDTO.ToUserLocation();
 
-        try{
+        try
+        {
             await _locationRepository.UpdateLocationAsync(userLocation);
-
-        } catch (Exception ex) {
-            _logger.LogError(ex, "Error updating user location: {Message}", ex.Message);
-            return StatusCode(500, "Internal server error while updating location.");
+            _logger.LogInformation("Location updated for user {UserId}", userLocationDTO.UserId);
+            return Ok(new { Success = true, Message = "Location updated", Data = userLocation });
         }
-        
-        _logger.LogDebug("User location updated successfully");
-        return Ok("Location updated successfully");
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error updating location");
+            return StatusCode(500, new { Error = "Database error updating location" });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error updating location");
+            return StatusCode(500, new { Error = "Internal server error" });
+        }
+    }
+
+    [HttpPost("DeleteLocation")]
+    public async Task<IActionResult> DeleteLocation([FromBody] UserLocationDTO userLocationDTO)
+    {
+        if (userLocationDTO == null)
+        {
+            _logger.LogWarning("Request body is null");
+            return BadRequest(new { Error = "Request body cannot be null" });
+        }
+
+        _logger.LogDebug("Request received at api/Location/DeleteLocation(POST)");
+        _logger.LogDebug("DTO received: {@UserLocationDTO}", userLocationDTO);
+
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+            _logger.LogWarning("Validation errors: {@Errors}", errors);
+            return BadRequest(new { Errors = errors });
+        }
+
+        // Validate user exists
+        var user = await _userManager.FindByIdAsync(userLocationDTO.UserId);
+        if (user == null)
+        {
+            _logger.LogWarning("User not found: {UserId}", userLocationDTO.UserId);
+            return NotFound(new { Error = "User not found" });
+        }
+
+        try
+        {
+            await _locationRepository.DeleteLocationAsync(userLocationDTO);
+            _logger.LogInformation("Location deleted for user {UserId}", userLocationDTO.UserId);
+            return Ok(new { Success = true, Message = "Location deleted" });
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error deleting location");
+            return StatusCode(500, new { Error = "Database error deleting location" });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error deleting location");
+            return StatusCode(500, new { Error = "Internal server error" });
+        }
     }
 
 }

@@ -1,15 +1,26 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Get the profile link
-    var profileLink = document.getElementById("manage");
+import { initSavedLocations } from '../ProfilePartial/savedLocations.js';
 
-    // Get the profile modal
-    var profileModal = new bootstrap.Modal(document.getElementById('profileModal'));
-
-    // Add click event listener to the profile link
-    if (profileLink) {
-        profileLink.addEventListener("click", function (e) {
-            e.preventDefault(); // Prevent default link behavior
-            profileModal.show(); // Show the modal
-        });
-    }
-});
+const modalElement = document.getElementById('profileModal');
+if (!modalElement) {
+    console.error('Profile modal element not found');
+} else {
+    const profileModal = new bootstrap.Modal(modalElement);
+    
+    // Handle modal shown event
+    const handleModalShown = () => {
+        try {
+            initSavedLocations();
+        } catch (error) {
+            console.error('Error initializing location editing:', error);
+        }
+    };
+    
+    modalElement.addEventListener('shown.bs.modal', handleModalShown);
+    
+    // Handle click event
+    document.querySelector('#manage')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        profileModal.show();
+        console.log('Profile link clicked');
+    });
+}

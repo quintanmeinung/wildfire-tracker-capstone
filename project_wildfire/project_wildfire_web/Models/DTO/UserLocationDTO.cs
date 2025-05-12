@@ -10,6 +10,10 @@ namespace project_wildfire_web.Models.DTO
 public partial class UserLocationDTO
 {
     [Required]
+    [Name("id")]
+    public string? Id { get; set; }
+
+    [Required]
     [Name("userId")]
     public string? UserId { get; set; }
 
@@ -44,6 +48,7 @@ namespace project_wildfire_web.ExtensionsMethods
         {   
             return new UserLocationDTO
             {
+            Id = ul.Id.ToString(),
             UserId = ul.UserId,
             Latitude = ul.Latitude.ToString(),
             Longitude = ul.Longitude.ToString(),
@@ -70,6 +75,7 @@ namespace project_wildfire_web.ExtensionsMethods
             }
             return new UserLocation
             {
+                Id = int.Parse(ul.Id),
                 UserId = ul.UserId,
                 Latitude = decimal.Parse(ul.Latitude),
                 Longitude = decimal.Parse(ul.Longitude),

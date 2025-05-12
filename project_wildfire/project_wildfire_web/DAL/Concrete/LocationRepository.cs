@@ -7,6 +7,8 @@ using project_wildfire_web.DAL.Abstract;
 using Microsoft.EntityFrameworkCore;
 using project_wildfire_web.DAL.Concrete;
 using Microsoft.AspNetCore.Identity;
+using project_wildfire_web.Models.DTO;
+using project_wildfire_web.ExtensionsMethods;
 
 namespace project_wildfire_web.DAL.Concrete
 {
@@ -45,14 +47,52 @@ namespace project_wildfire_web.DAL.Concrete
             return _context.SaveChangesAsync();
         }
 
-        public Task DeleteLocationAsync(int locationId, string userId)
+        public Task DeleteLocationAsync(UserLocationDTO dto)
         {
-            throw new NotImplementedException();
+            UserLocation location = dto.ToUserLocation();
+
+            var locationRecord = _context.UserLocations
+                .FirstOrDefault(x => x.Id == location.Id && x.UserId == location.UserId);
+
+            if (location == null)
+            {
+                throw new InvalidOperationException($"UserLocation with ID {location.Id} not found for user {location.UserId}");
+            }
+
+            _context.UserLocations.Remove(location);
+            return _context.SaveChangesAsync();
         }
 
-        public Task UpdateLocationAsync(UserLocation location)
+        public async Task UpdateLocationAsync(UserLocation location)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(location);
+
+            try
+            {
+                var existingEntity = await _context.UserLocations
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Id == location.Id);
+                
+                if (existingEntity == null)
+                {
+                    throw new InvalidOperationException($"UserLocation with ID {location.Id} not found");
+                }
+
+                _context.UserLocations.Update(location);
+                await _context.SaveChangesAsync();
+            }
+
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException(
+                    "Concurrency conflict occurred while updating location", ex);
+            }
+            
+            catch (DbUpdateException ex)
+            {
+                throw new DbUpdateException(
+                    "Database error occurred while updating location", ex);
+            }
         }
 
         public void Save()
