@@ -31,6 +31,30 @@ public class LocationApiController : ControllerBase
         _locationRepository = locationRepository;
     }
 
+    [HttpGet("GetLocations")]
+    public async Task<IActionResult> GetLocations()
+    {
+        _logger.LogDebug("Request received at api/Location/GetLocations(GET)");
+        string userId = _userManager.GetUserId(User);
+        if (string.IsNullOrEmpty(userId))
+        {
+            _logger.LogWarning("User ID is null or empty");
+            return BadRequest(new { Error = "User ID cannot be null or empty" });
+        }
+
+        try
+        {
+            var locations = await _locationRepository.GetUserLocationsAsync(userId);
+            _logger.LogDebug("User locations retrieved successfully: {Locations}", locations);
+            return Ok(locations);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving user locations: {Message}", ex.Message);
+            return StatusCode(500, "Internal server error while retrieving locations.");
+        }
+    }
+
     [HttpPost("SaveLocation")]
     public async Task<IActionResult> SaveLocation([FromBody] UserLocationDTO userLocationDTO)
     {
