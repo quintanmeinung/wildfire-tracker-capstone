@@ -29,7 +29,7 @@ namespace project_wildfire_tests.BDDTesting.Features
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BDDTesting/Features", "Email Update", "  As a user\r\n  I want to update my email address", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BDDTesting/Features", "Email Update", "  As a user\n  I want to update my email address", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "EmailUpdate.feature"
 #line hidden
