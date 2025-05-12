@@ -30,12 +30,18 @@ export function addFireMarkers(fireLayer, apiData) {
       fillOpacity: 0.8,
       className: "wildfire-marker"
     }).bindPopup(`
-      <strong>🔥 Wildfire Detected!</strong><br>
+      <strong>🔥 Wildfire!</strong><br>
       <strong>Radiative Power:</strong> ${power}<br>
       <strong>Latitude:</strong> ${fire.latitude.toFixed(5)}<br>
       <strong>Longitude:</strong> ${fire.longitude.toFixed(5)}
       <button class="subscribe-btn" data-fire-id="${fire.fireId}">Subscribe to fire</button>
     `);
+        marker.on('click', () => {
+      marker.openPopup();
+    });
+    
+    window.fireMarkerMap = window.fireMarkerMap || new Map();
+    window.fireMarkerMap.set(fire.fireId, marker);
 
     marker.addTo(fireLayer);
     bindSubscribeButtonOnPopup(marker, fire.fireId);

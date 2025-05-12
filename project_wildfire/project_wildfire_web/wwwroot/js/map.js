@@ -122,8 +122,33 @@ document.addEventListener("DOMContentLoaded", function () {
                 hideSpinner();
             });
     });
-});
 
+    document.addEventListener('click', function (e) {
+    const link = e.target.closest('.fire-jump');
+    if (link) {
+        e.preventDefault();
+        const lat = parseFloat(link.dataset.lat);
+        const lng = parseFloat(link.dataset.lng);
+        if (!isNaN(lat) && !isNaN(lng)) {
+            
+          window._leaflet_map.setView([lat, lng],13);
+            const fireId = parseInt(link.textContent.trim());
+          const marker = window.fireMarkerMap?.get(fireId);
+            if (marker) {
+                marker.fire('click');
+            }
+          const modalElement = document.getElementById('profileModal')
+          if(modalElement && bootstrap){
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if(modalInstance){
+                modalInstance.hide()
+            }
+          }
+        }
+    }
+});
+});
+    
 
 let activeMarker = null; // Variable to store user's most recent marker
 function addMarkerOnClick(e, map) {
