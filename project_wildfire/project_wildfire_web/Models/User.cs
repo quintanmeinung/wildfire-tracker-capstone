@@ -15,5 +15,6 @@ public partial class User
     public bool TextToSpeech { get; set; } = false;
 
     public virtual ICollection<Fire> Fires { get; set; } = new List<Fire>();
+    public virtual ICollection<UserFireSubscription> FireSubscriptions { get; set; }
     
 }

@@ -6,7 +6,7 @@ namespace project_wildfire_web.DAL.Abstract;
 public interface IUserFireSubRepository
 {
     //Method to get subscribed fires
-    Task<IEnumerable<Fire>> GetFiresByUserIdAsync(string userID);
+    Task<IEnumerable<Fire>> GetFiresSubsAsync(string userID);
     Task<bool> IsSubscribedAsync(string userID, int FireId);
     Task SubscribeAsync(string userID,int FireId);
     Task UnsubscribeAsync(string userID,int FireId);

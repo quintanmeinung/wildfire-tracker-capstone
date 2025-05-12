@@ -1,3 +1,4 @@
+
 export function addFireMarkers(fireLayer, apiData) {
   apiData.forEach(fire => {
     const power = fire.radiativePower;
@@ -33,9 +34,35 @@ export function addFireMarkers(fireLayer, apiData) {
       <strong>Radiative Power:</strong> ${power}<br>
       <strong>Latitude:</strong> ${fire.latitude.toFixed(5)}<br>
       <strong>Longitude:</strong> ${fire.longitude.toFixed(5)}
+      <button class="subscribe-btn" data-fire-id="${fire.fireId}">Subscribe to fire</button>
     `);
 
     marker.addTo(fireLayer);
+    bindSubscribeButtonOnPopup(marker, fire.fireId);
+  });
+}
+
+export function bindSubscribeButtonOnPopup(marker, fireId) {
+  marker.on('popupopen', () => {
+    const btn = document.querySelector('.subscribe-btn');
+    if (btn) {
+      btn.addEventListener('click', async () => {
+        try {
+          const response = await fetch(`/api/fireSub/${fireId}`,{
+            method: 'POST'
+          });
+
+          if (!response.ok) {
+            throw new Error('Subscription failed.');
+          }
+
+          const result = await response.json();
+          alert(result.message || "Subscribed successfully!");
+        } catch (err) {
+          alert("Error: " + err.message);
+        }
+      });
+    }
   });
 }
 

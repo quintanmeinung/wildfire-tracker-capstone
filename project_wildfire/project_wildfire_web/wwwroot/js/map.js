@@ -71,12 +71,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fetch wildfire data for today's date automatically
     showSpinner();
-    fetch(`/api/WildfireAPIController/fetchWildfiresByDate?date=${dateInput.value}`)
+  //  fetch(`/api/WildfireAPIController/fetchWildfiresByDate?date=${dateInput.value}`)
+    fetch("/api/WildfireAPIController/getSavedFires")
         .then(response => response.json())
         .then(data => {
             fireLayer.clearLayers();
             addFireMarkers(fireLayer, data);
-
+            //
+        //
             if (data.length === 0) {
                 console.warn('No wildfires reported today.');
             }
@@ -105,6 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 fireLayer.clearLayers();
                 addFireMarkers(fireLayer, data);
+                //
+                        // Attach event listeners to "Subscribe to Fire" buttons
 
                 if (data.length === 0) {
                     alert("No wildfires were reported for this date.");

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+
 namespace project_wildfire_web.Models;
 
 public partial class FireDataDbContext : DbContext
@@ -44,22 +45,6 @@ public partial class FireDataDbContext : DbContext
             entity.Property(e => e.FirstName).HasMaxLength(50);
             entity.Property(e => e.LastName).HasMaxLength(50);
 
-            entity.HasMany(d => d.Fires).WithMany(p => p.Users)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserFireSubscription",
-                    r => r.HasOne<Fire>().WithMany()
-                        .HasForeignKey("FireId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_UserFireSubscriptions_Fires"),
-                    l => l.HasOne<User>().WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_UserFireSubscriptions_Users"),
-                    j =>
-                    {
-                        j.HasKey("UserId", "FireId").HasName("PK__UserFire__499520ED71B18F01");
-                        j.ToTable("UserFireSubscriptions");
-                    });
         });
 
         modelBuilder.Entity<UserLocation>(entity =>
@@ -75,6 +60,18 @@ public partial class FireDataDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserLocations_Users");
         });
+        modelBuilder.Entity<UserFireSubscription>()
+            .HasKey(ufs => new { ufs.UserId, ufs.FireId });
+
+        modelBuilder.Entity<UserFireSubscription>()
+            .HasOne(ufs => ufs.User)
+            .WithMany(u => u.FireSubscriptions)
+            .HasForeignKey(ufs => ufs.UserId);
+
+        modelBuilder.Entity<UserFireSubscription>()
+            .HasOne(ufs => ufs.Fire)
+            .WithMany(f => f.UserSubscriptions)
+            .HasForeignKey(ufs => ufs.FireId);
 
         OnModelCreatingPartial(modelBuilder);
     }

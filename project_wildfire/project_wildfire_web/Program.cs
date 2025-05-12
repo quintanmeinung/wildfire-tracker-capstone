@@ -86,6 +86,7 @@ public class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IWildfireRepository, WildfireRepository>();
         builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+        builder.Services.AddScoped<IUserFireSubRepository, UserFireSubsRepository>();
         builder.Services.AddHttpClient();
         
         //adding swagger
