@@ -36,9 +36,7 @@ export function addFireMarkers(fireLayer, apiData) {
       <strong>Longitude:</strong> ${fire.longitude.toFixed(5)}
       <button class="subscribe-btn" data-fire-id="${fire.fireId}">Subscribe to fire</button>
     `);
-        /* marker.on('click', () => {
-      marker.openPopup(); 
-    }); */
+       
     
     window.fireMarkerMap = window.fireMarkerMap || new Map();
     window.fireMarkerMap.set(fire.fireId, marker);
