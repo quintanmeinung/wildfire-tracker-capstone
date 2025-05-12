@@ -241,7 +241,15 @@
                                     {
                                         @foreach (var fire in Model.FireSubscriptions)
                                         {
-                                            <td>@fire</td>
+                                            <tr>
+                                                <td>@fire.FireId</td>
+                                                <td>Active</td>
+                                                <td>@($"{fire.Latitude}, {fire.Longitude}")</td>
+                                                <td>@fire.RadiativePower</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                            
                                         }
                                     } 
                                 </tr>
