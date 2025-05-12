@@ -8,7 +8,7 @@ namespace project_wildfire_web.DAL.Abstract
         ICollection<UserLocation> GetUserLocations(string userId);
         UserLocation GetLocationById(int locationId);
         Task AddLocationAsync(UserLocation location);
-        Task DeleteLocationAsync(UserLocationDTO dto);
+        Task DeleteLocationAsync(string locationId);
         Task UpdateLocationAsync(UserLocation location);
         void Save();
 
