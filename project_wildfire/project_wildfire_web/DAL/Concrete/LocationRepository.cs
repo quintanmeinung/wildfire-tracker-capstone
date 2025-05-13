@@ -47,19 +47,22 @@ namespace project_wildfire_web.DAL.Concrete
             return _context.SaveChangesAsync();
         }
 
-        public Task DeleteLocationAsync(UserLocationDTO dto)
+        public Task DeleteLocationAsync(string locationId)
         {
-            UserLocation location = dto.ToUserLocation();
-
-            var locationRecord = _context.UserLocations
-                .FirstOrDefault(x => x.Id == location.Id && x.UserId == location.UserId);
-
-            if (location == null)
+            if (string.IsNullOrEmpty(locationId))
             {
-                throw new InvalidOperationException($"UserLocation with ID {location.Id} not found for user {location.UserId}");
+                throw new ArgumentNullException(nameof(locationId), "Location ID cannot be null or empty.");
             }
 
-            _context.UserLocations.Remove(location);
+            var locationRecord = _context.UserLocations
+                .FirstOrDefault(x => x.Id == int.Parse(locationId));
+
+            if (locationRecord == null)
+            {
+                throw new InvalidOperationException($"UserLocation with ID {locationId} not found.");
+            }
+
+            _context.UserLocations.Remove(locationRecord);
             return _context.SaveChangesAsync();
         }
 
