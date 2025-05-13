@@ -94,12 +94,6 @@ public class LocationApiController : ControllerBase
     [HttpPost("UpdateLocation")]
     public async Task<IActionResult> UpdateLocation([FromBody] UserLocationDTO userLocationDTO)
     {
-        if (userLocationDTO == null)
-        {
-            _logger.LogWarning("Request body is null");
-            return BadRequest(new { Error = "Request body cannot be null" });
-        }
-
         _logger.LogDebug("Request received at api/Location/UpdateLocation(POST)");
         _logger.LogDebug("DTO received: {@UserLocationDTO}", userLocationDTO);
 
@@ -114,10 +108,17 @@ public class LocationApiController : ControllerBase
         }
 
         // Validate user exists
-        var user = await _userManager.FindByIdAsync(userLocationDTO.UserId);
+        var userId = userLocationDTO.UserId ?? string.Empty;
+        if (string.IsNullOrEmpty(userId))
+        {
+            _logger.LogWarning("UserId is null or empty in DTO");
+            return BadRequest(new { Error = "UserId is required" });
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userLocationDTO.UserId);
+            _logger.LogWarning("User not found: {UserId}", userId);
             return NotFound(new { Error = "User not found" });
         }
 
@@ -126,7 +127,7 @@ public class LocationApiController : ControllerBase
         try
         {
             await _locationRepository.UpdateLocationAsync(userLocation);
-            _logger.LogInformation("Location updated for user {UserId}", userLocationDTO.UserId);
+            _logger.LogInformation("Location updated for user {UserId}", userId);
             return Ok(new { Success = true, Message = "Location updated", Data = userLocation });
         }
         catch (DbUpdateException ex)
