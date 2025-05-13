@@ -1,5 +1,6 @@
 @model project_wildfire_web.Models.DTO.ProfileViewModelDTO
 @using project_wildfire_web.Areas.Identity.Pages.Account.Manage
+@using project_wildfire_web.ExtensionsMethods
 
 
 <!-- Stores users profile view model -->
@@ -173,43 +174,51 @@
                 <div class="row">
                     <h4 class="mt-4"><u>Saved Locations</u></h4>
                     <div class="container ml-1">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <td><u>Name</u></td>
-                                    <td><u>Address</u></td>
-                                    <td><u>Latitude</u></td>
-                                    <td><u>Longitude</u></td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model.SavedLocations == null || !Model.SavedLocations.Any())
-                                    {
-                                    <tr>
-                                        <td>No saved locations</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    @foreach (var location in Model.SavedLocations)
-                                    {
-                                        <tr>
-                                            <td>@location.Title</td>
-                                            <td>@location.Address</td>
-                                            <td>@location.Latitude</td>
-                                            <td>@location.Longitude</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    }
-                                } 
-                            </tbody>
-                        </table>
+                        @if (Model.SavedLocations == null || !Model.SavedLocations.Any())
+                        {
+                            @:No saved locations. Click the map to get started!
+                        }
+                        else
+                        {
+                            @foreach (var location in Model.SavedLocations)
+                            {
+                                <div class="row my-1" data-location="@System.Text.Json.JsonSerializer.Serialize(location)">
+                                    <div class="col-3 sl-input border-bottom">
+                                        <input name="title"
+                                            type="text"
+                                            value="@location.Title"
+                                            class="form-control-plaintext"
+                                            readonly>
+                                    </div>
+                                    <div class="col-3 sl-input border-bottom">
+                                        <input name="address"
+                                            type="text" 
+                                            value="@location.Address" 
+                                            class="form-control-plaintext"
+                                            readonly>
+                                    </div>
+                                    <div class="col-2 sl-input border-bottom d-flex align-items-center">
+                                        <i class="fa-regular fa-bell me-2"></i>
+                                        <input name="radius"
+                                            type="number"
+                                            value="@location.Radius"
+                                            class="form-control-plaintext flex-grow-1 border-0 px-0"
+                                            disabled>
+                                    </div>
+                                    <div class="col-1 justify-content-center sl-actions">
+                                        <button id="view-@location.Id" class="btn btn-sm btn-outline-secondary view-btn">View</button>
+                                        <button id="save-@location.Id" class="btn btn-sm btn-success save-btn d-none">Save</button>
+                                    </div>
+                                    <div class="col-1 justify-content-center sl-actions">
+                                        <button id="edit-@location.Id" data-id="@location.Id" class="btn btn-sm btn-outline-primary edit-btn">Edit</button>
+                                        <button id="cancel-@location.Id" class="btn btn-sm btn-outline-secondary cancel-btn d-none">Cancel</button>
+                                    </div>
+                                    <div class="col-1 justify-content-center sl-delete">
+                                        <button id="delete-@location.Id" class="btn btn-sm btn-outline-danger delete-btn disabled">Delete</button>
+                                    </div>
+                                </div>
+                            }
+                        } 
                     </div>  
                 </div>
                 <div class="row">
@@ -256,3 +265,8 @@
     </div>
   </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/ProfilePartial/savedLocations.js"></script>
+    <script src="~/js/ProfilePartial/userInformation.js"></script>
+}
