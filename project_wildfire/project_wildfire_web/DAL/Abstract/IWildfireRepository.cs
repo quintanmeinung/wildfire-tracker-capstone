@@ -10,6 +10,7 @@ namespace project_wildfire_web.DAL.Abstract
         Task AddWildfiresAsync(List<Fire> wildfires);
         Task ClearWildfiresAsync();
         Task<int> GetWildfireCountAsync();
+        Task<List<Fire>> GetAllFiresAsync();
 
 
     }

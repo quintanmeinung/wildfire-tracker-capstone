@@ -140,21 +140,23 @@ namespace project_wildfire_tests.BDDTesting.StepDefinitions
         [When(@"I toggle the fire hazard layer button")]
         public void WhenIToggleTheFireHazardLayerButton()
         {
-            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(15));
 
-            var toggle = wait.Until(ExpectedConditions.ElementToBeClickable(
+            // Step 1: Ensure the toggle panel is visible
+            var togglePanelButton = wait.Until(ExpectedConditions.ElementToBeClickable(
                 By.ClassName("leaflet-control-layers-toggle")));
-            toggle.Click();
+            togglePanelButton.Click();
 
-            var labelSpan = wait.Until(ExpectedConditions.ElementIsVisible(
+            // Step 2: Wait for checkbox label to appear
+            wait.Until(ExpectedConditions.ElementIsVisible(
                 By.XPath("//span[normalize-space(text())='Wildfire Hazard Potential']")));
 
-            var checkbox = _driver.FindElement(By.XPath(
-                "//span[normalize-space(text())='Wildfire Hazard Potential']/preceding-sibling::input"));
+            // Step 3: Re-fetch the checkbox every time to avoid stale reference
+            var checkbox = wait.Until(driver => driver.FindElement(By.XPath(
+                "//span[normalize-space(text())='Wildfire Hazard Potential']/preceding-sibling::input")));
+
             checkbox.Click();
         }
-
-
 
         [Then(@"shelter markers should appear on the map")]
         public void ThenShelterMarkersShouldAppearOnTheMap()
@@ -220,27 +222,17 @@ namespace project_wildfire_tests.BDDTesting.StepDefinitions
         {
             var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
 
-            // ✅ STEP 1: Debug the map and layer state
-            var result = (Dictionary<string, object>)((IJavaScriptExecutor)_driver).ExecuteScript(@"
-                const map = window._leaflet_map || document.querySelector('.leaflet-container')._leaflet_map;
-                return {
-                    fireHazardDefined: typeof window.fireHazardLayer !== 'undefined',
-                    fireHazardAttached: map && window.fireHazardLayer ? map.hasLayer(window.fireHazardLayer) : null
-                };
-            ");
-
-            Console.WriteLine($"🔥 fireHazardLayer debug: defined={result["fireHazardDefined"]}, attached={result["fireHazardAttached"]}");
-
-            // ✅ STEP 2: Wait for tiles to be invisible (this still works if needed)
-            bool isDetached = wait.Until(driver =>
+            bool isRemoved = wait.Until(driver =>
             {
                 return (bool)((IJavaScriptExecutor)driver).ExecuteScript(@"
                     const map = window._leaflet_map;
-                    return map && window.fireHazardLayer && !map.hasLayer(window.fireHazardLayer);
+                    const layer = window.fireHazardLayer;
+                    if (!map || !layer) return false;
+                    return !map.hasLayer(layer);
                 ");
             });
 
-            Assert.That(isDetached, "Fire hazard layer is still attached to the map after toggle off.");
+            Assert.That(isRemoved, "Fire hazard layer is still attached to the map after toggle off.");
         }
 
         [Then(@"the toggle button should reflect the inactive state")]

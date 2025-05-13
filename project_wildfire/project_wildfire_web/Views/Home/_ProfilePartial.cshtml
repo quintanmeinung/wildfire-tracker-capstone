@@ -250,7 +250,20 @@
                                     {
                                         @foreach (var fire in Model.FireSubscriptions)
                                         {
-                                            <td>@fire</td>
+                                            <tr>
+                                                <td>
+                                                    <a href="#" class="fire-jump" data-lat="@fire.Latitude" data-lng="@fire.Longitude">
+                                                        @fire.FireId
+                                                    </a>
+                                                </td>
+                                                
+                                                <td>Active</td>
+                                                <td>@($"{fire.Latitude}, {fire.Longitude}")</td>
+                                                <td>@fire.RadiativePower</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+                                            </tr>
+                                            
                                         }
                                     } 
                                 </tr>
