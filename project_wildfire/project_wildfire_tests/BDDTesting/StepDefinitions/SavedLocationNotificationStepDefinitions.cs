@@ -25,7 +25,7 @@ public class SavedLocationNotificationStepDefinitions
         WebDriverFactory.QuitDriver();
     }
 
-    [Given(@"a user is logged in")]
+    [Given(@"a user is logged in for saved locations")]
     public void GivenAUserIsLoggedIn()
     {
         _driver.FindElement(By.Id("login")).Click();
@@ -43,14 +43,14 @@ public class SavedLocationNotificationStepDefinitions
     [When(@"the user adds a new location titled ""(.*)"" with radius (\d+) miles and interval (\d+) hour")]
     public void WhenUserAddsLocation(string title, int radius, int interval)
     {
-        _driver.FindElement(By.Id("location-title")).SendKeys(title);
-        _driver.FindElement(By.Id("location-latitude")).SendKeys("37.7749");
-        _driver.FindElement(By.Id("location-longitude")).SendKeys("-122.4194");
-        _driver.FindElement(By.Id("location-address")).SendKeys("San Francisco, CA");
-        _driver.FindElement(By.Id("location-radius")).SendKeys(radius.ToString());
-        _driver.FindElement(By.Id("location-interval")).SendKeys(interval.ToString());
+        _driver.FindElement(By.Id("title")).SendKeys(title);
+        _driver.FindElement(By.Id("latitude")).SendKeys("37.7749");
+        _driver.FindElement(By.Id("longitude")).SendKeys("-122.4194");
+        _driver.FindElement(By.Id("address")).SendKeys("San Francisco, CA");
+        _driver.FindElement(By.Id("radius")).SendKeys(radius.ToString());
+        _driver.FindElement(By.Id("timeInterval")).SendKeys(interval.ToString());
 
-        _driver.FindElement(By.Id("location-submit")).Click();
+        _driver.FindElement(By.Id("add-location-btn")).Click();
     }
 
     [Then(@"the location should appear in the saved locations list")]
