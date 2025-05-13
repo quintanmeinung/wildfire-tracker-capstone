@@ -1,11 +1,17 @@
 import { addAQIMarker } from './AQI.js';
 import { addFireMarkers } from './fireMarkers.js';
-import { getUserId } from './site.js'; // Import userId
-import { initDialogModal } from './saveLocationModalHandler.js'; // Import modal handler
+import { getUserId } from '../site.js'; // Import userId
+import { initDialogModal } from '../SaveLocationScripts/saveLocationModalHandler.js'; // Import modal handler
+import {addLegend } from './addLegend.js';
 
+const savedLocationMarkers = {}; // Tracks saved location markers
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
     const map = initializeMap();
+    window._leaflet_map = map;
+
+    // Exposes the map to be accessible from BDD tests
+    window.webfireMap = map; 
 
     // Base Layers
     const baseLayers = createBaseLayers();
@@ -60,8 +66,10 @@ document.addEventListener("DOMContentLoaded", function () {
             for (let location of savedLocations) {
                 console.log(location);
 
-                let marker = L.marker([location.latitude, location.longitude]).addTo(map);
+                let marker = L.marker([location.latitude, location.longitude], { locationId: location.id}).addTo(map);
+                savedLocationMarkers[location.id] = marker; // Store the marker in the savedLocations object
                 marker.bindPopup(location.title); // Bind the name to the marker popup
+                marker.getElement().id = location.title; // Set the marker ID to the location ID
             }
             map.on('click', function (e) {
                 addMarkerOnClick(e, map)
@@ -71,12 +79,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fetch wildfire data for today's date automatically
     showSpinner();
-    fetch(`/api/WildfireAPIController/fetchWildfiresByDate?date=${dateInput.value}`)
+  //  fetch(`/api/WildfireAPIController/fetchWildfiresByDate?date=${dateInput.value}`)
+    fetch("/api/WildfireAPIController/getSavedFires")
         .then(response => response.json())
         .then(data => {
             fireLayer.clearLayers();
             addFireMarkers(fireLayer, data);
-
+            //
+        //
             if (data.length === 0) {
                 console.warn('No wildfires reported today.');
             }
@@ -105,6 +115,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 fireLayer.clearLayers();
                 addFireMarkers(fireLayer, data);
+                //
+                        // Attach event listeners to "Subscribe to Fire" buttons
 
                 if (data.length === 0) {
                     alert("No wildfires were reported for this date.");
@@ -117,8 +129,33 @@ document.addEventListener("DOMContentLoaded", function () {
                 hideSpinner();
             });
     });
-});
 
+    document.addEventListener('click', function (e) {
+    const link = e.target.closest('.fire-jump');
+    if (link) {
+        e.preventDefault();
+        const lat = parseFloat(link.dataset.lat);
+        const lng = parseFloat(link.dataset.lng);
+        if (!isNaN(lat) && !isNaN(lng)) {
+            
+          window._leaflet_map.setView([lat, lng],13);
+            const fireId = parseInt(link.textContent.trim());
+          const marker = window.fireMarkerMap?.get(fireId);
+            if (marker) {
+                marker.fire('click');
+            }
+          const modalElement = document.getElementById('profileModal')
+          if(modalElement && bootstrap){
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if(modalInstance){
+                modalInstance.hide()
+            }
+          }
+        }
+    }
+});
+});
+    
 
 let activeMarker = null; // Variable to store user's most recent marker
 function addMarkerOnClick(e, map) {
@@ -143,6 +180,18 @@ function addMarkerOnClick(e, map) {
     activeMarker.openPopup(); // Open the popup immediately
 
     initDialogModal(); // Initialize the modal handler
+}
+
+export function removeMarker(id) {
+    // Given the location ID it will remove the marker from the map.
+    const marker = savedLocationMarkers[id];
+    console.log("Removing marker:", marker);
+    if (marker) {
+        marker.remove(); // Remove the marker from the map
+        delete savedLocationMarkers[id]; // Remove from the savedLocations object
+    } else {
+        console.error(`Marker with title "${id}" not found.`);
+    }
 }
 
 // Spinner functions
@@ -189,38 +238,19 @@ function createOverlayLayers(map) {
     const shelterClusterGroup = L.markerClusterGroup();
 
     //Wildfire Risk Layer
-    const wildfireRiskLayer = L.esri.imageMapLayer({
+    window.fireHazardLayer = L.esri.imageMapLayer({
         url: 'https://apps.fs.usda.gov/fsgisx01/rest/services/RDW_Wildfire/RMRS_WRC_WildfireHazardPotential/ImageServer',
-        opacity: 0.6
+        opacity: 0.4 //org 0.6
     });
-    /*
-    const femaShelters = L.esri.featureLayer({
-        url: 'https://gis.fema.gov/arcgis/rest/services/NSS/FEMA_NSS/FeatureServer/5',
-        pointToLayer: function (geojson, latlng) {
-            return L.circleMarker(latlng, {
-                radius: 2,
-                color: '#007bff',
-                fillColor: '#007bff',
-                fillOpacity: 0.8,
-                weight: 1
-            });
-        },
-        onEachFeature: function (feature, layer) {
-            const props = feature.properties;
-            const popup = `<strong>${props.SHELTER_NAME || "Unnamed Shelter"}</strong><br>
-                Capacity: ${props.CAPACITY || "Unknown"}<br>
-                Status: ${props.STATUS || "N/A"}`;
-            layer.bindPopup(popup);
-            shelterClusterGroup.addLayer(layer);
-        }
-    });*/
-
-    //Back up Shelter Marker data
-    
+        
     // Use Esri Leaflet to get shelter features
     const femaShelters = L.esri.featureLayer({
         url: 'https://gis.fema.gov/arcgis/rest/services/NSS/FEMA_NSS/FeatureServer/5',
         pointToLayer: function (geojson, latlng) {
+            if (map.getZoom() < 7) {
+                return null; // don't draw marker at low zoom
+            }
+
             const status = geojson.properties.shelter_status_code;
             let markerOptions;
     
@@ -246,12 +276,26 @@ function createOverlayLayers(map) {
         },
         onEachFeature: function (feature, layer) {
             const props = feature.properties;
-            let petAccommodations = "Not listed – call ahead"; // Default message for missing data
+
+            // Attach a test attribute to the SVG element for automation
+            layer.on('add', function () {
+                const el = layer.getElement();
+                if (el) {
+                    // ✅ Add 'shelter-marker' class while preserving existing classes
+                    const existingClass = el.getAttribute('class') || '';
+                    el.setAttribute('class', `${existingClass} shelter-marker`.trim());
+                    el.setAttribute('data-type', 'shelter'); // Optional: keep if useful elsewhere
+                    el.classList.add('shelter-marker');
+                }
+            });
+
+            let petAccommodations = "Not listed – call ahead";
             if (props.pet_accommodations_desc === " ") {
-                petAccommodations = "Pet Accommodations: Unknown"; // Specific message for "Unknown"
+                petAccommodations = "Pet Accommodations: Unknown";
             } else if (props.pet_accommodations_desc) {
-                petAccommodations = props.pet_accommodations_desc; // Show the actual description if available
+                petAccommodations = props.pet_accommodations_desc;
             }
+
             const popup = `
                 <strong>${props.shelter_name || "Unnamed Shelter"}</strong><br>
                 Address: ${props.address_1 || "Unknown"}<br>
@@ -264,9 +308,11 @@ function createOverlayLayers(map) {
                 Generator Onsite: ${props.generator_onsite === 'Y' ? "Yes" : "No"}<br>
                 Status: ${props.shelter_status_code || "N/A"}
             `;
+
             layer.bindPopup(popup);
             shelterClusterGroup.addLayer(layer);
         }
+
     });
 
     femaShelters.on('load', function (e) {
@@ -282,8 +328,6 @@ function createOverlayLayers(map) {
                 .openOn(map);
         }
     });
-
-        //})//.addTo(map);
             
     // Add the layer to the map on startup
     //wildfireRiskLayer.addTo(map);
@@ -296,7 +340,7 @@ function createOverlayLayers(map) {
         "Cities": cities,
         "AQI Stations": aqiLayer,
         "Fire Reports": fireLayer,
-        "Wildfire Hazard Potential": wildfireRiskLayer
+        "Wildfire Hazard Potential": window.fireHazardLayer
     };
 }
 
