@@ -3,7 +3,6 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using WebDriverManager;
 using WebDriverManager.DriverConfigs.Impl;
-
 namespace project_wildfire_tests.BDDTesting.Drivers;
 public static class WebDriverFactory
 {

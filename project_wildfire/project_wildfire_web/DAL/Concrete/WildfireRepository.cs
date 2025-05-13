@@ -34,5 +34,11 @@ namespace project_wildfire_web.DAL.Concrete
         {
             return await _context.Fires.CountAsync();
         }
+        public async Task<List<Fire>> GetAllFiresAsync()
+        {
+            return await _context.Fires.ToListAsync();
+        }
+
+       
     }
 }
