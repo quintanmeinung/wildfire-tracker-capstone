@@ -7,10 +7,9 @@ export function initSavedLocations() {
         if (e.target.matches('.edit-btn, .save-btn, .cancel-btn, .delete-btn')) {
             const row = e.target.closest('.row.my-1');
             if (e.target.matches('.edit-btn')) {
-                toggleButtons(e);
-                toggleEditing(e);
+                editButton(e);
             } else if (e.target.matches('.save-btn')) {
-                saveLocation(row);
+                saveLocationUpdates(row);
             } else if (e.target.matches('.cancel-btn')) {
                 cancelEdit(row);
             } else if (e.target.matches('.delete-btn')) {
@@ -24,7 +23,6 @@ function editButton(e) {
     console.log('Editing location...');
     toggleButtons(e);
     toggleEditing(e);
-    // No need to re-init buttons if using event delegation
 }
 
 function toggleEditing(e) {
@@ -55,7 +53,7 @@ function toggleEditing(e) {
     }
 }
 
-function saveLocation(row) {
+function saveLocationUpdates(row) {
     // Get current values
     const title = row.querySelector('input[name="title"]').value;
     const address = row.querySelector('input[name="address"]').value;
