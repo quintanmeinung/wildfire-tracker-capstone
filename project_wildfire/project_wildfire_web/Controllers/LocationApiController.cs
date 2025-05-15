@@ -91,10 +91,10 @@ public class LocationApiController : ControllerBase
         return Ok("Location saved successfully");
     }
 
-    [HttpPost("UpdateLocation")]
+    [HttpPut("UpdateLocation")]
     public async Task<IActionResult> UpdateLocation([FromBody] UserLocationDTO userLocationDTO)
     {
-        _logger.LogDebug("Request received at api/Location/UpdateLocation(POST)");
+        _logger.LogDebug("Request received at api/Location/UpdateLocation(PUT)");
         _logger.LogDebug("DTO received: {@UserLocationDTO}", userLocationDTO);
 
         if (!ModelState.IsValid)
