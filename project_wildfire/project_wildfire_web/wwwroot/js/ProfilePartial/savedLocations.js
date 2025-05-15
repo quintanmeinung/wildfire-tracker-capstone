@@ -85,6 +85,7 @@ function saveLocationUpdates(row) {
             throw new Error('API UpdateLocation response was not ok: ' + response.statusText);
         } else {
             console.log('Location updated successfully!');
+            updateMarker(location.Id, title, radius); // Updates the map marker with the new title and radius
         }
     }).catch(error => {
         console.error('Error updating location:', error);
@@ -93,6 +94,21 @@ function saveLocationUpdates(row) {
     // Exit edit mode
     toggleEditing({ target: row.querySelector('.save-btn') });
     toggleButtons({ target: row.querySelector('.save-btn') });
+}
+
+function updateMarker(locationId, title, radius) {
+    console.log('Updating marker for locationId:', locationId);
+    const markers = window.savedLocationMarkers;
+    var target = markers[locationId]
+    if (target) {
+        target.remove();
+        target.Title = title; // Update the title
+        target.Radius = radius; // Update the radius
+        target.bindPopup(title);
+        target.addTo(window._leaflet_map);
+    } else {
+        console.error('Marker not found for locationId:', locationId);
+    }
 }
 
 function cancelEdit(row) {
