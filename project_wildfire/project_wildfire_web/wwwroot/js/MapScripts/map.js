@@ -5,6 +5,7 @@ import { initDialogModal } from '../SaveLocationScripts/saveLocationModalHandler
 import {addLegend } from './addLegend.js';
 
 const savedLocationMarkers = {}; // Tracks saved location markers
+window.savedLocationMarkers = savedLocationMarkers; // Expose to global scope
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
     const map = initializeMap();
