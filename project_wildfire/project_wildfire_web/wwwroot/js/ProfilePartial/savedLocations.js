@@ -59,8 +59,36 @@ function saveLocationUpdates(row) {
     const address = row.querySelector('input[name="address"]').value;
     const radius = row.querySelector('input[name="radius"]').value;
     
-    // Submit via fetch() or form submission
+    // Construct the updated location object
     console.log('Saving:', { title, address, radius });
+    const location = JSON.parse(row.dataset.location);
+    // UserLocationDTO
+    const updatedDTO = {
+        Id: location.Id,        // These don't change;
+        UserId: location.UserId,// But, are required for the API
+        Title: title,           // Only title, address, and radius change
+        Address: address,
+        Latitude: location.Latitude,  // Same here
+        Longitude: location.Longitude,// And here
+        Radius: radius
+    };
+
+    // fetch update location endpoint
+    fetch('/api/Location/UpdateLocation', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedDTO)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('API UpdateLocation response was not ok: ' + response.statusText);
+        } else {
+            console.log('Location updated successfully!');
+        }
+    }).catch(error => {
+        console.error('Error updating location:', error);
+    });
     
     // Exit edit mode
     toggleEditing({ target: row.querySelector('.save-btn') });
