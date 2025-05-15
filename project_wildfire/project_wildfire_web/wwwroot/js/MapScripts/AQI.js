@@ -1,4 +1,4 @@
-async function addAQIMarker(map, stationId) {
+export async function addAQIMarker(map, stationId) {
     const apiUrl = `/api/aqi/get-aqi-data?stationId=${stationId}`;
 
     try {
@@ -45,5 +45,3 @@ async function addAQIMarker(map, stationId) {
         console.error("Error fetching AQI data:", error);
     }
 }
-
-export { addAQIMarker };
