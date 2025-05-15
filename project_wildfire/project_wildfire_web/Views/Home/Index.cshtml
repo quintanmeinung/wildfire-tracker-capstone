@@ -24,6 +24,9 @@
 
 <!-- Include Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- MarkerCluster CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
 <!-- Leaflet Compass CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-compass/dist/leaflet-compass.css" />
 <!-- Custom CSS file -->
@@ -95,58 +98,45 @@
 </div>
 
 @section Scripts {
-    <!-- Injects logged-in user's preferences from session to JS-->
+    <!-- External CSS (moved to top for better loading) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-compass/dist/leaflet-compass.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-easybutton/2.4.0/easy-button.min.css">
+    <link rel="stylesheet" href="~/css/easy-button.min.css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/leaflet.css">
+    <link rel="stylesheet" href="~/css/AccountPages/profilePartial.css">
+
+    <!-- Session Injection Script -->
     <script>
-        console.log("🧪 Session Inject Test");
+        console.log("Session Inject Test");
         window.userPreferences = {
             fontSize: '@(Context.Session.GetString("FontSize") ?? "medium")',
             contrastMode: @((Context.Session.GetString("ContrastMode") ?? "false").ToLower()),
             textToSpeech: @((Context.Session.GetString("TextToSpeech") ?? "false").ToLower())
         };
-        console.log("✅ Injected userPreferences:", window.userPreferences);
+        console.log("Injected userPreferences:", window.userPreferences);
     </script>
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  
-    <!-- Include Leaflet & Leaflet Plugins -->
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <script src="https://unpkg.com/leaflet-compass/dist/leaflet-compass.min.js"></script>
-    <!-- Load Leaflet-EasyButton Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-easybutton/2.4.0/easy-button.min.js"></script>
-    <!-- Include External JS -->
-    @* <script src="~/js/map.js"></script> *@
-    <script type="module" src="~/js/map.js"></script> <!-- changed this so i could import AQI.js into map.js -->
-    <script src="~/js/saveLocationModalHandler.js"></script>
+    <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script> <!-- NRI Wildlife as esri Leaflet plugin JS-->
+    <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+
+    <!-- Application Scripts -->
+    <script type="module" src="~/js/MapScripts/map.js"></script>
+    <script type="module" src="~/js/SaveLocationScripts/saveLocationModalHandler.js"></script>
+    <script type="module" src="~/js/SaveLocationScripts/saveLocationDialog.js"></script>
+    <script type="module" src="~/js/MapScripts/addLegend.js"></script>
+    <script type="module" src="~/js/AccountScripts/modalHandler.js"></script>
     <script src="~/js/accessibility.js" defer></script>
-    <script src="~/js/geolet.js"></script>
-    <script src="~/js/addLegend.js"></script>
+    <script src="~/js/MapScripts/geolet.js"></script>
     <script src="~/js/AccountScripts/profilePartial.js"></script>
-    <script src="~/js/saveLocationDialog.js"></script>
-
-    <!-- FontAwesome (for icons) -->
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2.4.0/src/easy-button.js"></script>
-
-    @* <script type="text/javascript" charset="utf-8">
-    (function (w, d, t, f) {
-        w[f] = w[f] || function (c, k, n) {
-            s = w[f], k = s['k'] = (s['k'] || (k ? ('&k=' + k) : ''));
-            s['c'] = c = (c instanceof Array) ? c : [c];
-            s['n'] = n = n || 0;
-            L = d.createElement(t), e = d.getElementsByTagName(t)[0];
-            L.async = 1;
-            L.src = '//feed.aqicn.org/feed/' + (c[n].city) + '/' + (c[n].lang || '') + '/feed.v1.js?n=' + n + k;
-            e.parentNode.insertBefore(L, e);
-        };
-    })(window, document, 'script', '_aqiFeed');
-</script> *@
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- Leaflet Compass CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-compass/dist/leaflet-compass.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-easybutton/2.4.0/easy-button.min.css">
-    <link rel="stylesheet" href="~/css/easy-button.min.css">
-    <link rel="stylesheet" href="~/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/css/leaflet.css" />
 }
 
