@@ -352,6 +352,7 @@ function initializeAqiLayer() {
     addAQIMarker(aqiLayer, "@89");     // Salem
     addAQIMarker(aqiLayer, "A503590"); // Dallas
     addAQIMarker(aqiLayer, "@11923");  // Turner
+    
     return aqiLayer;
 }
 
