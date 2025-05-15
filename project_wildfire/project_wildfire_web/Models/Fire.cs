@@ -15,4 +15,5 @@ public partial class Fire
     public Geometry? Polygon { get; set; }
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual ICollection<UserFireSubscription> UserSubscriptions { get; set; } = new List<UserFireSubscription>();
 }

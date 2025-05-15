@@ -7,10 +7,9 @@ export function initSavedLocations() {
         if (e.target.matches('.edit-btn, .save-btn, .cancel-btn, .delete-btn')) {
             const row = e.target.closest('.row.my-1');
             if (e.target.matches('.edit-btn')) {
-                toggleButtons(e);
-                toggleEditing(e);
+                editButton(e);
             } else if (e.target.matches('.save-btn')) {
-                saveLocation(row);
+                saveLocationUpdates(row);
             } else if (e.target.matches('.cancel-btn')) {
                 cancelEdit(row);
             } else if (e.target.matches('.delete-btn')) {
@@ -24,7 +23,6 @@ function editButton(e) {
     console.log('Editing location...');
     toggleButtons(e);
     toggleEditing(e);
-    // No need to re-init buttons if using event delegation
 }
 
 function toggleEditing(e) {
@@ -55,14 +53,42 @@ function toggleEditing(e) {
     }
 }
 
-function saveLocation(row) {
+function saveLocationUpdates(row) {
     // Get current values
     const title = row.querySelector('input[name="title"]').value;
     const address = row.querySelector('input[name="address"]').value;
     const radius = row.querySelector('input[name="radius"]').value;
     
-    // Submit via fetch() or form submission
+    // Construct the updated location object
     console.log('Saving:', { title, address, radius });
+    const location = JSON.parse(row.dataset.location);
+    // UserLocationDTO
+    const updatedDTO = {
+        Id: location.Id,        // These don't change;
+        UserId: location.UserId,// But, are required for the API
+        Title: title,           // Only title, address, and radius change
+        Address: address,
+        Latitude: location.Latitude,  // Same here
+        Longitude: location.Longitude,// And here
+        Radius: radius
+    };
+
+    // fetch update location endpoint
+    fetch('/api/Location/UpdateLocation', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedDTO)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('API UpdateLocation response was not ok: ' + response.statusText);
+        } else {
+            console.log('Location updated successfully!');
+        }
+    }).catch(error => {
+        console.error('Error updating location:', error);
+    });
     
     // Exit edit mode
     toggleEditing({ target: row.querySelector('.save-btn') });

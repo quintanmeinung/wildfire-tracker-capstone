@@ -9,6 +9,8 @@ namespace project_wildfire_web.Models.DTO
 {
 public partial class FireDTO
 {
+    public int FireId { get; set; } 
+
     [Required]
     [Name("latitude")]
     public decimal Latitude { get; set; }
@@ -43,11 +45,12 @@ namespace project_wildfire_web.ExtensionsMethods
 
             return new FireDTO
             {
-            Latitude = fire.Latitude,
-            Longitude = fire.Longitude,
+                FireId = fire.FireId,
+                Latitude = fire.Latitude,
+                Longitude = fire.Longitude,
 
-            // Cast radPower back to non-null decimal
-            RadiativePower = (decimal)radPower
+                // Cast radPower back to non-null decimal
+                RadiativePower = (decimal)radPower
             };
 
         }

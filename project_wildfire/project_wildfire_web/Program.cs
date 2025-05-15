@@ -20,7 +20,9 @@ public class Program
         // Retrieve primary DB connection string
         var WebfireConnectionString = builder.Configuration.GetConnectionString("WebfireConnectionString");
         Console.WriteLine($"[STARTUP] WebfireConnectionString: {WebfireConnectionString ?? "null"}");
-
+        var dbPassword = builder.Configuration["WildfireProj:DBPassword"];
+        WebfireConnectionString = WebfireConnectionString.Replace("placeholder", dbPassword);
+        
         // Add primary DB Context with NetTopologySuite support
         builder.Services.AddDbContext<FireDataDbContext>(options =>
             options.UseSqlServer(
@@ -66,6 +68,8 @@ public class Program
         builder.Services.AddScoped<NotificationService>();
         builder.Services.AddHostedService<NotificationBackgroundService>();
 
+        builder.Services.AddScoped<OpenAIService>();
+
 
 
         // Add services to the container.
@@ -84,6 +88,7 @@ public class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IWildfireRepository, WildfireRepository>();
         builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+        builder.Services.AddScoped<IUserFireSubRepository, UserFireSubsRepository>();
         builder.Services.AddHttpClient();
         
         //adding swagger

@@ -18,17 +18,20 @@ public class HomeController : Controller
     private readonly UserManager<IdentityUser> _userManager;
     private readonly ILocationRepository _locationRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IUserFireSubRepository _userFireSubRepo;
 
     public HomeController(
         ILogger<HomeController> logger,
         UserManager<IdentityUser> userManager,
         ILocationRepository repository,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        IUserFireSubRepository userFireSubRepo)
     {
         _logger = logger;
         _userManager = userManager;
         _locationRepository = repository;
         _userRepository = userRepository;
+        _userFireSubRepo = userFireSubRepo;
     }
 
     public async Task<IActionResult> Index()
@@ -49,7 +52,8 @@ public class HomeController : Controller
                 return NotFound("Unable to retreive primary user by ID.");
             }
 
-            var savedLocations = _locationRepository.GetUserLocations(primaryUser.UserId);
+            var savedLocations = await _locationRepository.GetUserLocationsAsync(primaryUser.UserId);
+            var subscribedFires = await _userFireSubRepo.GetFiresSubsAsync(primaryUser.UserId);
 
             var profileViewModel = new ProfileViewModel
             {
@@ -59,7 +63,7 @@ public class HomeController : Controller
                 Email = authUser.Email,
                 PhoneNumber = authUser.PhoneNumber,
                 SavedLocations = savedLocations,
-                FireSubscriptions = primaryUser.Fires
+                FireSubscriptions = subscribedFires.ToList()
             };
 
             // Setup location model for dynamic markers

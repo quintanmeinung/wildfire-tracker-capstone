@@ -85,6 +85,14 @@ namespace project_wildfire_web.Controllers;
 
             return StatusCode(500, "Failed to fetch wildfires from NASA API.");
         }
+        
+
+        [HttpGet("getSavedFires")]
+        public async Task<IActionResult> GetSavedFires()
+        {
+            var fires = await _wildfireRepository.GetAllFiresAsync();
+            return Ok(fires);
+        }
         /////Functiont to pull fire fatabase
 
 
