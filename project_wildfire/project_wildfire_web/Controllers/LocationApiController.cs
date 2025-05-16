@@ -31,6 +31,30 @@ public class LocationApiController : ControllerBase
         _locationRepository = locationRepository;
     }
 
+    [HttpGet("GetLocations")]
+    public async Task<IActionResult> GetLocations()
+    {
+        _logger.LogDebug("Request received at api/Location/GetLocations(GET)");
+        string userId = _userManager.GetUserId(User);
+        if (string.IsNullOrEmpty(userId))
+        {
+            _logger.LogWarning("User ID is null or empty");
+            return BadRequest(new { Error = "User ID cannot be null or empty" });
+        }
+
+        try
+        {
+            var locations = await _locationRepository.GetUserLocationsAsync(userId);
+            _logger.LogDebug("User locations retrieved successfully: {Locations}", locations);
+            return Ok(locations);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving user locations: {Message}", ex.Message);
+            return StatusCode(500, "Internal server error while retrieving locations.");
+        }
+    }
+
     [HttpPost("SaveLocation")]
     public async Task<IActionResult> SaveLocation([FromBody] UserLocationDTO userLocationDTO)
     {
@@ -67,16 +91,10 @@ public class LocationApiController : ControllerBase
         return Ok("Location saved successfully");
     }
 
-    [HttpPost("UpdateLocation")]
+    [HttpPut("UpdateLocation")]
     public async Task<IActionResult> UpdateLocation([FromBody] UserLocationDTO userLocationDTO)
     {
-        if (userLocationDTO == null)
-        {
-            _logger.LogWarning("Request body is null");
-            return BadRequest(new { Error = "Request body cannot be null" });
-        }
-
-        _logger.LogDebug("Request received at api/Location/UpdateLocation(POST)");
+        _logger.LogDebug("Request received at api/Location/UpdateLocation(PUT)");
         _logger.LogDebug("DTO received: {@UserLocationDTO}", userLocationDTO);
 
         if (!ModelState.IsValid)
@@ -90,10 +108,17 @@ public class LocationApiController : ControllerBase
         }
 
         // Validate user exists
-        var user = await _userManager.FindByIdAsync(userLocationDTO.UserId);
+        var userId = userLocationDTO.UserId ?? string.Empty;
+        if (string.IsNullOrEmpty(userId))
+        {
+            _logger.LogWarning("UserId is null or empty in DTO");
+            return BadRequest(new { Error = "UserId is required" });
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
         {
-            _logger.LogWarning("User not found: {UserId}", userLocationDTO.UserId);
+            _logger.LogWarning("User not found: {UserId}", userId);
             return NotFound(new { Error = "User not found" });
         }
 
@@ -102,7 +127,7 @@ public class LocationApiController : ControllerBase
         try
         {
             await _locationRepository.UpdateLocationAsync(userLocation);
-            _logger.LogInformation("Location updated for user {UserId}", userLocationDTO.UserId);
+            _logger.LogInformation("Location updated for user {UserId}", userId);
             return Ok(new { Success = true, Message = "Location updated", Data = userLocation });
         }
         catch (DbUpdateException ex)
@@ -131,7 +156,7 @@ public class LocationApiController : ControllerBase
         try
         {
             await _locationRepository.DeleteLocationAsync(locationId);
-            return Ok("Location deleted");
+            return Ok(new { Success = true, Message = "Location deleted" });
         }
         catch (DbUpdateException ex)
         {

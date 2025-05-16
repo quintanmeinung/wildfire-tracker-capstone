@@ -21,12 +21,12 @@ namespace project_wildfire_web.DAL.Concrete
             _context = context;
         }
 
-        public ICollection<UserLocation> GetUserLocations(string userId)
+        public async Task<ICollection<UserLocation>> GetUserLocationsAsync(string userId)
         {
-            var locations = _context.UserLocations
+            var locations = await _context.UserLocations
                 .Include(ul => ul.User)
                 .Where(ul => ul.UserId == userId)
-                .ToList();
+                .ToListAsync();
 
             return locations;
         }
