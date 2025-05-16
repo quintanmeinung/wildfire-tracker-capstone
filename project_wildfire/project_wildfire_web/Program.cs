@@ -13,7 +13,7 @@ namespace project_wildfire_web;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +39,9 @@ public class Program
             options.UseSqlServer(AuthConnectionString));
 
         // Add Identity services
-        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<WebfireIdentityDbContext>();
+        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<WebfireIdentityDbContext>();
 
 
         // Add API configuration
@@ -135,8 +137,46 @@ public class Program
         //Session storage middleware
         app.UseSession();
         //for aqi controller
-        app.MapControllers(); 
+        app.MapControllers();
 
-        app.Run();
+        //User RoleManager + UserManager Scope
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+
+            // Seed "Admin" role if it doesn't exist
+            string adminRole = "Admin";
+            if (!await roleManager.RoleExistsAsync(adminRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(adminRole));
+                Console.WriteLine("[ROLES] Admin role created.");
+            }
+
+            // Assign an admin user (you can change this email to your own!)
+            var adminEmails = new List<string>
+            {
+                "quintanscotmeinung@gmail.com",
+                //Mickey's email,
+                //Johny's email",
+                //Eric's email
+            };
+
+            foreach (var email in adminEmails)
+            {
+                var user = await userManager.FindByEmailAsync(email);
+                if (user != null && !(await userManager.IsInRoleAsync(user, "Admin")))
+                {
+                    await userManager.AddToRoleAsync(user, "Admin");
+                    Console.WriteLine($"[ROLES] {email} assigned to Admin role.");
+                }
+                else if (user == null)
+                {
+                    Console.WriteLine($"[ROLES] Admin user {email} not found.");
+                }
+            }
+        }
+        await app.RunAsync();
     }
 }
