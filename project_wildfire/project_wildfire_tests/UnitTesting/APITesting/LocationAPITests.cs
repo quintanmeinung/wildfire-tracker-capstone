@@ -9,6 +9,7 @@ using System.Security.Claims;
 using project_wildfire_web.ExtensionsMethods;
 using FluentAssertions.Specialized;
 using System.Text.Json.Nodes;
+using project_wildfire_web.Models.DTO;
 
 namespace project_wildfire_tests.UnitTests;
 
@@ -141,6 +142,74 @@ public class LocationApiControllerTests
         var badRequestResult = result as BadRequestObjectResult;
         Assert.That(badRequestResult?.Value, Is.EqualTo("LocationId is required"), 
             "Expected error message for null ID");
+    }
+
+    [Test]
+    public async Task UpdateLocation_WithInvalidModel_ReturnsBadRequest()
+    {
+        // Arrange
+        var invalidDto = new UserLocationDTO();
+        _controller.ModelState.AddModelError("UserId", "UserId is required");
+
+        // Act
+        var result = await _controller.UpdateLocation(invalidDto);
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<BadRequestObjectResult>());
+    }
+
+     [Test]
+    public async Task UpdateLocation_WithNullUserId_ReturnsBadRequest()
+    {
+        // Arrange
+        var location = CreateTestUserLocation();
+        var dto = location.ToUserLocationDTO();
+        dto.UserId = null; // Simulate null UserId
+
+        // Act
+        var result = await _controller.UpdateLocation(dto);
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<BadRequestObjectResult>());
+    }
+
+    [Test]
+    public async Task UpdateLocation_WhenUserNotFound_ReturnsNotFound()
+    {
+        // Arrange
+        var location = CreateTestUserLocation();
+        var dto = location.ToUserLocationDTO();
+
+        _userManagerMock.Setup(um => um.FindByIdAsync(dto.UserId))
+            .ReturnsAsync((IdentityUser)null); // Simulate user not found
+
+        // Act
+        var result = await _controller.UpdateLocation(dto); 
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<NotFoundObjectResult>());
+    }
+
+    [Test]
+    public async Task UpdateLocation_WithValidModel_ReturnsOk()
+    {
+        // Arrange
+        var location = CreateTestUserLocation();
+        var dto = location.ToUserLocationDTO();
+
+        var testUser = new IdentityUser { Id = dto.UserId };
+        _userManagerMock.Setup(um => um.FindByIdAsync(dto.UserId))
+            .ReturnsAsync(testUser);
+
+        _locationRepositoryMock.Setup(repo => repo.UpdateLocationAsync(It.IsAny<UserLocation>()))
+            .Returns(Task.CompletedTask)
+            .Verifiable();
+
+        // Act
+        var result = await _controller.UpdateLocation(dto);
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<OkObjectResult>());
     }
 
     private static UserLocation CreateTestUserLocation()
