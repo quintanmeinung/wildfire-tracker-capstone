@@ -10,6 +10,7 @@ using project_wildfire_web.ExtensionsMethods;
 using FluentAssertions.Specialized;
 using System.Text.Json.Nodes;
 using project_wildfire_web.Models.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace project_wildfire_tests.UnitTests;
 
@@ -210,6 +211,58 @@ public class LocationApiControllerTests
 
         // Assert
         Assert.That(result, Is.InstanceOf<OkObjectResult>());
+    }
+
+    [Test]
+    public async Task DeleteLocation_WhenIdIsNull_ReturnsBadRequest()
+    {
+        // Arrange
+        string locationId = null; // Simulate null ID
+
+        // Act
+        var result = await _controller.DeleteLocation(locationId);
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<BadRequestObjectResult>());
+    }
+
+    [Test]
+    public async Task DeleteLocation_ReturnsStatusCode500_OnDbUpdateException()
+    {
+        // Arrange
+        string locationId = "test-location-id";
+        _locationRepositoryMock
+            .Setup(r => r.DeleteLocationAsync(locationId))
+            .ThrowsAsync(new DbUpdateException());
+
+        // Act
+        var result = await _controller.DeleteLocation(locationId);
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<ObjectResult>());
+        var objectResult = result as ObjectResult;
+        Assert.That(objectResult, Is.Not.Null, "Expected ObjectResult to not be null");
+        Assert.That(objectResult.StatusCode, Is.EqualTo(500));
+    }
+
+    [Test]
+    public async Task DeleteLocation_ReturnsStatusCode500_OnGeneralException()
+    {
+        // Arrange
+        string locationId = "test-location-id";
+        _locationRepositoryMock
+            .Setup(r => r.DeleteLocationAsync(locationId))
+            .ThrowsAsync(new Exception());
+
+        // Act
+        var result = await _controller.DeleteLocation(locationId);
+
+        // Assert
+        Assert.That(result, Is.InstanceOf<ObjectResult>());
+
+        var objectResult = result as ObjectResult;
+        Assert.That(objectResult, Is.Not.Null, "Expected ObjectResult to not be null");
+        Assert.That(objectResult.StatusCode, Is.EqualTo(500));
     }
 
     private static UserLocation CreateTestUserLocation()
