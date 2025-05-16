@@ -52,6 +52,13 @@
     <button id="speechToggle">Enable Text-to-Speech</button>
 </div>
 
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <button id="createFireBtn" class="btn btn-danger" style="margin: 10px;">
+        🔥 Create Simulated Fire
+    </button>
+}
+
 @if (Model != null) {
     <div id="profile" class="profile-container" data-saved-locations='@Json.Serialize(Model.SavedLocations)'>
         <partial name="_ProfilePartial" model="Model.Profile"/> <!-- Modal partial for Profile summary -->
