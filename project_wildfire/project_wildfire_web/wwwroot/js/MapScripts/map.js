@@ -28,6 +28,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const fireLayer = overlayLayers["Fire Reports"];
     fireLayer.addTo(map);
 
+    // 🔥 Admin Fire Creation Tool
+    const createFireButton = document.getElementById("createFireBtn");
+
+    if (window.isAdmin && createFireButton) {
+        createFireButton.addEventListener("click", () => {
+            alert("🖱️ Click on the map to place a simulated fire marker.");
+            window.firePlacementMode = true;
+        });
+    }
+
     //Fire Marker Layer
     //const wildfireMarkersLayer = overlayLayers["Wildfire Markers"];
     //wildfireMarkersLayer.addTo(map);
@@ -75,8 +85,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 marker.getElement().id = location.title; // Set the marker ID to the location ID
             }
             map.on('click', function (e) {
-                addMarkerOnClick(e, map)
+                // 🔥 If fire placement mode is active, create fire marker instead
+                if (window.firePlacementMode) {
+                    const { lat, lng } = e.latlng;
+
+                    const fireMarker = L.circleMarker([lat, lng], {
+                        radius: 10,
+                        color: "red",
+                        fillColor: "orange",
+                        fillOpacity: 0.8,
+                        weight: 2,
+                        className: "admin-fire-marker"
+                    }).bindPopup(`
+                        <strong>🔥 Simulated Fire</strong><br>
+                        Latitude: ${lat.toFixed(4)}<br>
+                        Longitude: ${lng.toFixed(4)}<br>
+                        <em>Placed by admin</em>
+                    `).addTo(fireLayer);
+
+                    fireMarker.openPopup();
+                    console.log(`🔥 Fire created at [${lat.toFixed(4)}, ${lng.toFixed(4)}]`);
+
+                    window.firePlacementMode = false; // Exit fire mode
+                    return;
+                }
+
+                // 🧭 Otherwise, fall back to normal location save behavior
+                addMarkerOnClick(e, map);
             });
+
         }
     }
 
