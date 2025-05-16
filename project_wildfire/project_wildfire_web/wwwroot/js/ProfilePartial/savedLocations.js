@@ -4,7 +4,7 @@ import { deleteLocation } from './profileFetch.js';
 
 export function initSavedLocations() {
     document.addEventListener('click', function(e) {
-        if (e.target.matches('.edit-btn, .save-btn, .cancel-btn, .delete-btn')) {
+        if (e.target.matches('.edit-btn, .save-btn, .cancel-btn, .delete-btn, .view-btn')) {
             const row = e.target.closest('.row.my-1');
             if (e.target.matches('.edit-btn')) {
                 editButton(e);
@@ -14,9 +14,26 @@ export function initSavedLocations() {
                 cancelEdit(row);
             } else if (e.target.matches('.delete-btn')) {
                 deleteButton(e);
+            } else if (e.target.matches('.view-btn')) {
+                viewLocation(e);
             }
         }
     });
+}
+
+function viewLocation(e) {
+    console.log('Viewing location...');
+    const row = e.target.closest('.row.my-1');
+    const location = JSON.parse(row.dataset.location);
+
+    const lat = location.Latitude;
+    const lng = location.Longitude;
+    const radius = location.Radius;
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
+    modal.hide();
+
+    window._leaflet_map.setView([lat, lng], 12);
 }
 
 function editButton(e) {
@@ -54,14 +71,23 @@ function toggleEditing(e) {
 }
 
 function saveLocationUpdates(row) {
+
+    const location = JSON.parse(row.dataset.location);
+
     // Get current values
     const title = row.querySelector('input[name="title"]').value;
     const address = row.querySelector('input[name="address"]').value;
     const radius = row.querySelector('input[name="radius"]').value;
+
+    location.Title = title;
+    location.Address = address;
+    location.Radius = radius;
+
+    // Save changes in the data attribute so if user cancels, it reverts properly
+    row.dataset.location = JSON.stringify(location);
     
     // Construct the updated location object
     console.log('Saving:', { title, address, radius });
-    const location = JSON.parse(row.dataset.location);
     // UserLocationDTO
     const updatedDTO = {
         Id: location.Id,        // These don't change;
@@ -85,6 +111,7 @@ function saveLocationUpdates(row) {
             throw new Error('API UpdateLocation response was not ok: ' + response.statusText);
         } else {
             console.log('Location updated successfully!');
+            updateMarker(location.Id, title, radius); // Updates the map marker with the new title and radius
         }
     }).catch(error => {
         console.error('Error updating location:', error);
@@ -93,6 +120,21 @@ function saveLocationUpdates(row) {
     // Exit edit mode
     toggleEditing({ target: row.querySelector('.save-btn') });
     toggleButtons({ target: row.querySelector('.save-btn') });
+}
+
+function updateMarker(locationId, title, radius) {
+    console.log('Updating marker for locationId:', locationId);
+    const markers = window.savedLocationMarkers;
+    var target = markers[locationId]
+    if (target) {
+        target.remove();
+        target.Title = title; // Update the title
+        target.Radius = radius; // Update the radius
+        target.bindPopup(title);
+        target.addTo(window._leaflet_map);
+    } else {
+        console.error('Marker not found for locationId:', locationId);
+    }
 }
 
 function cancelEdit(row) {
@@ -114,6 +156,14 @@ function deleteButton(e) {
 
     deleteLocation(location.Id).then(() => {
         row.remove();
+
+        const remainingLocations = document.querySelectorAll('.row.my-1');
+        if (remainingLocations.length === 0) {
+            // Display "No saved locations" message
+            const locationsContainer = document.getElementById('location-container'); // Replace with your container ID
+            locationsContainer.innerHTML = '<p class="text-muted">No saved locations</p>';
+        }
+
     }).catch(error => {
         console.error('Error deleting location:', error);
     });

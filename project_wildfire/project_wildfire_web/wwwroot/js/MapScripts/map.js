@@ -8,6 +8,7 @@ import {addLegend } from './addLegend.js';
 const shelterStatusOverrides = {};
 
 const savedLocationMarkers = {}; // Tracks saved location markers
+window.savedLocationMarkers = savedLocationMarkers; // Expose to global scope
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
     const map = initializeMap();
