@@ -34,6 +34,10 @@ document.getElementById("saveLocationButton").addEventListener("click", async fu
     });
 });
 
+document.getElementById("radiusInput").addEventListener("input", function () {
+    updateRadiusValue(); // Call the function to update the radius value display
+});
+
 // Async function to save the location
 async function saveLocation(userLocationDto) {
     try {
@@ -51,4 +55,11 @@ async function saveLocation(userLocationDto) {
     } catch (error) {
         console.error("Error saving location:", error);
     }
+}
+
+function updateRadiusValue() {
+    var radiusInput = document.getElementById('radiusInput'); // Get the radius input element
+    var radiusValue = document.getElementById('radiusValue'); // Get the element to display the radius value
+    radiusValue.innerHTML = radiusInput.value; // Update the displayed radius value
+    console.log(radiusInput.value); // Log the radius value for debugging
 }
