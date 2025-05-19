@@ -8,6 +8,7 @@ import {addLegend } from './addLegend.js';
 const shelterStatusOverrides = {};
 
 const savedLocationMarkers = {}; // Tracks saved location markers
+window.savedLocationMarkers = savedLocationMarkers; // Expose to global scope
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
     const map = initializeMap();
@@ -79,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for (let location of savedLocations) {
                 console.log(location);
 
-                let marker = L.marker([location.latitude, location.longitude], { locationId: location.id}).addTo(map);
+                let marker = L.marker([location.latitude, location.longitude]).addTo(map);
                 savedLocationMarkers[location.id] = marker; // Store the marker in the savedLocations object
                 marker.bindPopup(location.title); // Bind the name to the marker popup
                 marker.getElement().id = location.title; // Set the marker ID to the location ID
@@ -197,28 +198,21 @@ document.addEventListener("DOMContentLoaded", function () {
 });
     
 
-let activeMarker = null; // Variable to store user's most recent marker
 function addMarkerOnClick(e, map) {
+    savedLocationMarkers['temp-marker']?.remove(); // Remove existing temp marker if any
 
-    if (activeMarker) {
-        map.removeLayer(activeMarker); // Remove the previous marker if it exists
-    }
-
-    // Create a new marker at the clicked location
-    activeMarker = L.marker(e.latlng).addTo(map);
-
-    // Create a popup with a button to save the location
-    var popup = document.createElement('div');
-    popup.id = 'save-location-popup';
+    let newMarker = L.marker(e.latlng).addTo(map); // Create a new marker at the clicked location
+    newMarker.getElement().id = 'temp-marker'; // Set the ID to 'temp-marker'
+    
+    const popup = document.createElement('div');
     popup.className = 'btn btn-primary';
-    popup.innerHTML = 'Save Location';
- 
-    popup.dataset.lat = e.latlng.lat.toFixed(5); // Store latitude in dataset
-    popup.dataset.lng = e.latlng.lng.toFixed(5); // Store longitude in dataset
+    popup.innerHTML = `Save Location`;
+    popup.id = 'save-location-popup';
 
-    activeMarker.bindPopup(popup);
-    activeMarker.openPopup(); // Open the popup immediately
+    newMarker.bindPopup(popup);
+    newMarker.openPopup(); // Open the popup immediately
 
+    savedLocationMarkers['temp-marker'] = newMarker; // Store the marker in the savedLocations object
     initDialogModal(); // Initialize the modal handler
 }
 
@@ -232,6 +226,23 @@ export function removeMarker(id) {
     } else {
         console.error(`Marker with title "${id}" not found.`);
     }
+}
+
+export function addMarker(userLocationDto) {
+    // Given the location DTO it will add the marker to the map.
+    const { id, title, latitude, longitude } = userLocationDto;
+    console.log("Adding marker:", userLocationDto);
+
+    if (savedLocationMarkers[id]) {
+        console.error(`Marker with title "${title}" already exists.`);
+        return;
+    }
+
+    const marker = L.marker([latitude, longitude])
+    marker.addTo(window._leaflet_map);
+    savedLocationMarkers[id] = marker; // Store the marker in the savedLocations object
+    marker.bindPopup(title); // Bind the name to the marker popup
+    marker.getElement().id = title; // Set the marker ID to the location ID
 }
 
 // Spinner functions
