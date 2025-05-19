@@ -23,7 +23,14 @@ document.getElementById("saveLocationButton").addEventListener("click", async fu
         if (response.ok) {
             // Handle successful location save
             console.log("Location saved successfully!");
-            // Optionally, you can close the modal here
+
+            // Replace the temp marker with the new location
+            window.savedLocationMarkers['temp-marker'].remove();
+            window.savedLocationMarkers[userLocationDto.Id] = L.marker([userLocationDto.Latitude, userLocationDto.Longitude]).addTo(window._leaflet_map);
+            window.savedLocationMarkers[userLocationDto.Id].bindPopup(userLocationDto.Title).openPopup();
+            window.savedLocationMarkers[userLocationDto.Id].getElement().id = userLocationDto.Title; // Set the ID of the marker element
+            
+            // Close the modal
             var dialogModal = bootstrap.Modal.getInstance(document.getElementById('dialogModal'));
             dialogModal.hide();
             alert("Location saved successfully!"); // Alert the user of success
@@ -61,5 +68,4 @@ function updateRadiusValue() {
     var radiusInput = document.getElementById('radiusInput'); // Get the radius input element
     var radiusValue = document.getElementById('radiusValue'); // Get the element to display the radius value
     radiusValue.innerHTML = radiusInput.value; // Update the displayed radius value
-    console.log(radiusInput.value); // Log the radius value for debugging
 }
