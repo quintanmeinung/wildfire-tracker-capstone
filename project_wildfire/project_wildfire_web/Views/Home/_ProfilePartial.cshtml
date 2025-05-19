@@ -173,7 +173,7 @@
                 </div>
                 <div class="row">
                     <h4 class="mt-4"><u>Saved Locations</u></h4>
-                    <div class="container ml-1">
+                    <div id="location-container" class="container ml-1">
                         @if (Model.SavedLocations == null || !Model.SavedLocations.Any())
                         {
                             @:No saved locations. Click the map to get started!
@@ -182,7 +182,7 @@
                         {
                             @foreach (var location in Model.SavedLocations)
                             {
-                                <div class="row my-1" data-location="@System.Text.Json.JsonSerializer.Serialize(location)">
+                                <div id="location-row" class="row my-1" data-location="@System.Text.Json.JsonSerializer.Serialize(location)">
                                     <div class="col-3 sl-input border-bottom">
                                         <input name="title"
                                             type="text"
