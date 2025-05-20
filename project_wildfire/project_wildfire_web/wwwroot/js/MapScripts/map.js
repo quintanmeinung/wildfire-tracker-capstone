@@ -18,8 +18,16 @@ document.addEventListener("DOMContentLoaded", function () {
     baseLayers["Street Map"].addTo(map);
 
     // Overlay Layers
-    const overlayLayers = createOverlayLayers(map);
+createOverlayLayers(map).then(overlayLayers => {
     const layerControl = L.control.layers(baseLayers, overlayLayers).addTo(map);
+
+    // Add desired layers to the map after they're ready
+    const fireLayer = overlayLayers["Fire Reports"];
+    fireLayer.addTo(map);
+
+    // You can add other layers here too if needed
+});
+
 
     // Fire Layer (we'll keep a reference)
     const fireLayer = overlayLayers["Fire Reports"];
@@ -225,13 +233,13 @@ function createBaseLayers() {
     };
 }
 
-function createOverlayLayers(map) {
+async function createOverlayLayers(map) {
     const cities = L.layerGroup().addLayer(
         L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View")
     );
     
 
-    const aqiLayer = initializeAqiLayer();
+    const aqiLayer = await initializeAqiLayer();
     const fireLayer = L.layerGroup();
 
     //Emergency Shelters Layer 1
@@ -344,16 +352,25 @@ function createOverlayLayers(map) {
     };
 }
 
-function initializeAqiLayer() {
+
+
+async function initializeAqiLayer() {
     const aqiLayer = L.layerGroup();
-    addAQIMarker(aqiLayer, "A503596"); // Salem Chemeketa
-    addAQIMarker(aqiLayer, "@91");     // Silverton
-    addAQIMarker(aqiLayer, "@83");     // Lyons
-    addAQIMarker(aqiLayer, "@89");     // Salem
-    addAQIMarker(aqiLayer, "A503590"); // Dallas
-    addAQIMarker(aqiLayer, "@11923");  // Turner
+
+    try {
+        const response = await fetch('/api/aqi/stations');
+        const stations = await response.json();
+
+        stations.forEach(station => {
+            addAQIMarker(aqiLayer, station.stationId); // Use StationId to render marker
+        });
+    } catch (error) {
+        console.error('Error loading AQI stations:', error);
+    }
+
     return aqiLayer;
 }
+
 
 function handleGeolocation(map) {
     if ("geolocation" in navigator) {
