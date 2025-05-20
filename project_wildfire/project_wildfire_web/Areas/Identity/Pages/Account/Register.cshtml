@@ -15,18 +15,21 @@
                     <div class="row d-flex justify-content-center mt-3">
                         <div class="col-8">
                             <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+                                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                                 
                                 <div class="row mb-3">
                                     <label asp-for="Input.FirstName" class="form-label">Name</label>
                                     <div class="col-md">
                                         <input asp-for="Input.FirstName" class="form-control" placeholder="First"/>
+                                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                                     </div>
                                 
                                     <div class="col-md">
                                         <input asp-for="Input.LastName" class="form-control" placeholder="Last"/>
+                                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
                                     </div>
-                                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-                                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                    
                                 </div>
 
                             
@@ -43,9 +46,6 @@
                                         <label asp-for="Input.Password" class="form-label">Password</label>
                                         <input asp-for="Input.Password" class="form-control" aria-required="true" />
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
-                        
-                                        
-                               
                                     </div>
                                 </div>
 
@@ -56,8 +56,6 @@
                                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                     </div>
                                 </div>
-                                
-                                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             
                                 <button id="registerSubmit" type="submit" class="w-100 mb-2 btn btn-lg btn-primary">Register</button>
                 
