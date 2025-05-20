@@ -27,7 +27,7 @@ using project_wildfire_web.DAL.Abstract;
 
 namespace project_wildfire_web.Areas.Identity.Pages.Account
 {
-    public class RegisterModel : PageModel
+    public partial class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -52,6 +52,31 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _userRepository = userRepository;
+        }
+
+        public partial class NameValidationAttribute : ValidationAttribute
+        {
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+            {
+                var str = value as string ?? string.Empty;
+
+                // Check for allowed characters
+                if (!NameCharRegex().IsMatch(str))
+                {
+                    return new ValidationResult("Names can only be letters, spaces, hyphens, and apostrophes.");
+                }
+
+                // Check for length
+                if (str.Length > 50)
+                {
+                    return new ValidationResult("Name cannot exceed 50 characters.");
+                }
+
+                return ValidationResult.Success;
+            }
+
+            [System.Text.RegularExpressions.GeneratedRegex(@"^[A-Za-z\s'-]*$")]
+            private static partial System.Text.RegularExpressions.Regex NameCharRegex();
         }
 
         /// <summary>
@@ -79,11 +104,11 @@ namespace project_wildfire_web.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [RegularExpression(@"^[A-Za-z\s'-]{1,50}$", ErrorMessage = "Names can only be letters, spaces, hyphens, and apostrophes")]
+            [NameValidation]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
-            [RegularExpression(@"^[A-Za-z\s'-]{1,50}$", ErrorMessage = "Names can only be letters, spaces, hyphens, and apostrophes")]
+            [NameValidation]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
