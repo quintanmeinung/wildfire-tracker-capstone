@@ -515,12 +515,11 @@ async function initializeAqiLayer() {
         const stations = await response.json();
 
         stations.forEach(station => {
-            addAQIMarker(aqiLayer, station.stationId); // Use StationId to render marker
+            addAQIMarker(aqiLayer, station.stationId); 
         });
     } catch (error) {
         console.error('Error loading AQI stations:', error);
     }
-
     return aqiLayer;
 }
 
