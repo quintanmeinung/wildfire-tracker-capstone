@@ -36,6 +36,8 @@
 <!-- Custom CSS file -->
 <link href="~/css/leaflet.css" rel="stylesheet" type="text/css" />
 
+@* 
+    !!Moved to side bar!!
 <div class="accessibility-controls">
     <label for="fontSize">Font Size:</label>
     <select id="fontSize" class="font-size-dropdown">
@@ -46,7 +48,7 @@
     </select>
     <button id="contrastToggle">Toggle High Contrast</button>
     <button id="speechToggle">Enable Text-to-Speech</button>
-</div>
+</div> *@
 
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
