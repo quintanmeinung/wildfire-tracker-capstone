@@ -32,14 +32,12 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
 <!-- Leaflet Compass CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet-compass/dist/leaflet-compass.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-compass@1.5.6/dist/leaflet-compass.min.css">
 <!-- Custom CSS file -->
 <link href="~/css/leaflet.css" rel="stylesheet" type="text/css" />
 
-<div class="text-center">
-    <h1 class="display-4">Wildfire Tracking Application</h1>
-</div>
-
+@* 
+    !!Moved to side bar!!
 <div class="accessibility-controls">
     <label for="fontSize">Font Size:</label>
     <select id="fontSize" class="font-size-dropdown">
@@ -50,7 +48,7 @@
     </select>
     <button id="contrastToggle">Toggle High Contrast</button>
     <button id="speechToggle">Enable Text-to-Speech</button>
-</div>
+</div> *@
 
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
@@ -69,24 +67,24 @@
     </div>
 }
 
-<div id="compass-degree"></div>
-<div id="compass-top-right"></div>
+@* <div id="compass-degree"></div>
+<div id="compass-top-right"></div> *@
 
 <!-- Loading spinner HTML -->
-<div id="loading-spinner" style="display: none; text-align: center; margin: 10px;">
+<div id="loading-spinner" style="display: none; text-align: center; margin: 10px; z-index: 5;">
     <span>🔄 Loading wildfire data...</span>
 </div>
 
 
 <!-- Map Container -->
-<div id="map" style="height: 700px; width: 100%; margin-top: 20px;"></div>
+<div id="map"></div>
 
 <!-- Custom Compass Image - Positioned at Top Right, below Layer Control -->
-<div class="compass-container">
+@* <div class="compass-container">
     <div id="compass" class="compass-img">
         <img src="~/images/compass.png" alt="Compass" />
     </div>
-</div>
+</div> *@
 
 <!-- Legend Info Modal -->
 <div class="modal fade" id="legendInfoModal" tabindex="-1" aria-labelledby="legendInfoModalLabel" aria-hidden="true">
@@ -106,11 +104,13 @@
     </div>
 </div>
 
+@* 
+    !!Moved to side bar!!
 <div class="fire-date-filter">
     <label for="fire-date">🗓️ Select Wildfire Date:</label>
     <input type="date" id="fire-date" name="fire-date" />
     <button id="filter-date-btn">Filter Fires</button>
-</div>
+</div> *@
 
 @section Scripts {
     <!-- External CSS (moved to top for better loading) -->
@@ -158,7 +158,7 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-    <script src="https://unpkg.com/leaflet-compass/dist/leaflet-compass.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-compass@1.5.6/dist/leaflet-compass.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-easybutton/2.4.0/easy-button.min.js"></script>
     <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script> <!-- NRI Wildlife as esri Leaflet plugin JS-->
     <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>

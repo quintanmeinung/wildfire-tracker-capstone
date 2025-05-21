@@ -13,43 +13,103 @@
     <script src="https://kit.fontawesome.com/2ae4f78c7d.js" crossorigin="anonymous"></script>
 </head>
 <!-- data-user-id lets us communicate authentication to javascript -->
-<body data-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Webfire</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Resources">Resources</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
+<body class="mb-0" data-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)">
+    <!-- Required Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <div class="d-flex flex-row vh-100">
+        <!-- Sidebar -->
+        <header class="d-flex flex-column bg-light p-3" style="width: 250px;">
+            <div class="d-flex flex-column h-100"> <!-- New wrapper div -->
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark active" asp-controller="Home" asp-action="Index">
+                            <i class="fa-solid fa-fire me-3"></i>Webfire
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Add JS or something here to add user's name if it's available -->
+                        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                            <i class="fa-regular fa-circle-user me-3"></i>Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="Resources">
+                            <i class="fa-solid fa-magnifying-glass me-3"></i>Resources
+                        </a>
+                    </li>
+                    <li class="nav-item"></li>
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">
+                            <i class="fa-solid fa-shield-halved me-3"></i></i>Privacy
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-universal-access fa-fw me-2"></i> Options
+                        </a>
+                        <div class="dropdown-menu p-3" style="width: 250px;">
+                            <div class="accessibility-controls">
+                                <!-- Font Size Selector -->
+                                <div class="mb-3">
+                                    <label for="fontSize" class="form-label">
+                                        <i class="fas fa-text-height me-2"></i> Font Size:
+                                    </label>
+                                    <select id="fontSize" class="form-select">
+                                        <option value="small">Small</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="large">Large</option>
+                                        <option value="xlarge">Extra Large</option>
+                                    </select>
+                                </div>
+
+                                <!-- Contrast Toggle -->
+                                <button id="contrastToggle" class="btn btn-outline-dark w-100 mb-2">
+                                    <i class="fas fa-adjust me-2"></i> Toggle High Contrast
+                                </button>
+
+                                <!-- Text-to-Speech -->
+                                <button id="speechToggle" class="btn btn-outline-dark w-100">
+                                    <i class="fas fa-volume-up me-2"></i> Text-to-Speech
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Date Filter Dropdown at Bottom -->
+                <div class="mt-auto"> <!-- Proper spacing -->
+                    <div class="nav-item mb-5 border-bottom">
+                        <partial name="_LoginPartial" />
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-calendar-days me-3"></i>Filter Wildfires
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-dark p-3 mb-4">
+                            <form class="fire-date-filter">
+                                <label for="fire-date" class="form-label">Select Date:</label>
+                                <input type="date" id="fire-date" name="fire-date" 
+                                       class="form-control mb-2">
+                                <button type="button" id="filter-date-btn" 
+                                        class="btn btn-primary w-100">
+                                    Filter
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </header>
+
+        <!-- Main Content -->
+        <div class="container-fluid flex-grow-1 px-0 overflow-auto">
+            <main role="main" class="flex-grow-1">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - project_wildfire_web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="~/js/AccountScripts/modalHandler.js"></script>
