@@ -73,7 +73,7 @@ body {
 }
 
 #map {
-  height: 90vh;
+  height: 100vh;
   width: 100%;
   position: relative;
   z-index: 1;
