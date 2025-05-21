@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add legend + compass
     addLegend(map);
-    initializeCompass(map);
+    //initializeCompass(map);
 
     var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
@@ -256,7 +256,9 @@ function hideSpinner() {
 
 // Map Setup
 function initializeMap() {
-    return L.map('map').setView([44.84, -123.23], 10); // Monmouth, OR
+    const map = L.map('map').setView([44.84, -123.23], 10); // Monmouth, OR
+    var compass = L.control.compass({ autoActive: true }).addTo(map);
+    return map;
 }
 
 function createBaseLayers() {
