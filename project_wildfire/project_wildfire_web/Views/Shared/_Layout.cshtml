@@ -43,6 +43,37 @@
                             <i class="fa-solid fa-shield-halved me-3"></i></i>Privacy
                         </a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-universal-access fa-fw me-2"></i> Options
+                        </a>
+                        <div class="dropdown-menu p-3" style="width: 250px;">
+                            <div class="accessibility-controls">
+                                <!-- Font Size Selector -->
+                                <div class="mb-3">
+                                    <label for="fontSize" class="form-label">
+                                        <i class="fas fa-text-height me-2"></i> Font Size:
+                                    </label>
+                                    <select id="fontSize" class="form-select">
+                                        <option value="small">Small</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="large">Large</option>
+                                        <option value="xlarge">Extra Large</option>
+                                    </select>
+                                </div>
+
+                                <!-- Contrast Toggle -->
+                                <button id="contrastToggle" class="btn btn-outline-dark w-100 mb-2">
+                                    <i class="fas fa-adjust me-2"></i> Toggle High Contrast
+                                </button>
+
+                                <!-- Text-to-Speech -->
+                                <button id="speechToggle" class="btn btn-outline-dark w-100">
+                                    <i class="fas fa-volume-up me-2"></i> Text-to-Speech
+                                </button>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
 
                 <!-- Date Filter Dropdown at Bottom -->
