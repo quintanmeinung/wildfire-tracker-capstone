@@ -23,18 +23,39 @@
             <div class="d-flex flex-column h-100"> <!-- New wrapper div -->
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link text-dark active" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-dark active" asp-controller="Home" asp-action="Index">
+                            <i class="fa-solid fa-fire me-3"></i>Webfire
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Add JS or something here to add user's name if it's available -->
+                        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                            <i class="fa-regular fa-circle-user me-3"></i>Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="Resources">
+                            <i class="fa-solid fa-magnifying-glass me-3"></i>Resources
+                        </a>
+                    </li>
+                    <li class="nav-item"></li>
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">
+                            <i class="fa-solid fa-shield-halved me-3"></i></i>Privacy
+                        </a>
                     </li>
                 </ul>
 
                 <!-- Date Filter Dropdown at Bottom -->
                 <div class="mt-auto"> <!-- Proper spacing -->
+                    <div class="nav-item mb-5 border-bottom">
+                        <partial name="_LoginPartial" />
+                    </div>
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" 
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            🗓️ Filter Wildfires
+                            <i class="fa-solid fa-calendar-days me-3"></i>Filter Wildfires
                         </a>
-                        <div class="dropdown-menu dropdown-menu-dark p-3">
+                        <div class="dropdown-menu dropdown-menu-dark p-3 mb-4">
                             <form class="fire-date-filter">
                                 <label for="fire-date" class="form-label">Select Date:</label>
                                 <input type="date" id="fire-date" name="fire-date" 
@@ -52,7 +73,7 @@
 
         <!-- Main Content -->
         <div class="container-fluid flex-grow-1 px-0 overflow-auto">
-            <main role="main">
+            <main role="main" class="flex-grow-1">
                 @RenderBody()
             </main>
         </div>
