@@ -2,11 +2,75 @@
     ViewData["Title"] = "Resources";
 }
 
-<div class="resources-page">
-    <h2 class="text-center display-4">Welcome to our Resource page</h2>
-    <p class="text-center">Here you will find useful links and information about fire safety, food pantries, and evacuation routes in case of a wildfire emergency.</p>
+<style>
+    body {
+        background-image: url('https://images.squarespace-cdn.com/content/v1/5c8a7f157fdcb83e8cf5e058/1552672270631-L7MSSDAF9EYLVE1OZ1JH/10.02.16-LIttle-North-Santiam-River-Trail--Jennifer-Carr-Photography-30-2000.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: 'Open Sans', sans-serif;
+        color: #1b8f4d;
+    }
 
-    <div class="accordion mx-auto" id="resourceAccordion" style="max-width: 800px;">
+    .resources-page {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(6px);
+        border-radius: 15px;
+        padding: 40px;
+        margin: 40px auto;
+        max-width: 900px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .accordion-button {
+        font-family: 'Playfair Display', serif;
+    }
+
+    .resources-page h2 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .accordion-button {
+        background-color: #2f4f4f;
+        color: white;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #3e6363;
+    }
+
+    .accordion-body {
+        background-color: #f9f9f9;
+        border-radius: 0 0 10px 10px;
+        padding: 20px;
+    }
+
+    a {
+        color: #007bff;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    iframe {
+        border: none;
+        border-radius: 10px;
+    }
+</style>
+
+<div class="resources-page">
+    <h2 class="text-center">Welcome to our Resource Page</h2>
+    <p class="text-center mb-4">Here you'll find essential information about food pantries, fire safety, and evacuation
+        routes in case of a wildfire emergency.</p>
+
+      <div class="accordion mx-auto" id="resourceAccordion" style="max-width: 800px;">
         <!-- Food Pantries -->
         <div class="accordion-item">
             <h2 class="accordion-header">
@@ -16,19 +80,29 @@
             </h2>
             <div id="foodPantries" class="accordion-collapse collapse" data-bs-parent="#resourceAccordion">
                 <div class="accordion-body">
-                    <ul>
-                        <h5 class ="text-center">In the event of wildfire that results in the loss of access to food we aim to provide a way to help you locate
-                            the nearest food pantry. Using the link below you will be directed to Feeding America website, which is the largest charity 
-                            "working to end hunger in the United States. We partner with food banks, food pantries, and local food programs to bring food
-                            to people facing hunger. We advocate for policies that create long-term solutions to hunger."
-                        </h5>
-                        <h5 class="text-center"><a href="https://www.feedingamerica.org/find-your-local-foodbank" target="_blank">Feeding America</a></h5>
-                    </ul>
+                    <p>
+                        In the event of a wildfire that results in the loss of food access, we encourage you to visit
+                        <a href="https://www.feedingamerica.org/find-your-local-foodbank" target="_blank"
+                            rel="noopener">Feeding America</a>
+                        — Feeding America is a United States–based non-profit organization that is a nationwide network
+                        of more than 200 food
+                        banks that feed more than 46 million people through food pantries, soup kitchens, shelters, and
+                        other community-based
+                        agencies. Forbes ranks it as the largest U.S. charity by revenue.
+                    </p>
+
+                    <!-- Video -->
+                    <div class="ratio ratio-16x9 mt-3">
+                        <iframe src="https://www.youtube.com/embed/Py5JW5J8afg" title="Feeding America"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Fire Safety -->
+    <div class="accordion mx-auto" id="resourceAccordion" style="max-width: 800px;">
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fireSafety">
@@ -37,20 +111,76 @@
             </h2>
             <div id="fireSafety" class="accordion-collapse collapse" data-bs-parent="#resourceAccordion">
                 <div class="accordion-body">
-                    <h5 class="text-center">Fire safety is critical in preventing fires at home and learning how wildfires can impact your home even
-                        though you might be at a "safe distance" from the fire itself. Below is a video that shows how wildfires can burn unsuspecting
-                        homes and how one might be able to prevent it. Here you'll find links to the <a href="https://www.redcross.org/get-help/how-to-prepare-for-emergencies/types-of-emergencies/fire.html?srsltid=AfmBOorL2Ekl5KdnF1bg1y4_GmCWyec-7VVWagmdcXcOZTi_j_CfqRCl" 
-                        target="_blank" rel="noopener noreferrer">American Red Cross</a> and the <a href="https://www.nfpa.org/education-and-research/wildfire" 
-                        target="_blank" rel="noopener noreferrer">National Fire Protection Association</a> that will include further information.
-                    </h5>
-                    <div class="ratio ratio-16x9">
-                        <iframe src="https://youtube.com/embed/3QthynXympI" title="Fire Safety Video" allowfullscreen></iframe>
-                    </div>
+                    <h4 class="fw-bold">What is Fire Safety?</h4>
+                    <p>
+                        Fire safety refers to the set of precautions, procedures, and measures taken to prevent fires,
+                        minimize the risk of fire-related accidents,
+                        and ensure the safety of individuals and property in the event of a fire. It involves a
+                        combination of awareness, preparedness, and proper
+                        safety practices to prevent fires from occurring and mitigate their impact if they do happen.
+                    </p>
+
+                    <h4 class="fw-bold mt-4">Fire Hazards to Look Out For</h4>
+                    <p>
+                        It's crucial to know the fire hazards to look out for. This can help organizations and
+                        individuals take proactive measures and create an
+                        effective fire safety system.
+                    </p>
+
+                    <ul class="text-start mx-auto" style="max-width: 750px;">
+                        <li><strong>Electrical hazards</strong> – faulty wiring, overloaded circuits, damaged cords,
+                            malfunctioning equipment</li>
+                        <li><strong>Cooking-related hazards</strong> – grease buildup, unattended cooking, misuse of
+                            appliances</li>
+                        <li><strong>Heating sources</strong> – unsafe use of heaters, fireplaces, wood-burning stoves
+                        </li>
+                        <li><strong>Flammable liquids and chemicals</strong> – gasoline, paint thinners, solvents</li>
+                        <li><strong>Smoking</strong> – careless cigarette disposal</li>
+                        <li><strong>Open flames</strong> – unattended candles, incense</li>
+                        <li><strong>Flammable materials</strong> – paper, cardboard, textiles, gases</li>
+                    </ul>
+
+                    <img src="https://mycalcas.com/wp-content/uploads/2020/01/Home-Fire-Safety-Guide.png"
+                        alt="Fire Safety Guide" class="img-fluid my-4 rounded shadow"
+                        style="max-width: 70%; height: auto;" />
+
+                    <h4 class="fw-bold mt-4">What to Do During a Fire</h4>
+                    <p>
+                        During a fire, it’s crucial to act quickly and follow proper procedures. These tips can help
+                        guide you:
+                    </p>
+
+                    <ul class="text-start mx-auto" style="max-width: 750px;">
+                        <li><strong>Alert others</strong> – Activate an alarm or shout “Fire!”</li>
+                        <li><strong>Evacuate safely</strong> – Use designated routes; avoid hot doors</li>
+                        <li><strong>Crawl low if necessary</strong> – Stay below smoke level</li>
+                        <li><strong>Close doors behind you</strong> – Helps slow spread of fire</li>
+                        <li><strong>Use stairs, not elevators</strong> – Elevators are dangerous during fire</li>
+                        <li><strong>Stay calm</strong> – Keep yourself and others focused</li>
+                        <li><strong>Follow emergency protocols</strong> – Listen to instructions</li>
+                        <li><strong>Help those in need</strong> – If safe, assist others</li>
+                        <li><strong>Do not re-enter the building</strong> – Wait for official clearance</li>
+                        <li><strong>Call emergency services</strong> – Once in a safe location</li>
+                    </ul>
+
+                    <img src="https://www.fireprosafetysolutions.com/wp-content/uploads/2020/11/fire-saty.jpg"
+                        alt="Fire Safety Response" class="img-fluid my-4 rounded shadow"
+                        style="max-width: 100%; height: auto;" />
+
+                    <p class="mt-4">
+                        Explore further guides from the
+                        <a href="https://www.redcross.org/get-help/how-to-prepare-for-emergencies/types-of-emergencies/fire.html"
+                            target="_blank" rel="noopener">Red Cross</a> and the
+                        <a href="https://www.nfpa.org/education-and-research/wildfire" target="_blank"
+                            rel="noopener">NFPA</a>.
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- Evacuation Routes -->
+
+        <!-- Evacuation Routes Section -->
+    <div class="accordion mx-auto" id="resourceAccordion" style="max-width: 800px;">
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#evacRoutes">
@@ -59,17 +189,109 @@
             </h2>
             <div id="evacRoutes" class="accordion-collapse collapse" data-bs-parent="#resourceAccordion">
                 <div class="accordion-body">
-                    <h5 class="text-center">Knowing how and where to evacaute is vital in the event of a wildfire
-                        sometimes you may have only minutes to evacuate. Below are links on how to prepare yourself
-                        for an evacuation, how to stay vigilant on local alerts, what to bring, and how to plan out
-                        an escape route.
-                    </h5>
+
+                    <h4 class="text-center fw-bold">Evacuating During a Wildfire</h4>
+                    <p class="text-center">
+                        In wildfire emergencies, knowing how and when to evacuate is critical. Our map helps you
+                        identify evacuation zones and nearby emergency shelters.
+                        Here's how to use it:
+                    </p>
+
+                    <p><strong>1. Hover over the Layers icon:</strong></p>
+                    <img src="~/images/Screenshot 2025-05-23 123627.png" alt="Layers Button"
+                        class="img-fluid my-3 rounded shadow" style="max-width: 80%; height: auto;" />
+
+                    <p><strong>2. Click on "Emergency Shelters" to view locations:</strong></p>
+                    <img src="~/images/Screenshot 2025-05-23 124656.png" alt="Emergency Shelters"
+                        class="img-fluid my-3 rounded shadow" style="max-width: 80%; height: auto;" />
+
+                    <p><strong>3. Click a shelter marker for detailed information:</strong></p>
+                    <img src="~/images/Screenshot 2025-05-23 125424.png" alt="Shelter Details"
+                        class="img-fluid my-3 rounded shadow" style="max-width: 80%; height: auto;" />
+
+                    <p><strong>4. Click "Evacuation Zones" to see area coverage:</strong></p>
+                    <img src="~/images/Screenshot 2025-05-23 125805.png" alt="Evacuation Zones"
+                        class="img-fluid my-3 rounded shadow" style="max-width: 80%; height: auto;" />
+
+                    <p class="mt-4">For more guidance, visit:</p>
                     <ul>
-                        <h5 class="text-center"><a href="https://www.ready.gov/evacuation" target="_blank">Ready.gov</a></h5>
-                        <h5 class="text-center"><a href="https://wildfire.oregon.gov/Pages/prepare.aspx" target="_blank">Oregon Widlfire Response & Recovery</a></h5>
+                        <li><a href="https://www.ready.gov/evacuation" target="_blank" rel="noopener">Ready.gov</a></li>
+                        <li><a href="https://wildfire.oregon.gov/Pages/prepare.aspx" target="_blank"
+                                rel="noopener">Oregon Wildfire Response & Recovery</a></li>
                     </ul>
+
                 </div>
             </div>
         </div>
+
+
+
+        <!-- Wildfire Embers -->
+    <div class="accordion mx-auto" id="resourceAccordion" style="max-width: 800px;">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#wildfireEmbers">
+                    Wildfire Embers
+                </button>
+            </h2>
+            <div id="wildfireEmbers" class="accordion-collapse collapse" data-bs-parent="#resourceAccordion">
+                <div class="accordion-body">
+                <div class="accordion-body text-center">
+                    <h4 class="fw-bold">Flying embers are the cause of up to 90% of homes destroyed by wildfire</h4>
+                    <p>
+                        When we think about wildfires, we generally envision huge walls of flames engulfing homes.
+                        The reality is that most homes do not ignite from direct contact with a flame front.
+                        In fact, it’s estimated that 90% of homes are destroyed indirectly by wind-borne embers
+                        that are carried ahead of the fire perimeter. When the heat generated by an intense wildfire
+                        is combined with wind, small burning embers can travel several miles away from the fire
+                        perimeter.
+                    </p>
+
+                    <!-- Image with spacing below -->
+                    <img src="https://www.frontlinewildfire.com/wp-content/uploads/2023/04/three-reasons-homes-burn-wildfire-2048x771.jpg"
+                        alt="Reasons homes burn in wildfires" class="img-fluid my-3 rounded shadow"
+                        style="max-width: 100%; height: auto;" />
+
+                    <!-- Video -->
+                    <div class="ratio ratio-16x9 mt-3">
+                        <iframe src="https://www.youtube.com/embed/JV7a1ejOqEc" title="Wildfire Demo 2019 Wide"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+
+                    <h4 class="fw-bold">Preventing ember ignition can save homes</h4>
+                    <p>
+                        In March of 2019 the Insurance Institute for Business & Home Safety
+                        (IBHS) simulated an active wildfire by showering embers on a duplex
+                        house structure in their test chamber in South Carolina. The house
+                        was built and landscaped on one side as a wildfire-resistant structure,
+                        and on the other side with common materials used when wildfire
+                        resistance is not a consideration. The wildfire-resistant side did not
+                        burn, highlighting the fact that if embers don’t have any fuel to ignite,
+                        the chance of a home being destroy by wildfire is reduced significantly.
+                    </p>
+
+                    <h4 class="fw-bold">Too wet for embers to ignite</h4>
+                    <p>
+                        By creating an environment that is too wet to burn, the threat of ember
+                        ignition due to a wildfire can be greatly reduced. Focusing on hydrating
+                        Home Ignition Zones 0 and 1 (HIZ0 and HIZ1), it is possible to saturate
+                        the area around a home prior to exposure to embers. A study from the
+                        University of Minnesota on the Ham Lake Fire indicated that intermittent
+                        precipitation over a 24 hour period for HIZ0 and HIZ1 creates an environment
+                        around a home that will be too wet for ember ignition to take place.
+                        In this study, every home equipped with a working external wildfire sprinkler
+                        system survived the Ham Lake fire. Out of 104 total structures, 46 with working
+                        sprinklers all survived, while 38 of the structures with no sprinklers were lost.
+                    </p>
+
+                    <!-- Image with spacing below -->
+                    <img src="https://www.frontlinewildfire.com/wp-content/uploads/2023/04/Wildfire-Spinkler-System-Design.png"
+                        alt="Reasons homes burn in wildfires" class="img-fluid my-3 rounded shadow"
+                        style="max-width: 100%; height: auto;" />
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
