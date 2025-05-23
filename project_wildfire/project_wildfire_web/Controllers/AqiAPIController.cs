@@ -94,13 +94,12 @@ public class AqiController : ControllerBase
     }
     
     [HttpGet("stations")]
-public async Task<IActionResult> GetAqiStations()
-{
-    var stations = await _context.AqiStations
-        .Select(s => new { s.Name, s.StationId })
-        .ToListAsync();
+    public async Task<IActionResult> GetAqiStations()
+    {
+        var stations = await _context.AqiStations
+            .Select(s => new { s.Name, s.StationId })
+            .ToListAsync();
 
-    return Ok(stations);
-}
-
+        return Ok(stations);
+    }
 }

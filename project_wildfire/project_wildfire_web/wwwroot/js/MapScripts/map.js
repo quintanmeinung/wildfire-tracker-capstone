@@ -69,7 +69,7 @@ createOverlayLayers(map).then(overlayLayers => {
 
     // Add legend + compass
     addLegend(map);
-    initializeCompass(map);
+    //initializeCompass(map);
 
     var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
@@ -264,7 +264,9 @@ function hideSpinner() {
 
 // Map Setup
 function initializeMap() {
-    return L.map('map').setView([44.84, -123.23], 10); // Monmouth, OR
+    const map = L.map('map').setView([44.84, -123.23], 10); // Monmouth, OR
+    var compass = L.control.compass({ autoActive: true }).addTo(map);
+    return map;
 }
 
 function createBaseLayers() {
@@ -515,12 +517,11 @@ async function initializeAqiLayer() {
         const stations = await response.json();
 
         stations.forEach(station => {
-            addAQIMarker(aqiLayer, station.stationId); // Use StationId to render marker
+            addAQIMarker(aqiLayer, station.stationId); 
         });
     } catch (error) {
         console.error('Error loading AQI stations:', error);
     }
-
     return aqiLayer;
 }
 
