@@ -169,7 +169,7 @@ function deleteButton(e) {
     });
 }
 
-function toggleButtons(e) {
+function toggleButtons(e) { //Refactor
     const row = e.target.closest('.row.my-1');
     if (!row) return;
 
