@@ -158,8 +158,8 @@ public class Program
             var adminEmails = new List<string>
             {
                 "quintanscotmeinung@gmail.com",
-                //Mickey's email,
-                //Johny's email",
+                "miked@wou.edu",
+                "jonnyr687@gmail.com"
                 //Eric's email
             };
 
