@@ -160,7 +160,6 @@ public class Program
                 "quintanscotmeinung@gmail.com",
                 "miked@wou.edu",
                 "jonnyr687@gmail.com"
-                //Eric's email
             };
 
             foreach (var email in adminEmails)

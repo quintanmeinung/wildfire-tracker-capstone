@@ -11,6 +11,7 @@ const savedLocationMarkers = {}; // Tracks saved location markers
 window.savedLocationMarkers = savedLocationMarkers; // Expose to global scope
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
+    const userId = getUserId();
     const map = initializeMap();
     window._leaflet_map = map;
 
@@ -37,7 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        const userId = getUserId();
         if (userId !== "") {
             const profileElement = document.getElementById("profile");
             const savedLocations = profileElement.dataset.savedLocations;
@@ -56,10 +56,13 @@ document.addEventListener("DOMContentLoaded", function () {
         map.on('click', function (e) {
             if (window.firePlacementMode) {
                 const { lat, lng } = e.latlng;
+
+                const simulatedPower = 25; // Example radiative power
+
                 const fireMarker = L.circleMarker([lat, lng], {
-                    radius: 10,
+                    radius: 8,
                     color: "red",
-                    fillColor: "orange",
+                    fillColor: "red",
                     fillOpacity: 0.8,
                     weight: 2,
                     className: "admin-fire-marker"
@@ -67,19 +70,37 @@ document.addEventListener("DOMContentLoaded", function () {
                     <strong>🔥 Simulated Fire</strong><br>
                     Latitude: ${lat.toFixed(4)}<br>
                     Longitude: ${lng.toFixed(4)}<br>
+                    Radiative Power: ${simulatedPower}<br>
                     <em>Placed by admin</em>
                 `).addTo(fireLayer);
 
                 fireMarker.openPopup();
-                console.log(`🔥 Fire created at [${lat.toFixed(4)}, ${lng.toFixed(4)}]`);
+
+                // Persist the fire to the DB
+                fetch('/api/AdminFire/Create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        latitude: lat,
+                        longitude: lng,
+                        radiativePower: simulatedPower,
+                        isAdminFire: true
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to save admin fire.");
+                    return response.json();
+                })
+                .then(result => {
+                    console.log("✅ Admin fire saved:", result);
+                })
+                .catch(err => {
+                    console.error("❌ Error saving admin fire:", err);
+                });
+
                 window.firePlacementMode = false;
                 return;
             }
-
-            if (userId !== "") {
-                addMarkerOnClick(e, map);
-            }
-        });
 
         // Load today's fire data
         showSpinner();
@@ -153,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
     addLegend(map);
     //initializeCompass(map);
 
-    var userId = getUserId(); // Get the user ID from the site.js file
+    //var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
 
         var profileElement = document.getElementById("profile");
@@ -276,7 +297,8 @@ function addMarkerOnClick(e, map) {
     initDialogModal(); // Initialize the modal handler
 }
 
-export function removeMarker(id) {
+//export function removeMarker(id) {
+function removeMarker(id) {
     // Given the location ID it will remove the marker from the map.
     const marker = savedLocationMarkers[id];
     console.log("Removing marker:", marker);
@@ -288,7 +310,9 @@ export function removeMarker(id) {
     }
 }
 
-export function addMarker(userLocationDto) {
+
+//export function addMarker(userLocationDto) {
+function addMarker(userLocationDto) {
     // Given the location DTO it will add the marker to the map.
     const { id, title, latitude, longitude } = userLocationDto;
     console.log("Adding marker:", userLocationDto);
@@ -637,7 +661,4 @@ function formatLocalDate(date) {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 }
-
-
-
-
+});

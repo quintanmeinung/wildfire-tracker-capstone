@@ -12,6 +12,8 @@ public partial class Fire
 
     public decimal? RadiativePower { get; set; }
 
+    public bool IsAdminFire { get; set; }
+
     public Geometry? Polygon { get; set; }
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();
