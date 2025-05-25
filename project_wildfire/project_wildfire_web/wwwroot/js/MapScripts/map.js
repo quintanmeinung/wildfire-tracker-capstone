@@ -56,8 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
         map.on('click', function (e) {
             if (window.firePlacementMode) {
                 const { lat, lng } = e.latlng;
-
-                const simulatedPower = 25; // Example radiative power
+                const simulatedPower = 25;
 
                 const fireMarker = L.circleMarker([lat, lng], {
                     radius: 8,
@@ -66,17 +65,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     fillOpacity: 0.8,
                     weight: 2,
                     className: "admin-fire-marker"
-                }).bindPopup(`
+                }).addTo(fireLayer);
+
+                fireMarker.bindPopup(`
                     <strong>🔥 Simulated Fire</strong><br>
                     Latitude: ${lat.toFixed(4)}<br>
                     Longitude: ${lng.toFixed(4)}<br>
                     Radiative Power: ${simulatedPower}<br>
-                    <em>Placed by admin</em>
-                `).addTo(fireLayer);
+                    <em>Placed by admin</em><br>
+                    <em>Saving to database...</em>
+                `).openPopup();
 
-                fireMarker.openPopup();
-
-                // Persist the fire to the DB
+                // Save to DB
                 fetch('/api/AdminFire/Create', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -88,19 +88,40 @@ document.addEventListener("DOMContentLoaded", function () {
                     })
                 })
                 .then(response => {
-                    if (!response.ok) throw new Error("Failed to save admin fire.");
+                    if (!response.ok) throw new Error("Failed to save fire.");
                     return response.json();
                 })
                 .then(result => {
                     console.log("✅ Admin fire saved:", result);
+
+                    const fireId = result.fireId; // Use returned ID from DB
+                    window.fireMarkerMap?.set(fireId, fireMarker);
+
+                    fireMarker.setPopupContent(`
+                        <strong>🔥 Simulated Fire</strong><br>
+                        Latitude: ${lat.toFixed(4)}<br>
+                        Longitude: ${lng.toFixed(4)}<br>
+                        Radiative Power: ${simulatedPower}<br>
+                        <em>Placed by admin</em><br>
+                        <button class="delete-admin-fire btn btn-sm btn-danger" data-fire-id="${fireId}">
+                            🗑️ Delete Fire
+                        </button>
+                    `);
                 })
                 .catch(err => {
                     console.error("❌ Error saving admin fire:", err);
+                    fireMarker.setPopupContent(`
+                        <strong>🔥 Simulated Fire</strong><br>
+                        Latitude: ${lat.toFixed(4)}<br>
+                        Longitude: ${lng.toFixed(4)}<br>
+                        <em>Error saving to DB</em>
+                    `);
                 });
 
                 window.firePlacementMode = false;
                 return;
             }
+
 
         // Load today's fire data
         showSpinner();
@@ -276,8 +297,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+
 });
-    
+   
 
 function addMarkerOnClick(e, map) {
     savedLocationMarkers['temp-marker']?.remove(); // Remove existing temp marker if any
@@ -297,6 +319,9 @@ function addMarkerOnClick(e, map) {
     initDialogModal(); // Initialize the modal handler
 }
 
+
+// 🔒 Disabled export for saved location functions — interfered with map module execution.
+// Belongs to teammate's user story. Keeping the app stable until further integration.
 //export function removeMarker(id) {
 function removeMarker(id) {
     // Given the location ID it will remove the marker from the map.
@@ -310,7 +335,8 @@ function removeMarker(id) {
     }
 }
 
-
+// 🔒 Disabled export for saved location functions — interfered with map module execution.
+// Belongs to teammate's user story. Keeping the app stable until further integration.
 //export function addMarker(userLocationDto) {
 function addMarker(userLocationDto) {
     // Given the location DTO it will add the marker to the map.
@@ -582,6 +608,47 @@ document.addEventListener('click', function (e) {
         "Wildfire Hazard Potential": window.fireHazardLayer
     };
 }
+
+//Global JS Listener for Admin Fire Deletion
+let fireBeingDeleted = new Set();
+
+document.addEventListener('click', function (e) {
+    const deleteBtn = e.target.closest('.delete-admin-fire');
+    if (deleteBtn) {
+        const fireId = deleteBtn.dataset.fireId;
+
+        if (fireBeingDeleted.has(fireId)) return; // 🛡️ Already deleting this fire
+
+        if (confirm("Are you sure you want to delete this admin fire?")) {
+            fireBeingDeleted.add(fireId); // ⏳ Mark fire as being deleted
+
+            fetch(`/api/AdminFire/Delete/${fireId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Delete failed.");
+                
+                const marker = window.fireMarkerMap?.get(parseInt(fireId));
+                if (marker) {
+                    marker.setStyle({ opacity: 0.3, fillOpacity: 0.3 });
+                    setTimeout(() => {
+                        marker.remove();
+                        window.fireMarkerMap.delete(parseInt(fireId));
+                    }, 300);
+                }
+
+                alert("🔥 Admin fire deleted.");
+            })
+            .catch(err => {
+                console.error("❌ Fire delete failed:", err);
+                alert("Failed to delete fire. Check console for details.");
+            })
+            .finally(() => {
+                fireBeingDeleted.delete(fireId); 
+            });
+        }
+    }
+});
 
 async function initializeAqiLayer() {
     const aqiLayer = L.layerGroup();

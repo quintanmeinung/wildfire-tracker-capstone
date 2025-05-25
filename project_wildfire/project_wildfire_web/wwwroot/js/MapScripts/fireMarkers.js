@@ -29,13 +29,37 @@ export function addFireMarkers(fireLayer, apiData) {
       opacity: 1,
       fillOpacity: 0.8,
       className: "wildfire-marker"
-    }).bindPopup(`
-      <strong>🔥 Wildfire!</strong><br>
-      <strong>Radiative Power:</strong> ${power}<br>
-      <strong>Latitude:</strong> ${fire.latitude.toFixed(5)}<br>
-      <strong>Longitude:</strong> ${fire.longitude.toFixed(5)}
-      <button class="subscribe-btn" data-fire-id="${fire.fireId}">Subscribe to fire</button>
-    `);
+  });
+
+  // Build popup content
+  let popupContent = `
+  <strong>🔥 Wildfire!</strong><br>
+  <strong>Radiative Power:</strong> ${power}<br>
+  <strong>Latitude:</strong> ${fire.latitude.toFixed(5)}<br>
+  <strong>Longitude:</strong> ${fire.longitude.toFixed(5)}
+`;
+
+// Show delete button *only* if it's an admin fire and the user is an admin
+if (fire.isAdminFire && window.isAdmin) {
+  popupContent += `
+    <br><em>Placed by admin</em><br>
+    <button class="delete-admin-fire btn btn-sm btn-danger" data-fire-id="${fire.fireId}">
+      🗑️ Delete Fire
+    </button>
+  `;
+}
+
+// Show subscribe button for *everyone*, for *any fire*
+popupContent += `
+  <br><button class="subscribe-btn" data-fire-id="${fire.fireId}">
+    🔔 Subscribe to fire
+  </button>
+`;
+
+
+  marker.bindPopup(popupContent);
+
+
        
     
     window.fireMarkerMap = window.fireMarkerMap || new Map();

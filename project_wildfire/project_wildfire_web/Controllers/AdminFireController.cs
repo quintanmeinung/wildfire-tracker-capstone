@@ -37,6 +37,38 @@ namespace project_wildfire_web.Controllers
                 fireId = fireEntity.FireId
             });
         }
+
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> DeleteFire(int id)
+        {
+            var fire = await _context.Fires.FindAsync(id);
+            if (fire == null)
+            {
+                return NotFound(); // 🟡 would give 404 — but you got 500
+            }
+
+            // 🔥 Step 1: Remove any related subscriptions
+            var subscriptions = _context.UserFireSubscriptions
+                .Where(s => s.FireId == id);
+            _context.UserFireSubscriptions.RemoveRange(subscriptions);
+
+            // 🔥 Step 2: Now remove the fire itself
+            _context.Fires.Remove(fire);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // ⛔ This is likely where the 500 is coming from
+                Console.WriteLine("🔥 Error deleting fire: " + ex.Message);
+                return StatusCode(500, "Server error while deleting fire");
+            }
+
+            return Ok(new { message = "Fire deleted successfully." });
+        }
+
     }
 }
 

@@ -160,6 +160,10 @@
     <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script> <!-- NRI Wildlife as esri Leaflet plugin JS-->
     <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
 
+    <script>
+    window.isAdmin = @(User.IsInRole("Admin").ToString().ToLower());
+    </script>
+    
     <!-- Application Scripts -->
     <script type="module" src="~/js/MapScripts/map.js"> </script>
     <script type="module" src="~/js/SaveLocationScripts/saveLocationModalHandler.js"></script>
