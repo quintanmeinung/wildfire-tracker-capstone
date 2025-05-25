@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
         map.on('click', function (e) {
             if (window.firePlacementMode) {
                 const { lat, lng } = e.latlng;
-                const simulatedPower = 25;
+                const simulatedPower = Math.floor(Math.random() * (60 - 5 + 1)) + 5;
 
                 const fireMarker = L.circleMarker([lat, lng], {
                     radius: 8,
