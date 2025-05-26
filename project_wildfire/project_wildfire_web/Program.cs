@@ -67,6 +67,13 @@ public class Program
             return new NasaService(httpClient, services.GetRequiredService<ILogger<NasaService>>(), configuration);
         });
 
+        builder.Services.AddHttpClient<IArcGisService, ArcGisService>(client =>
+        {
+            //client.BaseAddress = new Uri("https://data-nifc.opendata.arcgis.com/datasets/nifc::current-wildland-fire-incident-locations/api/");
+            client.BaseAddress = new Uri("https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/");
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        });
+
         //Adding Notification Service
         builder.Services.AddScoped<NotificationService>();
         builder.Services.AddHostedService<NotificationBackgroundService>();
