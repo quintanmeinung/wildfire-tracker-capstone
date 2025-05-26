@@ -16,6 +16,7 @@ const savedLocationMarkers = {}; // Tracks saved location markers
 window.savedLocationMarkers = savedLocationMarkers; // Expose to global scope
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Leaflet Map
+    const userId = getUserId();
     const map = initializeMap();
     window._leaflet_map = map;
 
@@ -42,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        const userId = getUserId();
         if (userId !== "") {
             const profileElement = document.getElementById("profile");
             const savedLocations = profileElement.dataset.savedLocations;
@@ -61,22 +61,70 @@ document.addEventListener("DOMContentLoaded", function () {
         map.on('click', function (e) {
             if (window.firePlacementMode) {
                 const { lat, lng } = e.latlng;
-                const fireMarker = L.circleMarker([lat, lng], {
-                    radius: 10,
-                    color: "red",
-                    fillColor: "orange",
-                    fillOpacity: 0.8,
-                    weight: 2,
-                    className: "admin-fire-marker"
-                }).bindPopup(`
+                const simulatedPower = Math.floor(Math.random() * (60 - 5 + 1)) + 5;
+
+                const fireIcon = L.divIcon({
+                    className: 'admin-fire-marker',
+                    html: '<div style="background: red; border-radius: 50%; width: 16px; height: 16px; border: 2px solid #800000;"></div>',
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                });
+
+                const fireMarker = L.marker([lat, lng], {
+                    icon: fireIcon
+                }).addTo(fireLayer);
+
+                fireMarker.bindPopup(`
                     <strong>🔥 Simulated Fire</strong><br>
                     Latitude: ${lat.toFixed(4)}<br>
                     Longitude: ${lng.toFixed(4)}<br>
-                    <em>Placed by admin</em>
-                `).addTo(fireLayer);
+                    Radiative Power: ${simulatedPower}<br>
+                    <em>Placed by admin</em><br>
+                    <em>Saving to database...</em>
+                `).openPopup();
 
-                fireMarker.openPopup();
-                console.log(`🔥 Fire created at [${lat.toFixed(4)}, ${lng.toFixed(4)}]`);
+                // Save to DB
+                fetch('/api/AdminFire/Create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        latitude: lat,
+                        longitude: lng,
+                        radiativePower: simulatedPower,
+                        isAdminFire: true
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to save fire.");
+                    return response.json();
+                })
+                .then(result => {
+                    console.log("✅ Admin fire saved:", result);
+
+                    const fireId = result.fireId; // Use returned ID from DB
+                    window.fireMarkerMap?.set(fireId, fireMarker);
+
+                    fireMarker.setPopupContent(`
+                        <strong>🔥 Simulated Fire</strong><br>
+                        Latitude: ${lat.toFixed(4)}<br>
+                        Longitude: ${lng.toFixed(4)}<br>
+                        Radiative Power: ${simulatedPower}<br>
+                        <em>Placed by admin</em><br>
+                        <button class="delete-admin-fire btn btn-sm btn-danger" data-fire-id="${fireId}">
+                            🗑️ Delete Fire
+                        </button>
+                    `);
+                })
+                .catch(err => {
+                    console.error("❌ Error saving admin fire:", err);
+                    fireMarker.setPopupContent(`
+                        <strong>🔥 Simulated Fire</strong><br>
+                        Latitude: ${lat.toFixed(4)}<br>
+                        Longitude: ${lng.toFixed(4)}<br>
+                        <em>Error saving to DB</em>
+                    `);
+                });
+
                 window.firePlacementMode = false;
                 return;
             }
@@ -171,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
     addLegend(map);
     //initializeCompass(map);
 
-    var userId = getUserId(); // Get the user ID from the site.js file
+    //var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
 
         var profileElement = document.getElementById("profile");
@@ -273,8 +321,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+
 });
-    
+   
 
 function addMarkerOnClick(e, map) {
     savedLocationMarkers['temp-marker']?.remove(); // Remove existing temp marker if any
@@ -294,7 +343,8 @@ function addMarkerOnClick(e, map) {
     initDialogModal(); // Initialize the modal handler
 }
 
-export function removeMarker(id) {
+//export function removeMarker(id) {
+function removeMarker(id) {
     // Given the location ID it will remove the marker from the map.
     const marker = savedLocationMarkers[id];
     console.log("Removing marker:", marker);
@@ -306,7 +356,8 @@ export function removeMarker(id) {
     }
 }
 
-export function addMarker(userLocationDto) {
+//export function addMarker(userLocationDto) {
+function addMarker(userLocationDto) {
     // Given the location DTO it will add the marker to the map.
     const { id, title, latitude, longitude } = userLocationDto;
     console.log("Adding marker:", userLocationDto);
@@ -577,6 +628,47 @@ document.addEventListener('click', function (e) {
     };
 }
 
+//Global JS Listener for Admin Fire Deletion
+let fireBeingDeleted = new Set();
+
+document.addEventListener('click', function (e) {
+    const deleteBtn = e.target.closest('.delete-admin-fire');
+    if (deleteBtn) {
+        const fireId = deleteBtn.dataset.fireId;
+
+        if (fireBeingDeleted.has(fireId)) return; // 🛡️ Already deleting this fire
+
+        if (confirm("Are you sure you want to delete this admin fire?")) {
+            fireBeingDeleted.add(fireId); // ⏳ Mark fire as being deleted
+
+            fetch(`/api/AdminFire/Delete/${fireId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Delete failed.");
+                
+                const marker = window.fireMarkerMap?.get(parseInt(fireId));
+                if (marker) {
+                    marker.setStyle({ opacity: 0.3, fillOpacity: 0.3 });
+                    setTimeout(() => {
+                        marker.remove();
+                        window.fireMarkerMap.delete(parseInt(fireId));
+                    }, 300);
+                }
+
+                alert("🔥 Admin fire deleted.");
+            })
+            .catch(err => {
+                console.error("❌ Fire delete failed:", err);
+                alert("Failed to delete fire. Check console for details.");
+            })
+            .finally(() => {
+                fireBeingDeleted.delete(fireId); 
+            });
+        }
+    }
+});
+
 async function initializeAqiLayer() {
     const aqiLayer = L.layerGroup();
 
@@ -655,7 +747,4 @@ function formatLocalDate(date) {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 }
-
-
-
-
+;

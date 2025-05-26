@@ -3,7 +3,7 @@ using project_wildfire_web.Models;
 using project_wildfire_web.Models.DTO;
 using project_wildfire_web.DAL.Abstract;
 using project_wildfire_web.Services;
-
+using project_wildfire_web.ExtensionsMethods;
 
 namespace project_wildfire_web.Controllers;
 
@@ -91,14 +91,14 @@ namespace project_wildfire_web.Controllers;
         public async Task<IActionResult> GetSavedFires()
         {
             var fires = await _wildfireRepository.GetAllFiresAsync();
-            return Ok(fires);
+
+            var fireDTOs = fires.Select(f => f.ToFireDTO()).ToList(); // ✅ Map to DTO
+            return Ok(fireDTOs);
         }
-        /////Functiont to pull fire fatabase
 
+        /////Functiont to pull fire database
 
-        
-
-        }
+}
 
 
 
