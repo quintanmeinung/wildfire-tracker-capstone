@@ -129,8 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-<<<<<<< HEAD
-=======
             if (userId !== "") {
                 addMarkerOnClick(e, map);
             }
@@ -144,7 +142,6 @@ document.addEventListener("DOMContentLoaded", function () {
          });
         // 1) Create a standalone layer for “Current USA Wildfires”
         const currentWildfireLayer = L.layerGroup().addTo(map);
->>>>>>> fa09c98e1b5bd24bbd182909384da1408af95966
 
         // 2) Populate that layer with your ArcGIS markers
         //    (update your function signature to accept a layerGroup instead of map)
@@ -750,4 +747,4 @@ function formatLocalDate(date) {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 }
-});
+;
