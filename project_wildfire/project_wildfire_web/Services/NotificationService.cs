@@ -25,7 +25,7 @@ public class NotificationService
         _textbeltApiKey = configuration["Textbelt:ApiKey"];
     }
 
-   public async Task CheckFiresNearUserLocationsAsync(string userId, string PhoneNumber)
+public async Task CheckFiresNearUserLocationsAsync(string userId, string phoneNumber)
 {
     var fires = await _context.Fires.ToListAsync();
 
@@ -35,25 +35,37 @@ public class NotificationService
 
     foreach (var location in userLocations)
     {
-        foreach (var fire in fires)
-        {
-            double distance = CalculateDistance(
-                (double)location.Latitude,
-                (double)location.Longitude,
-                (double)fire.Latitude,
-                (double)fire.Longitude);
-
-            if (distance <= location.NotificationRadius)
+        // Gather all fires near this location within notification radius
+        var nearbyFires = fires
+            .Select(fire => new
             {
-                string alertMessage = $"🔥 Fire alert near '{location.Title}' at {location.Address}! Within {distance:F2} miles.";
+                Fire = fire,
+                Distance = CalculateDistance(
+                    (double)location.Latitude,
+                    (double)location.Longitude,
+                    (double)fire.Latitude,
+                    (double)fire.Longitude)
+            })
+            .Where(x => x.Distance <= location.NotificationRadius)
+            .OrderBy(x => x.Distance) // Optional: sort by distance
+            .ToList();
 
-                _logger.LogInformation(alertMessage);
+        if (nearbyFires.Any())
+        {
+            int fireCount = nearbyFires.Count;
+            string distancesList = string.Join(", ", nearbyFires.Select(f => $"{f.Distance:F2}"));
 
-                await SendSmsNotificationAsync(PhoneNumber, alertMessage);
-            }
+            string alertMessage = fireCount == 1
+                ? $"🔥 There is 1 active fire near '{location.Title}' at {location.Address}! It is within {distancesList} miles of your saved location. Please be ready to evacuate!"
+                : $"🔥 There are {fireCount} active fires near '{location.Title}' at {location.Address}! These fires are within {distancesList} miles of your saved location. For your safety, please begin to evacuate!";
+
+            _logger.LogInformation(alertMessage);
+
+            await SendSmsNotificationAsync(phoneNumber, alertMessage);
         }
     }
 }
+
 
 
     // Haversine formula for calculating distance between two coordinates in miles

@@ -72,15 +72,12 @@ body {
   cursor: pointer;
 }
 
-<<<<<<< HEAD
 #map {
   height: 100vh;
   width: 100%;
   position: relative;
   z-index: 1;
 }
-=======
->>>>>>> 29e4d6cdd93f37af24338882acdfa07eed2cfa79
 
 .pulsing-wrapper {
   position: relative;

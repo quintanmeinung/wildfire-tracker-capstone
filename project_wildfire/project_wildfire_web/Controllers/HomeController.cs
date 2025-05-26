@@ -52,7 +52,7 @@ public class HomeController : Controller
                 return NotFound("Unable to retreive primary user by ID.");
             }
 
-            var savedLocations = _locationRepository.GetUserLocations(primaryUser.UserId);
+            var savedLocations = await _locationRepository.GetUserLocationsAsync(primaryUser.UserId);
             var subscribedFires = await _userFireSubRepo.GetFiresSubsAsync(primaryUser.UserId);
 
             var profileViewModel = new ProfileViewModel
