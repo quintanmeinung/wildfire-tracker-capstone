@@ -152,6 +152,61 @@ namespace project_wildfire_tests.BDDTesting.StepDefinitions
             var popup = _driver.FindElement(By.ClassName("leaflet-popup-content"));
             Assert.That(popup.Text.Contains(buttonText), $"Popup does not contain button with text: {buttonText}");
         }
+
+        [When("I click the delete button on the admin fire popup")]
+        public void WhenIClickTheDeleteButtonOnTheAdminFirePopup()
+        {
+            var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+
+            var deleteBtn = wait.Until(ExpectedConditions.ElementToBeClickable(
+                By.CssSelector(".delete-admin-fire")));
+
+            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView(true);", deleteBtn);
+            deleteBtn.Click();
+
+            // ✅ Handle confirm dialog: "Are you sure?"
+            try
+            {
+                IAlert confirm = _driver.SwitchTo().Alert();
+                Console.WriteLine($"Confirm dialog text: {confirm.Text}");
+                confirm.Accept(); // Accept deletion
+            }
+            catch (NoAlertPresentException)
+            {
+                Assert.Fail("Expected confirm dialog not found.");
+            }
+
+            // ✅ Handle success alert: "🔥 Admin fire deleted."
+            try
+            {
+                WebDriverWait alertWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+                alertWait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.AlertIsPresent());
+
+                IAlert postDeleteAlert = _driver.SwitchTo().Alert();
+                Console.WriteLine($"Post-deletion alert: {postDeleteAlert.Text}");
+                postDeleteAlert.Accept();
+            }
+            catch (WebDriverTimeoutException)
+            {
+                Console.WriteLine("ℹ️ No success alert appeared after deletion.");
+            }
+
+            Thread.Sleep(1000); // Let Leaflet update
+        }
+
+        [Then("the fire marker should be removed from the map")]
+        public void ThenTheFireMarkerShouldBeRemovedFromTheMap()
+        {
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+
+            bool markerDisappeared = wait.Until(driver =>
+            {
+                var remaining = driver.FindElements(By.CssSelector(".admin-fire-marker"));
+                return remaining.Count == 0;
+            });
+
+            Assert.That(markerDisappeared, "🔥 Fire marker still present after deletion.");
+        }
     }
 }
 

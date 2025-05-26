@@ -15,3 +15,10 @@ Feature: Admin Fire Creation and Deletion
     And I log in as a regular user
     Then I should see the admin-created fire marker
     And I should see the "Subscribe to fire" button on the popup
+
+    @AdminFireDeletion
+    Scenario: Admin deletes a simulated fire
+        Given I am logged in as an admin
+        And I place a simulated fire on the map
+        When I click the delete button on the admin fire popup
+        Then the fire marker should be removed from the map
