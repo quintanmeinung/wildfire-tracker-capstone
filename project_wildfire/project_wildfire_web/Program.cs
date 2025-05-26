@@ -16,6 +16,7 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
 
         // Retrieve primary DB connection string
         var WebfireConnectionString = builder.Configuration.GetConnectionString("WebfireConnectionString");
