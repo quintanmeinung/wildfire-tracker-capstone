@@ -159,7 +159,8 @@ public class Program
             {
                 "quintanscotmeinung@gmail.com",
                 "miked@wou.edu",
-                "jonnyr687@gmail.com"
+                "jonnyr687@gmail.com",
+                "adminone@example.com"
             };
 
             foreach (var email in adminEmails)

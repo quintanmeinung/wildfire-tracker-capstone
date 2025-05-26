@@ -58,13 +58,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 const { lat, lng } = e.latlng;
                 const simulatedPower = Math.floor(Math.random() * (60 - 5 + 1)) + 5;
 
-                const fireMarker = L.circleMarker([lat, lng], {
-                    radius: 8,
-                    color: "red",
-                    fillColor: "red",
-                    fillOpacity: 0.8,
-                    weight: 2,
-                    className: "admin-fire-marker"
+                const fireIcon = L.divIcon({
+                    className: 'admin-fire-marker',
+                    html: '<div style="background: red; border-radius: 50%; width: 16px; height: 16px; border: 2px solid #800000;"></div>',
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                });
+
+                const fireMarker = L.marker([lat, lng], {
+                    icon: fireIcon
                 }).addTo(fireLayer);
 
                 fireMarker.bindPopup(`
@@ -319,9 +321,6 @@ function addMarkerOnClick(e, map) {
     initDialogModal(); // Initialize the modal handler
 }
 
-
-// 🔒 Disabled export for saved location functions — interfered with map module execution.
-// Belongs to teammate's user story. Keeping the app stable until further integration.
 //export function removeMarker(id) {
 function removeMarker(id) {
     // Given the location ID it will remove the marker from the map.
@@ -335,8 +334,6 @@ function removeMarker(id) {
     }
 }
 
-// 🔒 Disabled export for saved location functions — interfered with map module execution.
-// Belongs to teammate's user story. Keeping the app stable until further integration.
 //export function addMarker(userLocationDto) {
 function addMarker(userLocationDto) {
     // Given the location DTO it will add the marker to the map.
