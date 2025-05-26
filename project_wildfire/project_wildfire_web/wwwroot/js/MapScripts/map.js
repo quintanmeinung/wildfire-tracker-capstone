@@ -3,6 +3,11 @@ import { addFireMarkers } from './fireMarkers.js';
 import { getUserId } from '../site.js'; // Import userId
 import { initDialogModal } from '../SaveLocationScripts/saveLocationModalHandler.js'; // Import modal handler
 import {addLegend } from './addLegend.js';
+import { addWildfireMarkers } from './arcgisMarkers.js';
+
+
+//add arcgis wildfire markers
+
 
 // Track overridden statuses keyed by shelter ID
 const shelterStatusOverrides = {};
@@ -22,22 +27,125 @@ document.addEventListener("DOMContentLoaded", function () {
     baseLayers["Street Map"].addTo(map);
 
     // Overlay Layers
-    const overlayLayers = createOverlayLayers(map);
-    const layerControl = L.control.layers(baseLayers, overlayLayers).addTo(map);
+    createOverlayLayers(map).then(overlayLayers => {
+        const fireLayer = overlayLayers["Fire Reports"];
+        fireLayer.addTo(map);
+        const layerControl = L.control.layers(baseLayers, overlayLayers).addTo(map);
 
-    // Fire Layer (we'll keep a reference)
-    const fireLayer = overlayLayers["Fire Reports"];
-    fireLayer.addTo(map);
+        // 🔥 Admin Fire Creation Tool
+        const createFireButton = document.getElementById("createFireBtn");
 
-    // 🔥 Admin Fire Creation Tool
-    const createFireButton = document.getElementById("createFireBtn");
+        if (window.isAdmin && createFireButton) {
+            createFireButton.addEventListener("click", () => {
+                alert("🖱️ Click on the map to place a simulated fire marker.");
+                window.firePlacementMode = true;
+            });
+        }
 
-    if (window.isAdmin && createFireButton) {
-        createFireButton.addEventListener("click", () => {
-            alert("🖱️ Click on the map to place a simulated fire marker.");
-            window.firePlacementMode = true;
+        const userId = getUserId();
+        if (userId !== "") {
+            const profileElement = document.getElementById("profile");
+            const savedLocations = profileElement.dataset.savedLocations;
+
+            if (savedLocations) {
+                const locations = JSON.parse(savedLocations);
+                for (let location of locations) {
+                    const marker = L.marker([location.latitude, location.longitude]).addTo(map);
+                    savedLocationMarkers[location.id] = marker;
+                    marker.bindPopup(location.title);
+                    marker.getElement().id = location.title;
+                }
+            }
+        }
+
+        map.on('click', function (e) {
+            if (window.firePlacementMode) {
+                const { lat, lng } = e.latlng;
+                const fireMarker = L.circleMarker([lat, lng], {
+                    radius: 10,
+                    color: "red",
+                    fillColor: "orange",
+                    fillOpacity: 0.8,
+                    weight: 2,
+                    className: "admin-fire-marker"
+                }).bindPopup(`
+                    <strong>🔥 Simulated Fire</strong><br>
+                    Latitude: ${lat.toFixed(4)}<br>
+                    Longitude: ${lng.toFixed(4)}<br>
+                    <em>Placed by admin</em>
+                `).addTo(fireLayer);
+
+                fireMarker.openPopup();
+                console.log(`🔥 Fire created at [${lat.toFixed(4)}, ${lng.toFixed(4)}]`);
+                window.firePlacementMode = false;
+                return;
+            }
+
+            if (userId !== "") {
+                addMarkerOnClick(e, map);
+            }
         });
-    }
+        
+        const flameIcon = L.icon({
+        iconUrl: 'images/flames.png',      // adjust path if your image lives in a subfolder
+        iconSize:     [32, 32],      // size of the icon
+        iconAnchor:   [16, 32],      // point of the icon which will correspond to marker's location
+        popupAnchor:  [0, -32]       // point from which the popup should open relative to the iconAnchor
+         });
+        // 1) Create a standalone layer for “Current USA Wildfires”
+        const currentWildfireLayer = L.layerGroup().addTo(map);
+
+        // 2) Populate that layer with your ArcGIS markers
+        //    (update your function signature to accept a layerGroup instead of map)
+        addWildfireMarkers(currentWildfireLayer, flameIcon);
+        layerControl.addOverlay(currentWildfireLayer, "Current USA Wildfires");
+        // Load today's fire data
+        showSpinner();
+        fetch("/api/WildfireAPIController/getSavedFires")
+            .then(response => response.json())
+            .then(data => {
+                fireLayer.clearLayers();
+                addFireMarkers(fireLayer, data);
+                if (data.length === 0) {
+                    console.warn('No wildfires reported today.');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading initial fire markers:', error);
+            })
+            .finally(() => {
+                hideSpinner();
+            });
+
+        // Date filter click handler
+        document.getElementById("filter-date-btn").addEventListener("click", () => {
+            const selectedDateStr = dateInput.value;
+            const minDateStr = dateInput.min;
+            const maxDateStr = dateInput.max;
+
+            if (selectedDateStr < minDateStr || selectedDateStr > maxDateStr) {
+                alert("Please select a date within the valid range.");
+                return;
+            }
+
+            showSpinner();
+            fetch(`/api/WildfireAPIController/fetchWildfiresByDate?date=${selectedDateStr}`)
+                .then(response => response.json())
+                .then(data => {
+                    fireLayer.clearLayers();
+                    addFireMarkers(fireLayer, data);
+                    if (data.length === 0) {
+                        alert("No wildfires were reported for this date.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching wildfire data for selected date:', error);
+                })
+                .finally(() => {
+                    hideSpinner();
+                });
+        });
+    });
 
     //Fire Marker Layer
     //const wildfireMarkersLayer = overlayLayers["Wildfire Markers"];
@@ -61,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add legend + compass
     addLegend(map);
-    initializeCompass(map);
+    //initializeCompass(map);
 
     var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
@@ -85,38 +193,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 marker.bindPopup(location.title); // Bind the name to the marker popup
                 marker.getElement().id = location.title; // Set the marker ID to the location ID
             }
-            map.on('click', function (e) {
-                // 🔥 If fire placement mode is active, create fire marker instead
-                if (window.firePlacementMode) {
-                    const { lat, lng } = e.latlng;
-
-                    const fireMarker = L.circleMarker([lat, lng], {
-                        radius: 10,
-                        color: "red",
-                        fillColor: "orange",
-                        fillOpacity: 0.8,
-                        weight: 2,
-                        className: "admin-fire-marker"
-                    }).bindPopup(`
-                        <strong>🔥 Simulated Fire</strong><br>
-                        Latitude: ${lat.toFixed(4)}<br>
-                        Longitude: ${lng.toFixed(4)}<br>
-                        <em>Placed by admin</em>
-                    `).addTo(fireLayer);
-
-                    fireMarker.openPopup();
-                    console.log(`🔥 Fire created at [${lat.toFixed(4)}, ${lng.toFixed(4)}]`);
-
-                    window.firePlacementMode = false; // Exit fire mode
-                    return;
-                }
-
-                // 🧭 Otherwise, fall back to normal location save behavior
-                addMarkerOnClick(e, map);
-            });
-
         }
-    }
+    } 
 
     // Fetch wildfire data for today's date automatically
     showSpinner();
@@ -256,7 +334,9 @@ function hideSpinner() {
 
 // Map Setup
 function initializeMap() {
-    return L.map('map').setView([44.84, -123.23], 10); // Monmouth, OR
+    const map = L.map('map').setView([44.84, -123.23], 10); // Monmouth, OR
+    var compass = L.control.compass({ autoActive: true }).addTo(map);
+    return map;
 }
 
 function createBaseLayers() {
@@ -276,13 +356,13 @@ function createBaseLayers() {
     };
 }
 
-function createOverlayLayers(map) {
+async function createOverlayLayers(map) {
     const cities = L.layerGroup().addLayer(
         L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View")
     );
     
 
-    const aqiLayer = initializeAqiLayer();
+    const aqiLayer = await initializeAqiLayer();
     const fireLayer = L.layerGroup();
 
     //Emergency Shelters Layer 1
@@ -497,16 +577,22 @@ document.addEventListener('click', function (e) {
     };
 }
 
-function initializeAqiLayer() {
+async function initializeAqiLayer() {
     const aqiLayer = L.layerGroup();
-    addAQIMarker(aqiLayer, "A503596"); // Salem Chemeketa
-    addAQIMarker(aqiLayer, "@91");     // Silverton
-    addAQIMarker(aqiLayer, "@83");     // Lyons
-    addAQIMarker(aqiLayer, "@89");     // Salem
-    addAQIMarker(aqiLayer, "A503590"); // Dallas
-    addAQIMarker(aqiLayer, "@11923");  // Turner
+
+    try {
+        const response = await fetch('/api/aqi/stations');
+        const stations = await response.json();
+
+        stations.forEach(station => {
+            addAQIMarker(aqiLayer, station.stationId); 
+        });
+    } catch (error) {
+        console.error('Error loading AQI stations:', error);
+    }
     return aqiLayer;
 }
+
 
 function handleGeolocation(map) {
     if ("geolocation" in navigator) {
