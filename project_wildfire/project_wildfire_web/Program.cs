@@ -16,6 +16,7 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
 
         // Retrieve primary DB connection string
         var WebfireConnectionString = builder.Configuration.GetConnectionString("WebfireConnectionString");
@@ -64,6 +65,13 @@ public class Program
             httpClient.BaseAddress = new Uri(fullUri);
             httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
             return new NasaService(httpClient, services.GetRequiredService<ILogger<NasaService>>(), configuration);
+        });
+
+        builder.Services.AddHttpClient<IArcGisService, ArcGisService>(client =>
+        {
+            //client.BaseAddress = new Uri("https://data-nifc.opendata.arcgis.com/datasets/nifc::current-wildland-fire-incident-locations/api/");
+            client.BaseAddress = new Uri("https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/");
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         });
 
         //Adding Notification Service

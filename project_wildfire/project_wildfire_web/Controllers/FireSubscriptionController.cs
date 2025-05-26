@@ -39,12 +39,12 @@ public class FireSubscriptionController : ControllerBase
             return Ok( new {messge = "Subscribed successfully."});
        }
 
-       [HttpGet]
+       [HttpDelete("{fireId}")]
        public async Task<IActionResult> Unsubscribe(int fireId)
        {    
             var userId = _userManager.GetUserId(User);
             await _userFireSubRepo.UnsubscribeAsync(userId,fireId);
-            return Ok( new {messge = "Subscribed successfully."});
+            return Ok( new {messge = "Unsubscribed successfully."});
        }
        
        [HttpGet("profile/fires")]

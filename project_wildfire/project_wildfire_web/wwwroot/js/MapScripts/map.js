@@ -3,6 +3,11 @@ import { addFireMarkers } from './fireMarkers.js';
 import { getUserId } from '../site.js'; // Import userId
 import { initDialogModal } from '../SaveLocationScripts/saveLocationModalHandler.js'; // Import modal handler
 import {addLegend } from './addLegend.js';
+import { addWildfireMarkers } from './arcgisMarkers.js';
+
+
+//add arcgis wildfire markers
+
 
 // Track overridden statuses keyed by shelter ID
 const shelterStatusOverrides = {};
@@ -80,7 +85,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 addMarkerOnClick(e, map);
             }
         });
+        
+        const flameIcon = L.icon({
+        iconUrl: 'images/flames.png',      // adjust path if your image lives in a subfolder
+        iconSize:     [32, 32],      // size of the icon
+        iconAnchor:   [16, 32],      // point of the icon which will correspond to marker's location
+        popupAnchor:  [0, -32]       // point from which the popup should open relative to the iconAnchor
+         });
+        // 1) Create a standalone layer for “Current USA Wildfires”
+        const currentWildfireLayer = L.layerGroup().addTo(map);
 
+        // 2) Populate that layer with your ArcGIS markers
+        //    (update your function signature to accept a layerGroup instead of map)
+        addWildfireMarkers(currentWildfireLayer, flameIcon);
+        layerControl.addOverlay(currentWildfireLayer, "Current USA Wildfires");
         // Load today's fire data
         showSpinner();
         fetch("/api/WildfireAPIController/getSavedFires")
