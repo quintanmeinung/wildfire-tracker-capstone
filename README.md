@@ -1,22 +1,36 @@
-# The Architechs
+# wildfire-tracker-capstone
+Capstone Project: Wildfire visualization and evacuation planning tool using NASA FIRMS, Leaflet.js, and Azure SQL.
 
-**Motto:** _Building The Future, One Line Of Code At A Time_
+# Wildfire Tracking Web Application
 
-**Logo:** 
+## Overview
+An interactive wildfire tracking system designed to visualize live fire data, simulate admin-created fires, and assist with evacuation planning. Built with real-time NASA FIRMS and FEMA GIS data.
 
-![Logo](https://github.com/qmeinung22/The-Architechs/blob/main/media/architechs_logo.png?raw=true)
+## Key Features
+- Real-time wildfire visualization with radiative power markers
+- Toggleable layers: Emergency shelters, AQI, wildfire risk
+- Admin-only fire simulation (create/delete custom fire markers)
+- User accessibility settings (text size, contrast, text-to-speech)
+- Mobile-friendly Leaflet map UI
 
-## Contributors 
+## Tech Stack
+- ASP.NET Core MVC (C#)
+- JavaScript + Leaflet.js
+- Azure SQL Database
+- NASA FIRMS + FEMA ArcGIS APIs
+- Reqnroll (Selenium + Gherkin for E2E testing)
 
-| Name               | Resume                                                                                            |
-| ------------------ | ------------------------------------------------------------------------------------------------- |
-| Eric Lomeli-Gil    | https://github.com/qmeinung22/The-Architechs/blob/main/team_resumes/EricLomeliGilResume.pdf       |
-| Jonny Reynoso      | https://github.com/qmeinung22/The-Architechs/blob/main/team_resumes/Jonny_s%20Resume.pdf          |
-| Quintan Meinung    | https://github.com/qmeinung22/The-Architechs/blob/main/team_resumes/Quintan_sResume.pdf           |
-| Mike Deladurantaye | https://github.com/qmeinung22/The-Architechs/blob/main/team_resumes/mike-deladurantaye-resume.pdf |
+## Screenshots
+- In Progress
 
-## Meeting Times
+## How to Run Locally
+1. Clone the repository
+2. Configure `appsettings.json` with your local SQL connection or use SQLite
+3. Run the project via Visual Studio / `dotnet run`
+4. Navigate to `localhost:5000`
 
-* **Weekly Standups:** Mondays and Wednesdays @ 2:00 PM - 2:15 PM
-* **Group Meetings:** Wednesday @ 6:00 PM - 7:45 PM.  Saturday @ 12:00 PM - 1:45 PM 
-* **Meeting with Product Owner:** Monday @ 6:30 PM - 7:20 PM
+## Demo Video
+[Link will go here after Friday’s recording]
+
+## Authors
+- Quintan Meinung + The Architechs Team @ Western Oregon University
