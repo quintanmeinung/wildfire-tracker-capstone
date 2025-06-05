@@ -23,7 +23,7 @@ namespace project_wildfire_web.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Invalid fire data");
 
-            // Force IsAdminFire to true (just in case someone tries to spoof)
+            
             fireDto.IsAdminFire = true;
 
             var fireEntity = fireDto.ToFire();
@@ -33,7 +33,7 @@ namespace project_wildfire_web.Controllers
 
             return Ok(new
             {
-                message = "🔥 Admin fire successfully saved.",
+                message = " Admin fire successfully saved.",
                 fireId = fireEntity.FireId
             });
         }
@@ -44,15 +44,15 @@ namespace project_wildfire_web.Controllers
             var fire = await _context.Fires.FindAsync(id);
             if (fire == null)
             {
-                return NotFound(); // 🟡 would give 404 — but you got 500
+                return NotFound(); 
             }
 
-            // 🔥 Step 1: Remove any related subscriptions
+            // Step 1: Remove any related subscriptions
             var subscriptions = _context.UserFireSubscriptions
                 .Where(s => s.FireId == id);
             _context.UserFireSubscriptions.RemoveRange(subscriptions);
 
-            // 🔥 Step 2: Now remove the fire itself
+            // Step 2: Now remove the fire itself
             _context.Fires.Remove(fire);
 
             try
@@ -61,8 +61,7 @@ namespace project_wildfire_web.Controllers
             }
             catch (Exception ex)
             {
-                // ⛔ This is likely where the 500 is coming from
-                Console.WriteLine("🔥 Error deleting fire: " + ex.Message);
+                Console.WriteLine(" Error deleting fire: " + ex.Message);
                 return StatusCode(500, "Server error while deleting fire");
             }
 

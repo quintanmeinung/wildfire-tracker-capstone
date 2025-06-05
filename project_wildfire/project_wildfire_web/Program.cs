@@ -51,10 +51,8 @@ public class Program
         {
             throw new Exception("NASA:FirmsApiKey is missing from configuration");
         }
-        //string apiBaseUrl = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/ApiKeyHere/VIIRS_SNPP_NRT/-130,40,-110,50/1/2025-04-20";
         string apiBaseUrl = "https://firms.modaps.eosdis.nasa.gov/api/country/csv/ApiKeyHere/VIIRS_SNPP_NRT/PER/1/2025-04-20";
 
-        //https://firms.modaps.eosdis.nasa.gov/api/country/csv/a554c72bc30ce6d5448d9b0848265b94/VIIRS_SNPP_NRT/USA/1/2025-04-20
         string fullUri = apiBaseUrl.Replace("ApiKeyHere", firmsApiKey);
 
         builder.Services.AddHttpClient<INasaService, NasaService>((httpClient, services) =>
@@ -69,7 +67,6 @@ public class Program
 
         builder.Services.AddHttpClient<IArcGisService, ArcGisService>(client =>
         {
-            //client.BaseAddress = new Uri("https://data-nifc.opendata.arcgis.com/datasets/nifc::current-wildland-fire-incident-locations/api/");
             client.BaseAddress = new Uri("https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         });
@@ -79,8 +76,6 @@ public class Program
         builder.Services.AddHostedService<NotificationBackgroundService>();
 
         builder.Services.AddScoped<OpenAIService>();
-
-
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
@@ -110,15 +105,12 @@ public class Program
         builder.Services.AddSession();
         builder.Configuration.AddUserSecrets<Program>();
         
-
         var app = builder.Build();
-
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
 
@@ -162,7 +154,7 @@ public class Program
                 Console.WriteLine("[ROLES] Admin role created.");
             }
 
-            // Assign an admin user (you can change this email to your own!)
+            //Admin Accounts
             var adminEmails = new List<string>
             {
                 "quintanscotmeinung@gmail.com",

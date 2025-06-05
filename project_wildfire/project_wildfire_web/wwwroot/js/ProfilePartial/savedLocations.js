@@ -22,7 +22,6 @@ export function initSavedLocations() {
 }
 
 function viewLocation(e) {
-    console.log('Viewing location...');
     const row = e.target.closest('.row.my-1');
     const location = JSON.parse(row.dataset.location);
 
@@ -37,7 +36,6 @@ function viewLocation(e) {
 }
 
 function editButton(e) {
-    console.log('Editing location...');
     toggleButtons(e);
     toggleEditing(e);
 }
@@ -87,7 +85,6 @@ function saveLocationUpdates(row) {
     row.dataset.location = JSON.stringify(location);
     
     // Construct the updated location object
-    console.log('Saving:', { title, address, radius });
     // UserLocationDTO
     const updatedDTO = {
         Id: location.Id,        // These don't change;
@@ -110,7 +107,6 @@ function saveLocationUpdates(row) {
         if (!response.ok) {
             throw new Error('API UpdateLocation response was not ok: ' + response.statusText);
         } else {
-            console.log('Location updated successfully!');
             updateMarker(location.Id, title, radius); // Updates the map marker with the new title and radius
         }
     }).catch(error => {
@@ -123,7 +119,6 @@ function saveLocationUpdates(row) {
 }
 
 function updateMarker(locationId, title, radius) {
-    console.log('Updating marker for locationId:', locationId);
     const markers = window.savedLocationMarkers;
     var target = markers[locationId]
     if (target) {
@@ -150,7 +145,6 @@ function cancelEdit(row) {
 }
 
 function deleteButton(e) {
-    console.log('Deleting location...');
     const row = e.target.closest('.row.my-1');
     const location = JSON.parse(row.dataset.location);
 
@@ -169,7 +163,7 @@ function deleteButton(e) {
     });
 }
 
-function toggleButtons(e) { //Refactor
+function toggleButtons(e) { 
     const row = e.target.closest('.row.my-1');
     if (!row) return;
 

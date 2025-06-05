@@ -15,7 +15,6 @@ namespace project_wildfire_web.Controllers;
         private readonly ILogger<WildfireAPIController> _logger;
         private readonly INasaService _nasaService;
         private readonly IConfiguration _configuration;
-        //private readonly HttpClient _httpClient;
         private readonly IWildfireRepository _wildfireRepository;
 
         public WildfireAPIController(IWildfireRepository wildfirefireRepository, ILogger<WildfireAPIController> logger, INasaService nasaService)
@@ -43,7 +42,6 @@ namespace project_wildfire_web.Controllers;
         }
 
         //Code to fetch Wildfire Markers by given date from user
-        //Updated by Quintan
         [HttpGet("fetchWildfiresByDate")]
         public async Task<IActionResult> GetWildfiresByDate([FromQuery] string date)
         {
@@ -92,12 +90,9 @@ namespace project_wildfire_web.Controllers;
         {
             var fires = await _wildfireRepository.GetAllFiresAsync();
 
-            var fireDTOs = fires.Select(f => f.ToFireDTO()).ToList(); // ✅ Map to DTO
+            var fireDTOs = fires.Select(f => f.ToFireDTO()).ToList(); 
             return Ok(fireDTOs);
         }
-
-        /////Functiont to pull fire database
-
 }
 
 

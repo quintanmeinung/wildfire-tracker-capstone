@@ -33,7 +33,7 @@ export function addFireMarkers(fireLayer, apiData) {
 
   // Build popup content
   let popupContent = `
-  <strong>🔥 Wildfire!</strong><br>
+  <strong> Wildfire!</strong><br>
   <strong>Radiative Power:</strong> ${power}<br>
   <strong>Latitude:</strong> ${fire.latitude.toFixed(5)}<br>
   <strong>Longitude:</strong> ${fire.longitude.toFixed(5)}
@@ -44,7 +44,7 @@ if (fire.isAdminFire && window.isAdmin) {
   popupContent += `
     <br><em>Placed by admin</em><br>
     <button class="delete-admin-fire btn btn-sm btn-danger" data-fire-id="${fire.fireId}">
-      🗑️ Delete Fire
+      Delete Fire
     </button>
   `;
 }
@@ -52,7 +52,7 @@ if (fire.isAdminFire && window.isAdmin) {
 // Show subscribe button for *everyone*, for *any fire*
 popupContent += `
   <br><button class="subscribe-btn" data-fire-id="${fire.fireId}">
-    🔔 Subscribe to fire
+    Subscribe to fire
   </button>
 `;
 
@@ -74,7 +74,6 @@ export function bindSubscribeButtonOnPopup(marker, fireId) {
   marker.on('popupopen', () => {
      const popupEl = marker.getPopup().getElement(); // Get the actual DOM element of the popup
       const btn = popupEl?.querySelector('.subscribe-btn'); // Look inside *that popup only*
-  //  const btn = document.querySelector('.subscribe-btn');
     if (btn) {
       btn.addEventListener('click', async () => {
         try {

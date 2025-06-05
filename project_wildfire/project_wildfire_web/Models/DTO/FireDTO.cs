@@ -3,8 +3,6 @@ using CsvHelper.Configuration.Attributes;
 using project_wildfire_web.Models;
 using project_wildfire_web.Models.DTO;
 
-
-
 namespace project_wildfire_web.Models.DTO
 {
     public partial class FireDTO
@@ -19,15 +17,10 @@ namespace project_wildfire_web.Models.DTO
         [Name("longitude")]
         public decimal Longitude { get; set; }
 
-        //[Required]
-        //public Geometry Location { get; set; } = null!;
-
-
         [Required]
         [Name("frp")]
         public decimal RadiativePower { get; set; }
 
-        //For admin created fires
          public bool IsAdminFire { get; set; } 
 
 }

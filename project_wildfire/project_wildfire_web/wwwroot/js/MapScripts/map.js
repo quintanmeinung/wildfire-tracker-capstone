@@ -5,10 +5,6 @@ import { initDialogModal } from '../SaveLocationScripts/saveLocationModalHandler
 import {addLegend } from './addLegend.js';
 import { addWildfireMarkers } from './arcgisMarkers.js';
 
-
-//add arcgis wildfire markers
-
-
 // Track overridden statuses keyed by shelter ID
 const shelterStatusOverrides = {};
 
@@ -33,12 +29,11 @@ document.addEventListener("DOMContentLoaded", function () {
         fireLayer.addTo(map);
         const layerControl = L.control.layers(baseLayers, overlayLayers).addTo(map);
 
-        // 🔥 Admin Fire Creation Tool
+        // Admin Fire Creation Tool
         const createFireButton = document.getElementById("createFireBtn");
 
         if (window.isAdmin && createFireButton) {
             createFireButton.addEventListener("click", () => {
-                alert("🖱️ Click on the map to place a simulated fire marker.");
                 window.firePlacementMode = true;
             });
         }
@@ -75,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }).addTo(fireLayer);
 
                 fireMarker.bindPopup(`
-                    <strong>🔥 Simulated Fire</strong><br>
+                    <strong> Simulated Fire</strong><br>
                     Latitude: ${lat.toFixed(4)}<br>
                     Longitude: ${lng.toFixed(4)}<br>
                     Radiative Power: ${simulatedPower}<br>
@@ -99,26 +94,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     return response.json();
                 })
                 .then(result => {
-                    console.log("✅ Admin fire saved:", result);
-
                     const fireId = result.fireId; // Use returned ID from DB
                     window.fireMarkerMap?.set(fireId, fireMarker);
 
                     fireMarker.setPopupContent(`
-                        <strong>🔥 Simulated Fire</strong><br>
+                        <strong>Simulated Fire</strong><br>
                         Latitude: ${lat.toFixed(4)}<br>
                         Longitude: ${lng.toFixed(4)}<br>
                         Radiative Power: ${simulatedPower}<br>
                         <em>Placed by admin</em><br>
                         <button class="delete-admin-fire btn btn-sm btn-danger" data-fire-id="${fireId}">
-                            🗑️ Delete Fire
+                            Delete Fire
                         </button>
                     `);
                 })
                 .catch(err => {
-                    console.error("❌ Error saving admin fire:", err);
                     fireMarker.setPopupContent(`
-                        <strong>🔥 Simulated Fire</strong><br>
+                        <strong> Simulated Fire</strong><br>
                         Latitude: ${lat.toFixed(4)}<br>
                         Longitude: ${lng.toFixed(4)}<br>
                         <em>Error saving to DB</em>
@@ -140,11 +132,11 @@ document.addEventListener("DOMContentLoaded", function () {
         iconAnchor:   [16, 32],      // point of the icon which will correspond to marker's location
         popupAnchor:  [0, -32]       // point from which the popup should open relative to the iconAnchor
          });
+
         // 1) Create a standalone layer for “Current USA Wildfires”
         const currentWildfireLayer = L.layerGroup().addTo(map);
 
         // 2) Populate that layer with your ArcGIS markers
-        //    (update your function signature to accept a layerGroup instead of map)
         addWildfireMarkers(currentWildfireLayer, flameIcon);
         layerControl.addOverlay(currentWildfireLayer, "Current USA Wildfires");
         // Load today's fire data
@@ -172,7 +164,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const maxDateStr = dateInput.max;
 
             if (selectedDateStr < minDateStr || selectedDateStr > maxDateStr) {
-                alert("Please select a date within the valid range.");
                 return;
             }
 
@@ -183,7 +174,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     fireLayer.clearLayers();
                     addFireMarkers(fireLayer, data);
                     if (data.length === 0) {
-                        alert("No wildfires were reported for this date.");
                     }
                 })
                 .catch(error => {
@@ -194,10 +184,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         });
     });
-
-    //Fire Marker Layer
-    //const wildfireMarkersLayer = overlayLayers["Wildfire Markers"];
-    //wildfireMarkersLayer.addTo(map);
         
     // Date control setup
     const dateInput = document.getElementById("fire-date");
@@ -217,9 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add legend + compass
     addLegend(map);
-    //initializeCompass(map);
 
-    //var userId = getUserId(); // Get the user ID from the site.js file
     if (userId !== "") {
 
         var profileElement = document.getElementById("profile");
@@ -227,15 +211,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Get saved locations from the profile element data attribute(Index.cshtml)
         var savedLocations = profileElement.dataset.savedLocations;
 
-        console.log("Saved locations:", savedLocations);
-
         if (savedLocations) {
             // Parse the JSON string to an object
             savedLocations = JSON.parse(savedLocations); 
  
             for (let location of savedLocations) {
-                console.log(location);
-
                 let marker = L.marker([location.latitude, location.longitude]).addTo(map);
                 savedLocationMarkers[location.id] = marker; // Store the marker in the savedLocations object
                 marker.bindPopup(location.title); // Bind the name to the marker popup
@@ -246,14 +226,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fetch wildfire data for today's date automatically
     showSpinner();
-  //  fetch(`/api/WildfireAPIController/fetchWildfiresByDate?date=${dateInput.value}`)
     fetch("/api/WildfireAPIController/getSavedFires")
         .then(response => response.json())
         .then(data => {
             fireLayer.clearLayers();
             addFireMarkers(fireLayer, data);
-            //
-        //
             if (data.length === 0) {
                 console.warn('No wildfires reported today.');
             }
@@ -271,23 +248,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const minDateStr = dateInput.min;
         const maxDateStr = dateInput.max;
 
-        if (selectedDateStr < minDateStr || selectedDateStr > maxDateStr) {
-            alert("Please select a date within the valid range.");
-            return;
-        }
-
         showSpinner();
         fetch(`/api/WildfireAPIController/fetchWildfiresByDate?date=${selectedDateStr}`)
             .then(response => response.json())
             .then(data => {
                 fireLayer.clearLayers();
                 addFireMarkers(fireLayer, data);
-                //
-                        // Attach event listeners to "Subscribe to Fire" buttons
-
-                if (data.length === 0) {
-                    alert("No wildfires were reported for this date.");
-                }
             })
             .catch(error => {
                 console.error('Error fetching wildfire data for selected date:', error);
@@ -324,7 +290,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
    
-
 function addMarkerOnClick(e, map) {
     savedLocationMarkers['temp-marker']?.remove(); // Remove existing temp marker if any
 
@@ -343,11 +308,9 @@ function addMarkerOnClick(e, map) {
     initDialogModal(); // Initialize the modal handler
 }
 
-//export function removeMarker(id) {
 function removeMarker(id) {
     // Given the location ID it will remove the marker from the map.
     const marker = savedLocationMarkers[id];
-    console.log("Removing marker:", marker);
     if (marker) {
         marker.remove(); // Remove the marker from the map
         delete savedLocationMarkers[id]; // Remove from the savedLocations object
@@ -356,12 +319,10 @@ function removeMarker(id) {
     }
 }
 
-//export function addMarker(userLocationDto) {
 function addMarker(userLocationDto) {
     // Given the location DTO it will add the marker to the map.
     const { id, title, latitude, longitude } = userLocationDto;
-    console.log("Adding marker:", userLocationDto);
-
+    
     if (savedLocationMarkers[id]) {
         console.error(`Marker with title "${title}" already exists.`);
         return;
@@ -412,7 +373,6 @@ async function createOverlayLayers(map) {
         L.marker([44.9429, -123.0351]).bindPopup("Salem, Oregon - Default View")
     );
     
-
     const aqiLayer = await initializeAqiLayer();
     const fireLayer = L.layerGroup();
 
@@ -430,7 +390,7 @@ async function createOverlayLayers(map) {
         url: 'https://gis.fema.gov/arcgis/rest/services/NSS/FEMA_NSS/FeatureServer/5',
         pointToLayer: function (geojson, latlng) {
             if (map.getZoom() < 7) {
-                return null; // don't draw marker at low zoom
+                return null; 
             }
 
             const shelterId = geojson.properties.shelter_id || geojson.properties.OBJECTID;
@@ -496,7 +456,7 @@ async function createOverlayLayers(map) {
                 Status: <strong>${status}</strong><br>
             `;
 
-            // 👮 Add toggle button only if user is an admin
+            // Add toggle button only if user is an admin
             if (window.isAdmin) {
                 popup += `
                     <button class="toggle-shelter-status-btn" data-id="${shelterId}">
@@ -528,8 +488,6 @@ async function createOverlayLayers(map) {
         const hasOpenShelters = features.some(f => f.properties.shelter_status_code === "OPEN");
     
         if (!hasOpenShelters) {
-            console.warn("No open shelters found at this time.");
-            // Optional: Display an info control or popup
             L.popup()
                 .setLatLng([44.9429, -123.0351]) // Default location or center
                 .setContent("No open shelters currently reported. All listed locations are closed.")
@@ -537,11 +495,6 @@ async function createOverlayLayers(map) {
         }
     });
             
-    // Add the layer to the map on startup
-    //wildfireRiskLayer.addTo(map);
-    //shelterClusterGroup.addTo(map);
-    //femaShelters.addTo(map);
-
 document.addEventListener('click', function (e) {
     const button = e.target.closest('.toggle-shelter-status-btn');
     if (button) {
@@ -552,7 +505,7 @@ document.addEventListener('click', function (e) {
         // Update override
         shelterStatusOverrides[shelterId] = newStatus;
 
-        // ✅ Refresh popup and marker
+        // Refresh popup and marker
         femaShelters.eachFeature(function (layer) {
             const props = layer.feature.properties;
             const id = props.shelter_id || props.OBJECTID;
@@ -592,7 +545,7 @@ document.addEventListener('click', function (e) {
                 // Re-bind the popup
                 layer.bindPopup(popup).openPopup();
 
-                // ✅ Update the marker style
+                // Update the marker style
                 const style = (status === "OPEN") ?
                     {
                         radius: 6,
@@ -612,12 +565,9 @@ document.addEventListener('click', function (e) {
                 layer.setStyle(style);
             }
         });
-
-        console.log(`🔄 Shelter ${shelterId} status changed to ${newStatus}`);
     }
 });
 
-    
     return {
         "Emergency Shelters": femaShelters,
         "Evacuation Zone": shelterClusterGroup,
@@ -628,7 +578,7 @@ document.addEventListener('click', function (e) {
     };
 }
 
-//Global JS Listener for Admin Fire Deletion
+// Global JS Listener for Admin Fire Deletion
 let fireBeingDeleted = new Set();
 
 document.addEventListener('click', function (e) {
@@ -636,10 +586,10 @@ document.addEventListener('click', function (e) {
     if (deleteBtn) {
         const fireId = deleteBtn.dataset.fireId;
 
-        if (fireBeingDeleted.has(fireId)) return; // 🛡️ Already deleting this fire
+        if (fireBeingDeleted.has(fireId)) return; // Already deleting this fire
 
         if (confirm("Are you sure you want to delete this admin fire?")) {
-            fireBeingDeleted.add(fireId); // ⏳ Mark fire as being deleted
+            fireBeingDeleted.add(fireId); // Mark fire as being deleted
 
             fetch(`/api/AdminFire/Delete/${fireId}`, {
                 method: 'DELETE'
@@ -655,12 +605,9 @@ document.addEventListener('click', function (e) {
                         window.fireMarkerMap.delete(parseInt(fireId));
                     }, 300);
                 }
-
-                alert("🔥 Admin fire deleted.");
             })
             .catch(err => {
-                console.error("❌ Fire delete failed:", err);
-                alert("Failed to delete fire. Check console for details.");
+                console.error("Fire delete failed:", err);
             })
             .finally(() => {
                 fireBeingDeleted.delete(fireId); 
@@ -740,7 +687,7 @@ function initializeCompass(map) {
     }
 }
 
-    // Format Date to YYYY-MM-DD
+// Format Date to YYYY-MM-DD
 function formatLocalDate(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");

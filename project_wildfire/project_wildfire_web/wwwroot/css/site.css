@@ -39,9 +39,9 @@ body {
 
 /*customizes the accordion buttons on resource page */
 .accordion-button {
-  font-size: 1.5rem; /* Makes text larger*/
-  padding: 15px 20px; /*Adjust vertical & horizontal padding*/
-  height: 60px; /*Increases button height*/
+  font-size: 1.5rem; 
+  padding: 15px 20px; 
+  height: 60px; 
 }
 
 /*CSS Code for Accessibility Font */
@@ -103,7 +103,7 @@ body {
   left: 0;
   width: 32px;
   height: 32px;
-  pointer-events: none; /* allows clicking the marker easily */
+  pointer-events: none; 
 }
 
 @keyframes pulse {

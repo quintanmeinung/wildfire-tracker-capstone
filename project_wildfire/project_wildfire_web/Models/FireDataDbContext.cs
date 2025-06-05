@@ -73,7 +73,7 @@ public partial class FireDataDbContext : DbContext
             .WithMany(f => f.UserSubscriptions)
             .HasForeignKey(ufs => ufs.FireId);
 
-        modelBuilder.Entity<AqiStation>() //these two lines were added for my nunit test F14
+        modelBuilder.Entity<AqiStation>() 
             .HasKey(a => a.StationId);
 
         OnModelCreatingPartial(modelBuilder);

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace project_wildfire_tests.UnitTests
 {
-    // ✅ Local DTO for unit testing only
+    // Local DTO for unit testing only
     public class ShelterDTO
     {
         public string shelter_name { get; set; }

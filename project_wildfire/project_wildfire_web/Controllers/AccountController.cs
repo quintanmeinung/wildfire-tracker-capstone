@@ -28,14 +28,4 @@ public class AccountController : Controller
         _locationRepository = repository;
         _userRepository = userRepository;
     }
-
-   /*  public async Task<IActionResult> Login(LoginViewModel model)
-    {
-        if(ModelState.IsValid)
-        {
-          var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe,lockoutOnFailure: false);
-
-        }
-    }
- */
 }
