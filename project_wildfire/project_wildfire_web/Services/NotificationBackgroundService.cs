@@ -21,14 +21,14 @@ public class NotificationBackgroundService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("🔥 NotificationBackgroundService is starting...");
+       /* _logger.LogInformation("🔥 NotificationBackgroundService is starting...");
 
         while (!stoppingToken.IsCancellationRequested)
         {
             await CheckUserLocationsAsync();
 
             await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken); // Run every 1 minute
-        }
+        }*/
     }
 
 private async Task CheckUserLocationsAsync()
