@@ -23,7 +23,7 @@ public partial class UserLocation
     public DateTime? LastNotificationSent { get; set; }
     
     [Range(1, 100, ErrorMessage = "Radius must be 1-100 miles")]
-    public int NotificationRadius { get; set; } = 25; //Used to be this     public int NotificationRadius { get; set; } just in case it breaks anything
+    public int NotificationRadius { get; set; } = 25; 
 
     public virtual User User { get; set; } = null!;
 

@@ -8,12 +8,12 @@
 
 /* Style for the custom compass image */
 .compass-img {
-    width: 60px;   /* Adjust size here */
-    height: 60px;  /* Adjust size here */
+    width: 60px;   
+    height: 60px;  
 }
 
 #compass img {
-    width: 175%;  /* Ensures image scales to fill the container */
+    width: 175%;  
     height: 175%;
 }
 

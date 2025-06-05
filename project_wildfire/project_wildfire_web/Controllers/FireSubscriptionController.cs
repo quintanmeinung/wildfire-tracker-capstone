@@ -17,11 +17,9 @@ namespace project_wildfire_web.Controllers;
 public class FireSubscriptionController : ControllerBase
 {
     // FireSubscription Constructor
-    //Need this property since fire subs are tied to users
+    // Need this property since fire subs are tied to users
         private readonly UserManager<IdentityUser> _userManager;
-        //private readonly IFireRepo
         private readonly IUserRepository _userRepo;
-       // private readonly IUserFireSubRepo
        private readonly IUserFireSubRepository _userFireSubRepo;
 
        public FireSubscriptionController(UserManager<IdentityUser> userManager,IUserRepository userRepo, IUserFireSubRepository userFireSubRepo )
@@ -50,7 +48,7 @@ public class FireSubscriptionController : ControllerBase
        [HttpGet("profile/fires")]
           public async Task<IActionResult> GetUserFireSubscriptions()
           {
-          var userId = _userManager.GetUserId(User); // or however you get logged-in user
+          var userId = _userManager.GetUserId(User); 
           var fires = await _userFireSubRepo.GetFiresSubsAsync(userId);
           return Ok(fires);
           }

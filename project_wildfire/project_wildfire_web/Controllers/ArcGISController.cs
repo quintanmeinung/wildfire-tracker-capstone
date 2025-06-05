@@ -29,18 +29,5 @@ namespace Controllers
             var fires = await _arcGisService.GetUsaWildfiresAsync();
             return Ok(fires);
         }
-
-        /// <summary>
-        /// GET /api/wildfires/{id}
-        /// Returns details for a specific wildfire by its OBJECTID.
-        /// </summary>
-    /*     [HttpGet("{id}")]
-        public async Task<ActionResult<FireEvent>> GetWildfireById(string id)
-        {
-            var fire = await _arcGisService.GetEventDetailsAsync(id);
-            if (fire == null)
-                return NotFound();
-            return Ok(fire);
-        } */
     }
 }

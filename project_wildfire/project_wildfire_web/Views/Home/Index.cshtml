@@ -36,24 +36,10 @@
 <!-- Custom CSS file -->
 <link href="~/css/leaflet.css" rel="stylesheet" type="text/css" />
 
-@* 
-    !!Moved to side bar!!
-<div class="accessibility-controls">
-    <label for="fontSize">Font Size:</label>
-    <select id="fontSize" class="font-size-dropdown">
-        <option value="small">Small</option>
-        <option value="medium" selected>Medium</option>
-        <option value="large">Large</option>
-        <option value="xlarge">Extra Large</option>
-    </select>
-    <button id="contrastToggle">Toggle High Contrast</button>
-    <button id="speechToggle">Enable Text-to-Speech</button>
-</div> *@
-
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
     <button id="createFireBtn" class="btn btn-danger" style="margin: 10px;">
-        🔥 Create Simulated Fire
+         Create Simulated Fire
     </button>
 }
 
@@ -67,8 +53,6 @@
     </div>
 }
 
-@* <div id="compass-degree"></div>
-<div id="compass-top-right"></div> *@
 
 <!-- Loading spinner HTML -->
 <div id="loading-spinner" style="display: none; text-align: center; margin: 10px; z-index: 5;">
@@ -78,13 +62,6 @@
 
 <!-- Map Container -->
 <div id="map"></div>
-
-<!-- Custom Compass Image - Positioned at Top Right, below Layer Control -->
-@* <div class="compass-container">
-    <div id="compass" class="compass-img">
-        <img src="~/images/compass.png" alt="Compass" />
-    </div>
-</div> *@
 
 <!-- Legend Info Modal -->
 <div class="modal fade" id="legendInfoModal" tabindex="-1" aria-labelledby="legendInfoModalLabel" aria-hidden="true">
@@ -103,14 +80,6 @@
         </div>
     </div>
 </div>
-
-@* 
-    !!Moved to side bar!!
-<div class="fire-date-filter">
-    <label for="fire-date">🗓️ Select Wildfire Date:</label>
-    <input type="date" id="fire-date" name="fire-date" />
-    <button id="filter-date-btn">Filter Fires</button>
-</div> *@
 
 @section Scripts {
     <!-- External CSS (moved to top for better loading) -->
@@ -138,14 +107,14 @@
     {
         <script>
             window.isAdmin = true;
-            console.log("✅ Admin user detected.");
+            console.log("Admin user detected.");
         </script>
     }
     else
     {
         <script>
             window.isAdmin = false;
-            console.log("👤 Standard user detected.");
+            console.log("Standard user detected.");
         </script>
     }
 
