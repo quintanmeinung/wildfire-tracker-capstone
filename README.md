@@ -1,7 +1,8 @@
-# wildfire-tracker-capstone
+# Wildfire Tracking Web Application
 Capstone Project: Wildfire visualization and evacuation planning tool using NASA FIRMS, Leaflet.js, and Azure SQL.
 
-# Wildfire Tracking Web Application
+## URL
+https://wildfire-website-app-fnc8bxajf0b0hzf2.canadacentral-01.azurewebsites.net/
 
 ## Overview
 An interactive wildfire tracking system designed to visualize live fire data, simulate admin-created fires, and assist with evacuation planning. Built with real-time NASA FIRMS and FEMA GIS data.
