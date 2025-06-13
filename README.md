@@ -21,8 +21,8 @@ An interactive wildfire tracking system designed to visualize live fire data, si
 - NASA FIRMS + FEMA ArcGIS APIs
 - Reqnroll (Selenium + Gherkin for E2E testing)
 
-## Screenshots
-- In Progress
+## Tech/Presentation Video Link
+- https://drive.google.com/file/d/1KgUCO1YqQcD5l66AkDT4UgNJPSLMpZ3v/view?usp=drive_link
 
 ## How to Run Locally
 1. Clone the repository
