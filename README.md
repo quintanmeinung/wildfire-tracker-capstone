@@ -22,8 +22,9 @@ An interactive wildfire tracking system designed to visualize live fire data, si
 - Reqnroll (Selenium + Gherkin for E2E testing)
 
 ## Tech/Presentation Video Link
+- https://drive.google.com/file/d/1xSbNU-2iMrbeZaZ9qUAKbv3dKAbC39IF/view?usp=drive_link
 - https://drive.google.com/file/d/1KgUCO1YqQcD5l66AkDT4UgNJPSLMpZ3v/view?usp=drive_link
-
+  
 ## How to Run Locally
 1. Clone the repository
 2. Configure `appsettings.json` with your local SQL connection or use SQLite
